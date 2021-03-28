@@ -46,6 +46,7 @@
     
     <script src="<?= BASEURL; ?>/plugins/jquery/jquery-ui.min.js"></script>
     <link href="<?= BASEURL; ?>/css/ui-autocomplete.css" rel="stylesheet">
+    <link href="<?= BASEURL; ?>/plugins/multi-select/css/multi-select.css" rel="stylesheet">
     <script>
         var base_url = window.location.origin+'/ta-erp';
     </script>
@@ -101,6 +102,18 @@
             top: 10px;
             right: 15px;
             list-style: none;
+        }
+
+        .bootstrap-select.btn-group .dropdown-menu.inner {
+            position: static;
+            float: none;
+            border: 0;
+            padding: 0;
+            margin: 0;
+            border-radius: 0;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            margin: 20px !important;
         }
 
         /* @media(max-width: 520px) {

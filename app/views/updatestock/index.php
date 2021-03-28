@@ -6,7 +6,7 @@
                 ?>
             </div>
             <div class="row clearfix">
-            <form action="<?= BASEURL; ?>/updatestock/post" method="post" enctype="multipart/form-data">
+            <form id="form-update-stock" enctype="multipart/form-data">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">                   
                     <div class="card">
                         <div class="header">
@@ -43,25 +43,33 @@
                             </h2>
                         </div>
                         <div class="body">
-                            <div class="table-responsive">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <table class="table table-bordered table-striped table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Material</th>
-                                                <th>Description</th>
-                                                <th>Warehouse</th>
-                                                <th>Quantity</th>
-                                                <th>Unit</th>
-                                                <th>Remark</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tbl-pr-body" class="mainbodynpo">
+                            <div class="row">
+                                <div class="table-responsive">
+                                    <div class="">
+                                        <table class="table table-bordered table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Material</th>
+                                                    <th>Description</th>
+                                                    <th>Warehouse</th>
+                                                    <th>Quantity</th>
+                                                    <th>Unit</th>
+                                                    <th>Price Unit</th>
+                                                    <th>Remark</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tbl-pr-body" class="mainbodynpo">
 
-                                        </tbody>
-                                    </table>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <ul class="pull-right">    
                                         <button type="button" id="btn-dlg-add-item" class="btn bg-blue">
                                             <i class="material-icons">playlist_add</i> <span>ADD ITEM</span>
@@ -190,18 +198,21 @@
                             </td>
                             <td> 
                                 
-                                <select name="itm_whs[]" counter="`+count+`" id="whs`+count+`" class="form-control" required style="width:150px;">
+                                <select name="itm_whs[]" counter="`+count+`" id="whs`+count+`" class="form-control" required style="width:200px;">
                                     <option value=""></option>
                                 </select>
                             </td>
                             <td> 
-                                <input type="text" name="itm_qty[]" counter="`+count+`" id="poqty`+count+`"  class="form-control inputNumber" style="width:100px; text-align:right;" required="true" />
+                                <input type="text" name="itm_qty[]" counter="`+count+`" id="poqty`+count+`"  class="form-control inputNumber" style="width:100px; text-align:right;" required="true" autocomplete="off"/>
                             </td>
                             <td> 
                                 <input type="text" name="itm_unit[]" counter="`+count+`" id="unit`+count+`" class="form-control" style="width:80px;" required="true" value="`+ selected_data.matunit +`" readonly/>
                             </td>
                             <td> 
-                                <input type="text" name="itm_remark[]" counter="`+count+`" id="remark`+count+`"  class="form-control" style="width:150px; text-align:right;" required="true" />
+                                <input type="text" name="itm_price[]" counter="`+count+`" id="price`+count+`" class="form-control inputNumber" style="width:100px; text-align:right;" required="true" autocomplete="off"/>
+                            </td>
+                            <td> 
+                                <input type="text" name="itm_remark[]" counter="`+count+`" id="remark`+count+`"  class="form-control" style="width:200px;" required="true" />
                             </td>
                             <td>
                                 <button type="button" class="btn btn-danger btn-sm removePO hideComponent" counter="`+count+`">Remove</button>
@@ -232,18 +243,7 @@
                         e.preventDefault();
                         $(this).closest("tr").remove();
                         renumberRows();
-                    })
-
-                    $('.materialCode').on('change', function(){
-                        var xcounter = $(this).attr('counter');
-                        var kodebrg  = $('#material'+xcounter).val();
-
-                        getMaterialbyKode(kodebrg, function(d){
-                            console.log(d)
-                            $('#matdesc'+xcounter).val(d.matdesc);
-                            $('#unit'+xcounter).val(d.matunit);
-                        });
-                    })
+                    });
 
                     $('.inputNumber').on('change', function(){
                         this.value = formatRupiah(this.value, '');
@@ -293,7 +293,7 @@
                 $('#barangModal').modal('show')
             })
 
-            $('#form-pr-data').on('submit', function(event){
+            $('#form-update-stock').on('submit', function(event){
                 event.preventDefault();
                 
                 var formData = new FormData(this);
@@ -317,7 +317,12 @@
                             showErrorMessage(JSON.stringify(err))
                         }
                     }).done(function(data){
-                        showSuccessMessage('PR Created '+ data)
+                        // showSuccessMessage('PR Created '+ data)
+                        if(data.msgtype === '1'){
+                            showSuccessMessage(data.message);
+                        }else{
+                            showSuccessMessage(data.message);
+                        }
                     })
             })            
 
@@ -346,7 +351,7 @@
                 // swal("Success", message, "success");
                 swal({title: "Success!", text: message, type: "success"},
                     function(){ 
-                        window.location.href = base_url+'/pr';
+                        window.location.href = base_url+'/updatestock';
                     }
                 );
             }

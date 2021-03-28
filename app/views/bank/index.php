@@ -21,8 +21,8 @@
                                             <th>Bank ID</th>
                                             <th>Bank Account Number</th>
                                             <th>Bank Account Name</th>
-                                            <th>Saldo</th>
-                                            <th>User</th>
+                                            <th>NPWP</th>
+                                            <!-- <th>User</th> -->
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -35,8 +35,7 @@
                                                 <td><?= $bank['deskripsi']; ?></td>
                                                 <td><?= $bank['bankno']; ?></td>
                                                 <td><?= $bank['bankacc']; ?></td>
-                                                <td><?= number_format($bank['balance'],2); ?></td>
-                                                <td><?= $bank['user']; ?></td>
+                                                <td><?= $bank['npwp']; ?></td>
                                                 <td>
                                                     <a href="<?= BASEURL; ?>/bank/edit/<?= $bank['bankid']; ?>/<?= $bank['bankno']; ?>" type="button" class="btn btn-success">Edit</a>
                                                     <a href="<?= BASEURL; ?>/bank/delete/<?= $bank['id']; ?>" type="button" class="btn btn-danger">Delete</a>

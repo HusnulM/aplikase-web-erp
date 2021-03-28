@@ -148,7 +148,7 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <select class="form-control show-tick" name="bankacc" id="bankacc">
+                                            <select class="form-control show-tick" name="bankacc" id="bankacc" data-live-search="true">
                                                 <option value="">Bank Account</option>
                                                 <?php foreach($data['banklist'] as $bank) : ?>
                                                     <option value="<?= $bank['bankno']; ?>"> <?= $bank['bankno']; ?> : <?= $bank['bankacc']; ?> - <?= $bank['deskripsi']; ?></option>

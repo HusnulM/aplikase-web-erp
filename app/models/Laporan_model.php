@@ -180,6 +180,18 @@ class Laporan_model{
         return $this->db->resultSet();
     }
 
+    public function getHeaderServiceCost($strdate,$enddate){
+        $this->db->query("SELECT * FROM v_service01 WHERE servicedate BETWEEN '$strdate' AND '$enddate' order by servicenum asc");
+
+        return $this->db->resultSet();
+    }
+
+    public function getServiceCostItem($servicenum){
+        $this->db->query("SELECT * FROM v_service02 WHERE servicenum = '$servicenum' order by servicenum, resitem asc");
+
+        return $this->db->resultSet();
+    }
+
     public function getHeaderInvoice($strdate,$enddate){
         $this->db->query("SELECT * FROM v_rinvoice01 WHERE ivdate BETWEEN '$strdate' AND '$enddate'");
         return $this->db->resultSet();

@@ -14,13 +14,17 @@ class Service_model{
         return $this->db->single();
     }
 
+    public function getServiceWhs(){
+
+    }
+
     public function getNextPONumber($object){
 		$this->db->query("CALL sp_NextNriv('$object')");
 		return $this->db->single();
     }
 
     public function getOpenServiceByID($servicenum){
-        $this->db->query("SELECT * FROM t_service01 WHERE servicenum ='$servicenum'");
+        $this->db->query("SELECT a.*, b.deskripsi as 'whsname' FROM t_service01 as a left join t_gudang as b on a.warehouse = b.gudang WHERE a.servicenum ='$servicenum'");
 		return $this->db->single();
     }
 
@@ -53,8 +57,7 @@ class Service_model{
             $this->db->query("SELECT * FROM v_stockbatch WHERE quantity > 0");
         }else{
             $this->db->query("SELECT * FROM v_stockbatch where warehouse in(select ob_value from t_user_object_auth where username='$user' and ob_auth = 'OB_WAREHOUSE') AND quantity > 0");
-        }  
-        
+        }          
 		return $this->db->resultSet();
     }
 
@@ -67,13 +70,6 @@ class Service_model{
     }
 
     public function getStock($whs){
-        // $user = $_SESSION['usr']['user'];
-        // $whsAuth = $this->getWhsAuth();
-        // if($whsAuth['ob_value'] === "*"){
-        //     $this->db->query("SELECT * FROM v_stock WHERE quantity > 0 AND warehouse='$whs'");
-        // }else{
-        //     $this->db->query("SELECT * FROM v_stock where warehouse in(select ob_value from t_user_object_auth where username='$user' and ob_auth = 'OB_WAREHOUSE') AND quantity > 0");
-        // }  
         $this->db->query("SELECT * FROM v_stock WHERE quantity > 0 AND warehouse='$whs'");
         return $this->db->resultSet();
     }
@@ -135,8 +131,69 @@ class Service_model{
         }
     }
 
+    public function update($data,$servicenum){
+        try {
+            $matnr = $data['itm_material'];
+            $menge = $data['itm_qty'];
+            $meins = $data['itm_unit'];
+
+            $query1 = "UPDATE t_service01 SET servicedate=:servicedate,note=:note,mekanik=:mekanik,nopol=:nopol,servicestatus=:servicestatus,warehouse=:warehouse WHERE servicenum=:servicenum";
+        
+            $this->db->query($query1);
+            $this->db->bind('servicenum',   $servicenum);
+            $this->db->bind('servicedate',  $data['servicedate']);
+            $this->db->bind('note',         $data['note']);
+            $this->db->bind('mekanik',      $data['mekanik']);
+            $this->db->bind('nopol',        $data['nopol']);
+            $this->db->bind('servicestatus',null);
+            $this->db->bind('warehouse',    $data['warehouse']);
+            $this->db->execute();    
+
+            $query2 = "INSERT INTO t_service02(servicenum,serviceitem,material,warehouse,quantity,unit,createdon,createdby)
+                            VALUES(:servicenum,:serviceitem,:material,:warehouse,:quantity,:unit,:createdon,:createdby)
+                        ON DUPLICATE KEY UPDATE material=:material,warehouse=:warehouse,quantity=:quantity,unit=:unit
+                      ";
+            $this->db->query($query2);
+            for($i = 0; $i < count($matnr); $i++){
+                $rows = $rows + 1;
+                $this->db->bind('servicenum',   $servicenum);
+                $this->db->bind('serviceitem',  $rows);
+                $this->db->bind('material',     $matnr[$i]);
+                $this->db->bind('warehouse',    $data['warehouse']);
+                
+                $_menge = "";
+                $_menge = str_replace(".", "",  $menge[$i]);
+                $_menge = str_replace(",", ".", $_menge);
+                $this->db->bind('quantity',     $_menge);
+                $this->db->bind('unit',         $meins[$i]);
+
+                $this->db->bind('createdon',    date('Y-m-d'));
+                $this->db->bind('createdby',    $_SESSION['usr']['user']);
+                $this->db->execute();
+            }
+
+            return $this->db->rowCount();    
+    
+        } catch (Exception $e) {
+            $message = 'Caught exception: '.  $e->getMessage(). "\n";
+            Flasher::setErrorMessage($message,'error');
+            $return = array(
+                "msgtype" => "0",
+                "message" => $message,
+                "data"    => $message
+            );
+            return $return;
+        }
+    }
+
     public function closeservice($servicenum){
         $query1 = "UPDATE t_service01 SET servicestatus='X' WHERE servicenum='$servicenum'";
+        $this->db->query($query1);
+        $this->db->execute();    
+    }
+
+    public function delete($servicenum){
+        $query1 = "DELETE FROM t_service01 WHERE servicenum='$servicenum'";
         $this->db->query($query1);
         $this->db->execute();    
     }

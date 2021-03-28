@@ -259,46 +259,17 @@ class Movement_model{
                             )");
                             $this->db->execute(); 
                         }
-
-                        // $rows = $rows + 1;
-                        // $this->db->bind('grnum',    $mblnr);
-                        // $this->db->bind('year',     date('Y'));
-                        // $this->db->bind('gritem',   $rows);
-                        // $this->db->bind('movement', $data['immvt']);
-                        // $this->db->bind('batchnumber', $batchnum[$i]);
-                        // $this->db->bind('material', $matnr[$i]);
-                        // $this->db->bind('matdesc',  $maktx[$i]);
-                        
-                        // $_menge = "";
-                        // $_menge = str_replace(".", "",  $menge[$i]);
-                        // $_menge = str_replace(",", ".", $_menge);
-                        // $this->db->bind('quantity', $_menge);
-                        // $this->db->bind('unit',     $meins[$i]);
-                        // $this->db->bind('ponum',     null);
-                        // $this->db->bind('poitem',    null);
-                        // $this->db->bind('resnum',    $refnum[$i]);
-                        // $this->db->bind('resitem',   $refitem[$i]);
-                        // $this->db->bind('shkzg',   '-');        
-                        // $this->db->bind('remark',      $txz01[$i]);
-                        // $this->db->bind('warehouse',   $lgort2[$i]);
-                        // $this->db->bind('warehouseto', $lgort[$i]);                    
-                        // $this->db->bind('createdon',   date('Y-m-d'));
-                        // $this->db->bind('createdby',   $_SESSION['usr']['user']);
-                        // $this->db->execute();
                     }
                 }
             }
-        
-    
-                // return $this->db->rowCount();
 
-                $return = array(
-                    "msgtype" => "1",
-                    "message" => "Post Success",
-                    "data"    => null
-                );
+            $return = array(
+                "msgtype" => "1",
+                "message" => "Post Success",
+                "data"    => null
+            );
 
-                return 1;         
+            return 1;         
     
         } catch (Exception $e) {
             $message = 'Caught exception: '.  $e->getMessage(). "\n";

@@ -10,6 +10,31 @@ class Generalsetting extends Controller{
     }
 
     public function index(){
-        echo "General Setting";
+      $data['title'] = 'General Setting';
+      $data['menu']  = 'General Setting';
+
+      // Wajib di semua route ke view--------------------------------------------
+      $data['setting']  = $this->model('Setting_model')->getgensetting();    //--
+      $data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
+      //-------------------------------------------------------------------------   
+
+      $data['setting'] = $this->model('Setting_model')->getgensetting();   
+
+      $this->view('templates/header_a', $data);
+      $this->view('setting/index', $data);
+      $this->view('templates/footer_a');
+  }
+
+  public function save(){
+    // echo json_encode($_POST);
+    if( $this->model('Setting_model')->savepsetting($_POST) > 0 ) {
+      Flasher::setMessage('General Setting Berhasil di update','','success');
+      header('location: '. BASEURL . '/generalsetting');
+      exit;			
+    }else{
+      Flasher::setMessage('General Setting Gagal di update,','','danger');
+      header('location: '. BASEURL . '/generalsetting');
+      exit;	
     }
+  }
 }

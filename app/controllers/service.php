@@ -52,6 +52,37 @@ class Service extends Controller{
         }        
     }
 
+    public function detail($servicenum){
+        $check = $this->model('Home_model')->checkUsermenu('service','Read');
+        if ($check){
+            $data['title'] = 'Detail Service Order';
+            $data['menu']  = 'Detail Service Order';
+
+            // Wajib di semua route ke view--------------------------------------------
+            $data['setting']  = $this->model('Setting_model')->getgensetting();    //--
+            $data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
+            //-------------------------------------------------------------------------   
+
+            // $data['roles'] = $this->model('Role_model')->getList();   
+            $data['whs']       = $this->model('Warehouse_model')->getWarehouseByAuth();  
+            $data['srvheader'] = $this->model('Service_model')->getOpenServiceByID($servicenum);
+
+            if($data['srvheader']['servicestatus'] === "X"){
+                Flasher::setMessage('Service ', $servicenum . ' already confirm!', 'danger');
+                header('location: '. BASEURL . '/service');
+                exit;	
+            }else{
+                $data['srvdetail'] = $this->model('Service_model')->getOpenServiceItemByID($servicenum);
+    
+                $this->view('templates/header_a', $data);
+                $this->view('service/detail', $data);
+                $this->view('templates/footer_a');
+            }
+        }else{
+            $this->view('templates/401');
+        }        
+    }
+
     public function confirm(){
         $check = $this->model('Home_model')->checkUsermenu('service/confirm','Read');
         if ($check){
@@ -63,8 +94,7 @@ class Service extends Controller{
             $data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
             //-------------------------------------------------------------------------   
 
-            $data['services'] = $this->model('Service_model')->getOpenServiceData();   
-
+            $data['services'] = $this->model('Service_model')->getOpenServiceData(); 
 
             $this->view('templates/header_a', $data);
             $this->view('service/servicelist', $data);
@@ -132,6 +162,21 @@ class Service extends Controller{
 		}
 	}
 
+    public function update(){
+        $servicenum = $_POST['servicenum'];
+		if( $this->model('Service_model')->update($_POST, $servicenum) > 0 ) {			
+			Flasher::setMessage('Service ', $servicenum . ' updated!', 'success');
+			header('location: '. BASEURL . '/service');
+			exit;			
+		}else{
+			// $this->model('Service_model')->delete_error('SRV-'.$nextNumb['nextnumb']);
+			$result = ["msg"=>"error"];
+			header('location: '. BASEURL . '/service');
+			exit;	
+		}
+        // echo json_encode($_POST);
+	}
+
     public function postconfirmservice(){
         // echo json_encode($_POST);
         $checkstock = $this->model('Service_model')->checkinventorystock($_POST);
@@ -165,4 +210,18 @@ class Service extends Controller{
             }
         }
     }
+
+    public function delete($servicenum){
+		if( $this->model('Service_model')->delete($servicenum) > 0 ) {			
+			Flasher::setMessage('Service ', $servicenum . ' deleted!', 'success');
+			header('location: '. BASEURL . '/service');
+			exit;			
+		}else{
+			// $this->model('Service_model')->delete_error('SRV-'.$nextNumb['nextnumb']);
+			$result = ["msg"=>"error"];
+			header('location: '. BASEURL . '/service');
+			exit;	
+		}
+        // echo json_encode($_POST);
+	}
 }

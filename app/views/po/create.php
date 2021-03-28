@@ -397,9 +397,13 @@
 
             
             $('#btn-add-poitem-from-pr').on('click', function(){
-                $('#prListModal').modal('show');
-                var selectedwhs = $('#warehouse').val();
-                loadopenpr(selectedwhs);
+                if(vendor === ""){
+                    showErrorMessage('Input Vendor');
+                }else{
+                    $('#prListModal').modal('show');
+                    var selectedwhs = $('#warehouse').val();
+                    loadopenpr(selectedwhs);
+                }
             });
 
             $('#btn-add-poitem').on('click', function(){
@@ -434,34 +438,38 @@
             $('#form-po-data').on('submit', function(event){
                 event.preventDefault();
                 if(detail_order_beli.length > 0){
-                    var formData = new FormData(this);
-                    console.log($(this).serialize())
-                    $.ajax({
-                        url:base_url+'/po/savepo',
-                        method:'post',
-                        data:formData,
-                        dataType:'JSON',
-                        contentType: false,
-                        cache: false,
-                        processData: false,
-                        beforeSend:function(){
-                            $('#btn-save').attr('disabled','disabled');
-                        },
-                        success:function(data)
-                        {
+                    if($('#vendor').val() === ''){
+                        showErrorMessage("Select Vendor!");
+                    }else{
+                        var formData = new FormData(this);
+                        console.log($(this).serialize())
+                        $.ajax({
+                            url:base_url+'/po/savepo',
+                            method:'post',
+                            data:formData,
+                            dataType:'JSON',
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            beforeSend:function(){
+                                $('#btn-save').attr('disabled','disabled');
+                            },
+                            success:function(data)
+                            {
 
-                        },
-                        error:function(err){
-                            showErrorMessage(JSON.stringify(err));
-                            console.log(err);
-                        }
-                    }).done(function(result){
-                        if(result.msgtype === "1"){
-                            showSuccessMessage("PO "+ result.docnum + " Created");
-                        }else{
-                            showErrorMessage(result.docnum);
-                        }
-                    }) ;
+                            },
+                            error:function(err){
+                                showErrorMessage(JSON.stringify(err));
+                                console.log(err);
+                            }
+                        }).done(function(result){
+                            if(result.msgtype === "1"){
+                                showSuccessMessage("PO "+ result.docnum + " Created");
+                            }else{
+                                showErrorMessage(result.docnum);
+                            }
+                        }) ;
+                    }
                 }else{
                     showErrorMessage("No Purchase Order Item");
                 }

@@ -200,6 +200,56 @@ class Reports extends Controller{
 		echo json_encode($data);
 	}
 
+	public function rcost(){
+		$check = $this->model('Home_model')->checkUsermenu('reports/rcost','Read');
+        if ($check){
+			$data['title']    = 'Report Cost';
+			$data['menu']     = 'Report Cost';
+			// Wajib di semua route ke view--------------------------------------------
+			$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
+			$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
+			//------------------------------------------------------------------------- 
+	
+			$this->view('templates/header_a', $data);
+			$this->view('reports/rcost', $data);
+			$this->view('templates/footer_a');
+		}else{
+            $this->view('templates/401');
+        }
+	}
+
+	public function rcostview($strdate, $enddate, $whs){
+		$check = $this->model('Home_model')->checkUsermenu('reports/rcost','Read');
+        if ($check){
+			$data['title']    = 'Report Cost';
+			$data['menu']     = 'Report Cost';
+			// Wajib di semua route ke view--------------------------------------------
+			$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
+			$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
+			//------------------------------------------------------------------------- 
+			
+			$data['strdate'] = $strdate;
+			$data['enddate'] = $enddate;
+			$data['whs']     = $whs;
+
+			$this->view('templates/header_a', $data);
+			$this->view('reports/rcostview', $data);
+			$this->view('templates/footer_a');
+		}else{
+            $this->view('templates/401');
+        }
+	}
+
+	public function rcostheader($strdate, $enddate){
+		$data['data'] = $this->model('Laporan_model')->getHeaderServiceCost($strdate, $enddate);
+		echo json_encode($data);
+	}
+
+	public function rcostdetail($servicenum){
+		$data = $this->model('Laporan_model')->getServiceCostItem($servicenum);
+		echo json_encode($data);
+	}
+
 	public function rservicedetail($servicenum){
 		$data = $this->model('Laporan_model')->getDetailService($servicenum);
 		echo json_encode($data);

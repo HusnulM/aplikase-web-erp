@@ -34,20 +34,18 @@ class Bank_model{
     }
 
     public function save($data){
-        $query = "INSERT INTO t_bank (bankid, bankno, bankacc, status, balance, user) 
-                      VALUES(:bankid,:bankno,:bankacc,:status,:balance, :user)";
+        $query = "INSERT INTO t_bank (bankid, bankno, bankacc, npwp) 
+                      VALUES(:bankid,:bankno,:bankacc,:npwp)";
         $this->db->query($query);
         
         $this->db->bind('bankid',  $data['bankey']);
         $this->db->bind('bankno',  $data['bankacc']);
         $this->db->bind('bankacc', $data['bankaccname']);
-        $this->db->bind('status',  'X');
-        $this->db->bind('balance', $data['balance']);
-        $this->db->bind('user',    $data['userid']);
+        $this->db->bind('npwp',    $data['npwp']);
         $this->db->execute();
 
         // var_dump($data);
-        $this->createbeginningbalance($data['bankacc'], $data['balance']);
+        // $this->createbeginningbalance($data['bankacc'], $data['balance']);
 
         return $this->db->rowCount();
     }
@@ -112,31 +110,40 @@ class Bank_model{
 
     public function update($data){
 
-        $cekmutasi = $this->cekmutasi($data['bankacc']);
-        if($cekmutasi['rows'] == '0'){
-            $query = "UPDATE t_bank set bankid=:bankid, bankno=:bankno, bankacc=:bankacc, balance=:balance, user=:user where id=:id";
+        // $cekmutasi = $this->cekmutasi($data['bankacc']);
+        // if($cekmutasi['rows'] == '0'){
+        //     $query = "UPDATE t_bank set bankid=:bankid, bankno=:bankno, bankacc=:bankacc, balance=:balance, user=:user where id=:id";
+        //     $this->db->query($query);
+        //     $this->db->bind('id',     $data['id']);
+        //     $this->db->bind('bankid', $data['bankey']);
+        //     $this->db->bind('bankno', $data['bankacc']);
+        //     $this->db->bind('bankacc',$data['bankaccname']);
+        //     $this->db->bind('balance', $data['balance']);
+        //     $this->db->bind('user',    $data['userid']);
+        //     $this->db->execute();
+
+        //     $this->createbeginningbalance($data['bankacc'], $data['balance']);
+        // }else if($cekmutasi['rows'] == '1'){
+        //     $query = "UPDATE t_bank set bankid=:bankid, bankacc=:bankacc, balance=:balance, user=:user where id=:id";
+        //     $this->db->query($query);
+        //     $this->db->bind('id',     $data['id']);
+        //     $this->db->bind('bankid', $data['bankey']);
+        //     $this->db->bind('bankacc',$data['bankaccname']);
+        //     $this->db->bind('balance', $data['balance']);
+        //     $this->db->bind('user',   $data['userid']);
+        //     $this->db->execute();
+
+        //     $this->createbeginningbalance($data['bankacc'], $data['balance']);
+        // }    
+        $query = "UPDATE t_bank set bankid=:bankid, bankno=:bankno, bankacc=:bankacc, npwp=:npwp where id=:id";
             $this->db->query($query);
             $this->db->bind('id',     $data['id']);
             $this->db->bind('bankid', $data['bankey']);
             $this->db->bind('bankno', $data['bankacc']);
             $this->db->bind('bankacc',$data['bankaccname']);
-            $this->db->bind('balance', $data['balance']);
-            $this->db->bind('user',    $data['userid']);
-            $this->db->execute();
-
-            $this->createbeginningbalance($data['bankacc'], $data['balance']);
-        }else if($cekmutasi['rows'] == '1'){
-            $query = "UPDATE t_bank set bankid=:bankid, bankacc=:bankacc, balance=:balance, user=:user where id=:id";
-            $this->db->query($query);
-            $this->db->bind('id',     $data['id']);
-            $this->db->bind('bankid', $data['bankey']);
-            $this->db->bind('bankacc',$data['bankaccname']);
-            $this->db->bind('balance', $data['balance']);
-            $this->db->bind('user',   $data['userid']);
-            $this->db->execute();
-
-            $this->createbeginningbalance($data['bankacc'], $data['balance']);
-        }        
+            $this->db->bind('npwp',   $data['npwp']);
+            
+            $this->db->execute();    
         
         return $this->db->rowCount();
     }

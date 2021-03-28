@@ -14,11 +14,7 @@
                                 <?= $data['menu']; ?>
                             </h2>
 
-                            <ul class="header-dropdown m-r--5">                                
-                                <!-- <button type="submit" class="btn bg-blue pull-right" id="btn-post" style="margin-left:5px;">
-                                    <i class="material-icons">save</i> <span>SAVE</span>
-                                </button> -->
-
+                            <ul class="header-dropdown m-r--5">  
                                 <a href="<?= BASEURL; ?>/service/create" class="btn bg-blue pull-right" id="btn-post">
                                 <i class="material-icons">create_new_folder</i> <span>Create Service</span>
                                 </a>
@@ -50,8 +46,8 @@
                                                 <td><?= $out['note']; ?></td>
                                                 <td><?= $out['mekanik']; ?></td>
                                                 <td>
-                                                    <a href="<?= BASEURL; ?>/service/detail/data?ponum=<?= $out['servicenum']; ?>" type="button" class="btn btn-success">Detail</a>
-                                                    <a href="<?= BASEURL; ?>/service/delete/data?ponum=<?= $out['servicenum']; ?>" class="btn btn-danger">Delete</a>
+                                                    <a href="<?= BASEURL; ?>/service/detail/<?= $out['servicenum']; ?>" type="button" class="btn btn-success">Edit</a>
+                                                    <a href="<?= BASEURL; ?>/service/delete/<?= $out['servicenum']; ?>" class="btn btn-danger">Delete</a>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

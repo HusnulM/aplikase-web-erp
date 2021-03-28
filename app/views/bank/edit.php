@@ -39,18 +39,10 @@
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <div class="form-line">
-                                                <label for="balance">Saldo</label>
-                                                <input type="text" name="balance" id="balance" class="form-control" required="true" value="<?= $data['bankdata']['balance']; ?>">
+                                                <label for="npwp">NPWP</label>
+                                                <input type="text" name="npwp" id="npwp" class="form-control" required="true" value="<?= $data['bankdata']['npwp']; ?>">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <select class="form-control show-tick" name="userid">
-                                            <option value="<?= $data['bankdata']['user']; ?>"><?= $data['bankdata']['user']; ?></option>
-                                            <?php foreach($data['user'] as $user) : ?>
-                                                <option value="<?= $user['username']; ?>"><?= $user['username']; ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
                                     </div>
                                 </div>
                                 <div class="row clearfix">                            
