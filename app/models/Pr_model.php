@@ -11,7 +11,7 @@ class Pr_model{
 
     public function getOpenPR(){
         $user = $_SESSION['usr']['user'];
-        $this->db->query("SELECT distinct prnum, prdate, note, requestby, approvestat From v_pr001 WHERE approvestat = '1' and createdby = '$user' order by prnum desc");
+        $this->db->query("SELECT distinct a.prnum, b.warehouse, c.deskripsi as 'whsname', b.typepr, b.prdate, b.note, b.requestby, a.approvestat From v_pr004 as a inner join t_pr01 as b on a.prnum = b.prnum left join t_gudang as c on b.warehouse = c.gudang WHERE a.approvestat = '1' and a.createdby = '$user' order by a.prnum desc");
         return $this->db->resultSet();
     }
 
@@ -31,14 +31,7 @@ class Pr_model{
     public function getApprovedPR(){
         $user = $_SESSION['usr']['user'];
         $dept = $_SESSION['usr']['department'];
-        // if($_SESSION['usr']['userlevel'] === 'SysAdmin'){
-        //     $this->db->query("SELECT * From v_pr001 WHERE approvestat = '2' and pocreated is null order by prnum,pritem");
-        // }elseif($_SESSION['usr']['userlevel'] === 'Admin'){
-        //     $this->db->query("SELECT * From v_pr001 WHERE approvestat = '2' and pocreated is null order by prnum,pritem");
-        // }else{
-        //     $this->db->query("SELECT * From v_pr001 WHERE approvestat = '2' and createdby = '$user' and pocreated is null order by prnum,pritem");
-        // }
-        $this->db->query("SELECT * From v_pr001 WHERE approvestat = '2' and pocreated is null order by prnum,pritem");
+        $this->db->query("SELECT * FROM v_pr005");
 		return $this->db->resultSet();
     }
 
@@ -48,7 +41,7 @@ class Pr_model{
     }    
 
     public function getPRheader($prnum){
-		$this->db->query("SELECT a.*, b.deskripsi, fGetNamaUser(a.createdby) as 'crtby' From t_pr01 as a inner join t_gudang as b on a.warehouse = b.gudang Where a.prnum = '$prnum'");
+		$this->db->query("SELECT a.*, b.deskripsi as 'whsname', fGetNamaUser(a.createdby) as 'crtby' From t_pr01 as a left join t_gudang as b on a.warehouse = b.gudang Where a.prnum = '$prnum'");
 		return $this->db->single();
     }
 
@@ -76,9 +69,9 @@ class Pr_model{
         $meins = $data['itm_unit'];
         $txz01 = $data['itm_remark'];
 
-        $query1 = "INSERT INTO t_pr01(prnum,note,prdate,approvestat,warehouse,requestby,createdon,createdby)
-                   VALUES(:prnum,:note,:prdate,:approvestat,:warehouse,:requestby,:createdon,:createdby)
-                   ON DUPLICATE KEY UPDATE note=:note, prdate=:prdate,approvestat=:approvestat,warehouse=:warehouse,requestby=:requestby,createdon=:createdon,createdby=:createdby";
+        $query1 = "INSERT INTO t_pr01(prnum,typepr,note,prdate,approvestat,warehouse,requestby,createdon,createdby)
+                   VALUES(:prnum,:typepr,:note,:prdate,:approvestat,:warehouse,:requestby,:createdon,:createdby)
+                   ON DUPLICATE KEY UPDATE typepr=:typepr,note=:note, prdate=:prdate,approvestat=:approvestat,warehouse=:warehouse,requestby=:requestby,createdon=:createdon,createdby=:createdby";
         
         if($createdon == null){
             $createdon = date('Y-m-d');
@@ -86,14 +79,10 @@ class Pr_model{
 
         $this->db->query($query1);
 		$this->db->bind('prnum',      $prnum);
+        $this->db->bind('typepr',     $data['prtype']);
         $this->db->bind('note',       $data['note']);
         $this->db->bind('prdate',     $data['reqdate']);
-        if($_SESSION['usr']['jbtn'] >= 4){
-            $this->db->bind('approvestat','2');
-        }else{
-            $this->db->bind('approvestat','1');
-        }
-        
+        $this->db->bind('approvestat','1');
         $this->db->bind('warehouse',  $data['warehouse']);
         $this->db->bind('requestby',  $data['requestor']);
 		$this->db->bind('createdon',  $createdon);
@@ -101,9 +90,9 @@ class Pr_model{
         $this->db->execute();
         $rows = 0;
 
-        $query2 = "INSERT INTO t_pr02(prnum,pritem,material,matdesc,quantity,unit,remark,createdon,createdby)
-        VALUES(:prnum,:pritem,:material,:matdesc,:quantity,:unit,:remark,:createdon,:createdby)
-        ON DUPLICATE KEY UPDATE material=:material, matdesc=:matdesc, quantity=:quantity, unit=:unit,remark=:remark";
+        $query2 = "INSERT INTO t_pr02(prnum,pritem,material,matdesc,quantity,unit,approvestat,remark,createdon,createdby)
+        VALUES(:prnum,:pritem,:material,:matdesc,:quantity,:unit,:approvestat,:remark,:createdon,:createdby)
+        ON DUPLICATE KEY UPDATE material=:material, matdesc=:matdesc, quantity=:quantity, unit=:unit, approvestat=:approvestat, remark=:remark";
         $this->db->query($query2);
         for($i = 0; $i < count($matnr); $i++){
             $rows = $rows + 1;
@@ -117,6 +106,7 @@ class Pr_model{
             $_menge = str_replace(",", ".", $_menge);
             $this->db->bind('quantity', $_menge);
             $this->db->bind('unit',     $meins[$i]);
+            $this->db->bind('approvestat','1');
             $this->db->bind('remark',   $txz01[$i]);
             $this->db->bind('createdon',  $createdon);
             $this->db->bind('createdby',  $_SESSION['usr']['user']);

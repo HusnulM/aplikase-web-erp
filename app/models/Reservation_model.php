@@ -12,6 +12,11 @@ class Reservation_model{
 
     }
 
+    public function getWarehouseUtama(){
+        $this->db->query("SELECT * FROM t_gudang WHERE gudang = 'WH00'");
+		return $this->db->resultSet();
+    }
+
     public function getReservation02($resnum){
         $this->db->query("SELECT *, resnum as 'refnum', resitem as 'refitem', fGetWarehouseName(fromwhs) as 'whsname1', fGetWarehouseName(towhs) as 'whsname2' FROM t_reserv02 WHERE resnum='$resnum' and movementstat is null");
         return $this->db->resultSet();

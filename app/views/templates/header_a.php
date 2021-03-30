@@ -7,10 +7,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title><?= $data['title']; ?></title>
     <!-- Favicon-->
-    <!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
-    <!-- <link rel="icon" type="image/png" href="https://awsi.co.id/sitepad-data/uploads//2020/05/cropped-logo-fix-awsi-transparent-192x192.png" /> -->
-
-    <link rel="icon" type="image/png" href="<?= BASEURL; ?>/images/aws-logo.png" />
+    <link rel="icon" type="image/png" href="<?= BASEURL; ?>/images/logo.png" />
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
@@ -49,25 +46,13 @@
     
     <script src="<?= BASEURL; ?>/plugins/jquery/jquery-ui.min.js"></script>
     <link href="<?= BASEURL; ?>/css/ui-autocomplete.css" rel="stylesheet">
+    <link href="<?= BASEURL; ?>/plugins/multi-select/css/multi-select.css" rel="stylesheet">
     <script>
-        var base_url = window.location.origin+'/aws-erp';
-
-        // alert(window.location.href)
-        // var _uri = window.location.href;
-        // if(_uri.includes('wosprocess')){
-        // }else{
-        //     localStorage.removeItem("reffidmesin");
-        // }
+        var base_url = window.location.origin+'/ta-erp';
     </script>
 
-    <!-- <style>
-        a:hover {
-           cursor:pointer;
-        }
-    </style> -->
-
     <style>
-        .buttons-pdf, .buttons-print, .buttons-csv, .buttons-copy{
+        .buttons-pdf, .buttons-print, .buttons-csv, .buttons-copy, .buttons-excel{
             display:none;
         }
 
@@ -118,10 +103,28 @@
             right: 15px;
             list-style: none;
         }
+
+        .bootstrap-select.btn-group .dropdown-menu.inner {
+            position: static;
+            float: none;
+            border: 0;
+            padding: 0;
+            margin: 0;
+            border-radius: 0;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            margin: 20px !important;
+        }
+
+        /* @media(max-width: 520px) {
+            .navbar{
+                display: none;
+            }
+        } */
     </style>
 </head>
 
-<body class="theme-blue">
+<body class="theme-teal">
   <!-- Page Loader -->
     <div class="page-loader-wrapper">
         <div class="loader">
@@ -451,10 +454,6 @@
       }
     }
 
-    // console.log(_md)
-    // console.log(_tr)
-    // console.log(_rp)
-    // console.log(_st)
     if(_md < 1){
       $('#li_md').hide();
     }

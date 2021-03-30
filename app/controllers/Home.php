@@ -35,6 +35,7 @@ class Home extends Controller {
 	public function loginwithreffid(){
 		$data['user'] = $this->model('Home_model')->getuserbyreffid($_POST['reffid']);
 		if($data['user']){
+			// $data['user'] = $this->model('Home_model')->getuserdata($reffiddata['username']);
 			Auth::setLoginSession($data['user']['username'],$data['user']['password'],'admin',$data['user']['userlevel'],$data['user']['nama'],$data['user']['jbtn'],$data['user']['department'],$data['user']['jabatan']);
 			header('location: '. BASEURL );
 		}else{
@@ -43,24 +44,8 @@ class Home extends Controller {
 		}
 	}
 
-	public function loginwithqr(){
-		$data['user'] = $this->model('Home_model')->getuserbyreffid($_POST['reffid']);
-		if($data['user']){
-			Auth::setLoginSession($data['user']['username'],$data['user']['password'],'admin',$data['user']['userlevel'],$data['user']['nama'],$data['user']['jbtn'],$data['user']['department'],$data['user']['jabatan']);
-			// header('location: '. BASEURL );
-
-			echo json_encode("true");
-			exit;
-		}else{
-			echo json_encode("false");
-			exit;
-			// Flasher::setMessage('REFFID Not Registerred','','error');
-			// header('location: '. BASEURL );
-		}
-	}
-
 	public function logout(){
-		//setcookie($_SESSION['usr']['user'], "AUTH-USER", time() - 3600); 
+		setcookie($_SESSION['usr']['user'], "AUTH-USER", time() - 3600); 
 		unset($_SESSION['usr']);
 		header('location: '. BASEURL);
 	}

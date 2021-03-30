@@ -21,6 +21,7 @@
                                         <tr>
                                             <th>No</th>
                                             <th>No. PO</th>
+                                            <th>Type PO</th>
                                             <th>Tanggal Order</th>
                                             <th>Vendor</th>
                                             <th>Nama Vendor</th>
@@ -35,12 +36,19 @@
                                             <tr>
                                                 <td><?= $no; ?></td>
                                                 <td><?= $pr['ponum']; ?></td>
+                                                <td>
+                                                    <?php if($pr['potype'] === "PO01") : ?>
+                                                            PO Stock
+                                                        <?php else: ?>
+                                                            PO Lokal
+                                                    <?php endif; ?>
+                                                </td>
                                                 <td><?= $pr['podat']; ?></td>
                                                 <td><?= $pr['vendor']; ?></td>
                                                 <td><?= $pr['namavendor']; ?></td>
                                                 <td><?= $pr['note']; ?></td>
                                                 <td>
-                                                    <a href="<?= BASEURL; ?>/approvepo/detail/data?ponum=<?= $pr['ponum']; ?>" type="button" class="btn btn-success">Detail</a>
+                                                    <a href="<?= BASEURL; ?>/approvepo/detail/<?= $pr['ponum']; ?>" type="button" class="btn btn-success">Detail</a>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

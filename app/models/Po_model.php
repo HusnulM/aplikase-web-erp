@@ -15,7 +15,7 @@ class Po_model{
     }
     
     public function getPOHeader($ponum){
-        $this->db->query("SELECT distinct ponum, podat, vendor, namavendor, note, approvestat, alamat, createdon, fGetNamaUser(createdby) as 'createdby', tf_price, tf_dest, tf_shipment, tf_shipdate, tf_top, tf_packing, ppn From v_po001 WHERE ponum = '$ponum'");
+        $this->db->query("SELECT distinct ponum, warehouse, podat, vendor, namavendor, note, approvestat, alamat, createdon, fGetNamaUser(createdby) as 'createdby' From v_po001 WHERE ponum = '$ponum'");
         return $this->db->single();
     }
 
@@ -43,13 +43,12 @@ class Po_model{
         $user = $_SESSION['usr']['user'];
         $dept = $_SESSION['usr']['department'];
 
-        if($_SESSION['usr']['userlevel'] === 'SysAdmin'){
-            $this->db->query("SELECT * FROM v_po001 WHERE approvestat in('0','1')");
-        }elseif($_SESSION['usr']['userlevel'] === 'Admin'){
-            $this->db->query("SELECT * FROM v_po001 WHERE approvestat in('0','1') and department = '$dept'");
-        }else{
-            $this->db->query("SELECT * FROM v_po001 WHERE approvestat in('0','1') and createdby = '$user'");
-        }
+        // if($_SESSION['usr']['userlevel'] === 'SysAdmin'){
+        //     $this->db->query("SELECT * FROM v_po001 WHERE approvestat in('0','1')");
+        // }else{
+        //     $this->db->query("SELECT * FROM v_po001 WHERE approvestat in('0','1') and createdby = '$user'");
+        // }
+        $this->db->query("SELECT * FROM v_po001 WHERE approvestat in('0','1') and createdby = '$user'");
         return $this->db->resultSet();
     }
 
@@ -64,6 +63,16 @@ class Po_model{
         return $this->db->single();
     }
 
+    public function checkpoitemapproved($ponum){
+        $this->db->query("SELECT COUNT(*) as 'rows' FROM t_po02 WHERE ponum='$ponum' AND approvestat <> '1'");
+        return $this->db->single();
+    }
+
+    public function getApprovedPR($whs){
+        $this->db->query("SELECT * FROM v_pr005 WHERE warehouse='$whs'");
+		return $this->db->resultSet();
+    }
+
     public function createpo($data, $ponum, $createdon = null){
         // try {
             $no = 0;
@@ -75,28 +84,19 @@ class Po_model{
             // $ponumber = $this->generatenopo($ponum);
             $ponumber = $ponum;
 
-            $query1 = "INSERT INTO t_po01(ponum,ext_ponum,podat,vendor,note,approvestat,currency,ppn,tf_price,tf_dest,tf_shipment,tf_top,tf_packing,tf_shipdate,createdon,createdby)
-                       VALUES(:ponum,:ext_ponum,:podat,:vendor,:note,:approvestat,:currency,:ppn,:tf_price,:tf_dest,:tf_shipment,:tf_top,:tf_packing,:tf_shipdate,:createdon,:createdby)";
+            $query1 = "INSERT INTO t_po01(ponum,ext_ponum,potype,podat,vendor,note,approvestat,currency,warehouse,createdon,createdby)
+                       VALUES(:ponum,:ext_ponum,:potype,:podat,:vendor,:note,:approvestat,:currency,:warehouse,:createdon,:createdby)";
             
             $this->db->query($query1);
             $this->db->bind('ponum',       $ponum);
             $this->db->bind('ext_ponum',   $ponum);
+            $this->db->bind('potype',      $data['potype']);
             $this->db->bind('podat',       $data['podate']);
             $this->db->bind('vendor',      $data['vendor']);
             $this->db->bind('note',        $data['note']);
-            if($_SESSION['usr']['jbtn'] >= 4){
-                $this->db->bind('approvestat','2');
-            }else{
-                $this->db->bind('approvestat','1');
-            }
-            $this->db->bind('currency', 'IDR');
-            $this->db->bind('ppn',         $data['ppnval']);
-            $this->db->bind('tf_price',    $data['tf_price']);
-            $this->db->bind('tf_dest',     $data['tf_dest']);
-            $this->db->bind('tf_shipment', $data['tf_shipment']);
-            $this->db->bind('tf_top',      $data['tf_top']);
-            $this->db->bind('tf_packing',  $data['tf_packing']);
-            $this->db->bind('tf_shipdate', $data['tf_shipdate']);
+            $this->db->bind('approvestat', '1');
+            $this->db->bind('currency',    'IDR');
+            $this->db->bind('warehouse',   $data['warehouse']);
             $this->db->bind('createdon',   $createdon);
             $this->db->bind('createdby',   $_SESSION['usr']['user']);
             $this->db->execute();
@@ -106,11 +106,13 @@ class Po_model{
             $quantity = $data['itm_qty'];
             $unit     = $data['itm_unit'];
             $price    = $data['itm_price'];
+            $ppn      = $data['itm_ppn'];
+            $disc     = $data['itm_discount'];
             $prnum    = $data['itm_prnum'];
             $pritem   = $data['itm_pritem'];
     
-            $query2 = "INSERT INTO t_po02(ponum,poitem,material,matdesc,quantity,unit,price,grqty,prnum,pritem,approvestat,createdon,createdby)
-                       VALUES(:ponum,:poitem,:material,:matdesc,:quantity,:unit,:price,:grqty,:prnum,:pritem,:approvestat,:createdon,:createdby)";
+            $query2 = "INSERT INTO t_po02(ponum,poitem,material,matdesc,quantity,unit,price,ppn,discount,grqty,prnum,pritem,approvestat,createdon,createdby)
+                       VALUES(:ponum,:poitem,:material,:matdesc,:quantity,:unit,:price,:ppn,:discount,:grqty,:prnum,:pritem,:approvestat,:createdon,:createdby)";
             $this->db->query($query2);
             $item = 0;
             for($i = 0; $i < count($material); $i++){
@@ -131,6 +133,12 @@ class Po_model{
                 $_price = str_replace(",", ".", $_price);
     
                 $this->db->bind('price',       $_price);
+                $this->db->bind('ppn',         $ppn[$i]);
+
+                $_discn = "";
+                $_discn = str_replace(".", "",  $disc[$i]);
+                $_discn = str_replace(",", ".", $_discn);
+                $this->db->bind('discount',     $_discn);
                 $this->db->bind('grqty',       '0');
     
                 if($prnum[$i] === "NULL" || $prnum[$i] === "null" || $prnum[$i] === ""){

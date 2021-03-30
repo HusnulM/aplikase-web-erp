@@ -24,13 +24,25 @@ class Updatestock extends Controller {
     }
 
     public function post(){      
-        if( $this->model('Updatestock_model')->post($_POST) > 0 ) {
-			Flasher::setMessage('Update Material Stock ', ' Success!', 'success');
-			header('location: '. BASEURL . '/updatestock');
+        $nextNumb = $this->model('Home_model')->getNextNumber('GROTHER');
+        if( $this->model('Updatestock_model')->post($_POST, $nextNumb['nextnumb']) > 0 ) {
+			// Flasher::setMessage('Update Material Stock ', ' Success!', 'success');
+			// header('location: '. BASEURL . '/updatestock');
+            $return = array(
+                "msgtype" => "1",
+                "message" => "Stock Updated",
+                "docnum"  => $nextNumb['nextnumb']
+            );
+            echo json_encode($return);
 			exit;			
 		}else{
-			$result = ["msg"=>"error"];
-			header('location: '. BASEURL . '/updatestock');
+			// $result = ["msg"=>"error"];
+			// header('location: '. BASEURL . '/updatestock');
+            $return = array(
+                "msgtype" => "2",
+                "message" => "Error update stock",
+                "docnum"  => ""
+            );
 			exit;	
         }
     }

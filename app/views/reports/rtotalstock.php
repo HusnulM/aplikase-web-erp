@@ -113,8 +113,10 @@
                     { "data": "matdesc" },
                     { "data": "qty", "className" : "text-right",
                         render: function(data, type, row){
-                            data = data.replaceAll('.00','');
-                            data = data.replaceAll('.',',');
+                            data = data.replace('.00','');
+                            data = data.replace('.',',');
+                            data = data.replace('.',',');
+                            data = data.replace('.',',');
                             
                             return formatRupiah(data,'');
                         }

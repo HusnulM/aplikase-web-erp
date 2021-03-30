@@ -8,7 +8,9 @@
                                 Report Reservation
                             </h2>
                             <ul class="header-dropdown m-r--5">                                
-							<a href="<?= BASEURL; ?>/reports/movement" type="button" class="btn btn-primary">Back</a>
+							<a href="<?= BASEURL; ?>/reports/reservasi" type="button" class="btn bg-teal">
+                            <i class="material-icons">backspace</i> <span>BACK</span>
+                            </a>
 							</ul>
                         </div>
                         <div class="body">                                

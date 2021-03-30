@@ -78,11 +78,11 @@ class Pr extends Controller{
 
 			$data['prhead']   = $this->model('Pr_model')->getPRheader($prnum);
 			$data['pritem']   = $this->model('Pr_model')->getPRitem($prnum);
-			$data['project']  = $this->model('Project_model')->projectList();
+			// $data['project']  = $this->model('Project_model')->projectList();
 			$data['whs']      = $this->model('Warehouse_model')->getWarehouseByAuth();  
 			$data['_whs']     = $this->model('Warehouse_model')->getById($data['prhead']['warehouse']);
 			$data['prnum']    = $prnum;
-	
+			// echo json_encode($data['prhead']);
 			$this->view('templates/header_a', $data);
 			$this->view('pr/detail', $data);
 			$this->view('templates/footer_a');
@@ -133,7 +133,14 @@ class Pr extends Controller{
 	}
 
 	public function savepr(){
-		$nextNumb = $this->model('Pr_model')->getNextNumber('PR');
+		if($_POST['warehouse'] === "WH00"){
+			$nextNumb = $this->model('Pr_model')->getNextNumber('PR');
+		}elseif($_POST['warehouse'] === "WH01"){
+			$nextNumb = $this->model('Pr_model')->getNextNumber('PR2');
+		}elseif($_POST['warehouse'] === "WH02"){
+			$nextNumb = $this->model('Pr_model')->getNextNumber('PR3');
+		}
+
 		if( $this->model('Pr_model')->savepr($_POST, $nextNumb['nextnumb']) > 0 ) {
 			$result = ["msg"=>"sukses", $nextNumb];
 			echo json_encode($nextNumb['nextnumb']);
@@ -310,17 +317,21 @@ class Pr extends Controller{
 		$excel->getActiveSheet()->getStyle('D4')->getFont()->setBold(TRUE);
 		$excel->getActiveSheet()->getStyle('E4')->getFont()->setBold(TRUE);
 
-		$objDrawing = new PHPExcel_Worksheet_Drawing();
-        $objDrawing->setName('Logo ');
-        $objDrawing->setDescription('Logo ');
-        $objDrawing->setPath('./images/aws-logo.png');
-        $objDrawing->setResizeProportional(true);
-        $objDrawing->setWidth(100);
-        $objDrawing->setCoordinates('F1');
-        $objDrawing->setWorksheet($excel->getActiveSheet());
+		// $objDrawing = new PHPExcel_Worksheet_Drawing();
+        // $objDrawing->setName('Logo ');
+        // $objDrawing->setDescription('Logo ');
+        // $objDrawing->setPath('./images/aws-logo.png');
+        // $objDrawing->setResizeProportional(true);
+        // $objDrawing->setWidth(100);
+        // $objDrawing->setCoordinates('F1');
+        // $objDrawing->setWorksheet($excel->getActiveSheet());
 
 		$excel->setActiveSheetIndex(0)->setCellValue('A5', "Requirement Date");
 		$excel->setActiveSheetIndex(0)->setCellValue('B5', $data['header']['prdate']);
+		
+		$excel->setActiveSheetIndex(0)->setCellValue('D4', "Warehouse");
+		$excel->setActiveSheetIndex(0)->setCellValue('E4', $data['header']['whsname']);
+
 		$excel->setActiveSheetIndex(0)->setCellValue('D5', "Created By");
 		$excel->setActiveSheetIndex(0)->setCellValue('E5', $data['header']['crtby']);
 

@@ -24,7 +24,7 @@
                                         <i class="material-icons">description</i> Basic Data
                                     </a>
                                 </li>
-                                <li role="presentation">
+                                <!-- <li role="presentation">
                                     <a href="#alt_uom_view" data-toggle="tab">
                                         <i class="material-icons">line_weight</i> Alternative UOM
                                     </a>
@@ -33,7 +33,7 @@
                                     <a href="#purchasing_view" data-toggle="tab">
                                         <i class="material-icons">shopping_basket</i> Purchasing
                                     </a>
-                                </li>
+                                </li> -->
                             </ul>
 
                             <div class="tab-content">
@@ -43,27 +43,48 @@
                                         <div class="col-sm-4">
                                             <div class="form-group">
                                                 <div class="form-line">
-                                                    <input type="text" name="kodebrg" id="kodebrg" class="form-control" placeholder="Kode Material" value="<?= $data['material']['material']; ?>" readonly>
+                                                <label for="">Kode Barang</label>
+                                                    <input type="text" name="kodebrg" id="kodebrg" class="form-control" placeholder="Kode Barang" value="<?= $data['material']['material']; ?>" readonly>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-8">
                                             <div class="form-group">
                                                 <div class="form-line">
-                                                    <input type="text" name="namabrg" id="namabrg" class="form-control" placeholder="Description" required="true" value="<?= $data['material']['matdesc']; ?>">
+                                                <label for="">Deskripsi</label>
+                                                    <input type="text" name="namabrg" id="namabrg" class="form-control" placeholder="Deskripsi" required="true" value="<?= $data['material']['matdesc']; ?>">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <div class="form-group">
                                                 <div class="form-line">
+                                                <label for="">Kategori</label>
+                                                    <select name="mattype" id="mattype" class="form-control">
+                                                        <option value="<?= $data['cmattype']['mattype'] ?>">
+                                                            <?= $data['cmattype']['mattype']; ?> - <?= $data['cmattype']['mattypedesc']; ?>
+                                                        </option>
+                                                        <?php foreach($data['mattype'] as $out) : ?>
+                                                            <option value="<?= $out['mattype']; ?>">
+                                                                <?= $out['mattype']; ?> - <?= $out['mattypedesc']; ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <div class="form-line">
+                                                <label for="">Nama Part</label>
                                                     <input type="text" name="partname" id="partname" class="form-control" placeholder="Part Name" value="<?= $data['material']['partname']; ?>">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <div class="form-group">
                                                 <div class="form-line">
+                                                <label for="">Nomor Part</label>
                                                     <input type="text" name="partnumber" id="partnumber" class="form-control" placeholder="Part Number" required="true" value="<?= $data['material']['partnumber']; ?>">
                                                 </div>
                                             </div>
@@ -71,24 +92,25 @@
                                         <div class="col-sm-4">
                                             <div class="form-group">
                                                 <div class="form-line">
+                                                <label for="">Satuan</label>
                                                     <input type="text" name="satuan" id="satuan" class="form-control" placeholder="Base UOM" required="true" value="<?= $data['material']['matunit']; ?>">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <!-- <div class="col-sm-4">
                                             <div class="form-group">
                                                 <div class="form-line">
                                                     <input type="text" name="size" id="size" class="form-control" placeholder="Size" value="<?= $data['material']['size']; ?>">
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-sm-4">
+                                        </div> -->
+                                        <!-- <div class="col-sm-4">
                                             <div class="form-group">
                                                 <div class="form-line">
                                                     <input type="text" name="color" id="color" class="form-control" placeholder="Color" value="<?= $data['material']['color']; ?>">
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
 

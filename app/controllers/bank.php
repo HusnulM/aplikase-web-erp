@@ -2,7 +2,7 @@
 
 class Bank extends Controller{
     public function __construct(){
-		if($_SESSION['usr']['userlevel'] == "Admin" ){
+		if( isset($_SESSION['usr']) ){
 
 		}else{
 			header('location:'. BASEURL);
@@ -10,24 +10,35 @@ class Bank extends Controller{
     }
 
     public function index(){
-		$data['title'] = 'Master Bank';
-		$data['menu']  = 'Master Bank';
-		$data['menu-dsc'] = '';
+		$check = $this->model('Home_model')->checkUsermenu('bank','Read');
+        if ($check){
+			$data['title'] = 'Master Bank';
+			$data['menu']  = 'Master Bank';
+			
+			// Wajib di semua route ke view--------------------------------------------
+			$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
+			$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
+			//-------------------------------------------------------------------------
 
-		$data['setting'] = $this->model('Setting_model')->getgensetting();
-		$data['bank']    = $this->model('Bank_model')->getBankAccount();
+			$data['bank']  = $this->model('Bank_model')->getBankAccount();
+	
+			$this->view('templates/header_a', $data);
+			$this->view('bank/index', $data);
+			$this->view('templates/footer_a');
+		}else{
 
-		$this->view('templates/header_a', $data);
-		$this->view('bank/index', $data);
-		$this->view('templates/footer_a');
+		}
 	}
 	
 	public function create(){
 		$data['title'] = 'Add Bank Account';
 		$data['menu']  = 'Add Bank Account';
-		$data['menu-dsc'] = '';
+		
+		// Wajib di semua route ke view--------------------------------------------
+		$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
+		$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
+		//-------------------------------------------------------------------------
 
-		$data['setting']   = $this->model('Setting_model')->getgensetting();
 		$data['banklist']  = $this->model('Bank_model')->getBankList();
 		$data['user']      = $this->model('User_model')->userList();
 
@@ -36,14 +47,17 @@ class Bank extends Controller{
 		$this->view('templates/footer_a');
 	}
 	
-	public function edit($id){
+	public function edit($bankid,$bankno){
 		$data['title'] = 'Edit Master Bank';
 		$data['menu']  = 'Edit Master Bank';
-		$data['menu-dsc'] = '';
+		
+		// Wajib di semua route ke view--------------------------------------------
+		$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
+		$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
+		//-------------------------------------------------------------------------
 
-		$data['setting'] = $this->model('Setting_model')->getgensetting();
-		$data['bank']    = $this->model('Bank_model')->getBankAccount();
-		$data['bankdata'] = $this->model('Bank_model')->getBankAccountById($id);
+		// $data['bank']      = $this->model('Bank_model')->getBankAccount();
+		$data['bankdata']  = $this->model('Bank_model')->getBankAccountById($bankid,$bankno);
 		$data['banklist']  = $this->model('Bank_model')->getBankList();
 		$data['user']      = $this->model('User_model')->userList();
 		

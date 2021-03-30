@@ -35,7 +35,7 @@
                                             <div class="form-line">
                                                 <label for="resdate">From Warehouse</label>
                                                 <select class="form-control show-tick" name="fromwhs" id="resdate">
-                                                    <?php foreach($data['whs'] as $out) : ?>
+                                                    <?php foreach($data['whsto'] as $out) : ?>
                                                         <option value="<?= $out['gudang']; ?>"><?= $out['deskripsi']; ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
@@ -78,30 +78,37 @@
                             
                         </div>
                         <div class="body">
-                            <div class="table-responsive">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <table class="table table-bordered table-striped table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Kode Material</th>
-                                                <th>Material Description</th>
-                                                <th>Quantity</th>
-                                                <th>Unit</th>
-                                                <th>Remark</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tbl-pr-body" class="mainbodynpo">
+                            <div class="row">
+                                <div class="table-responsive">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom:0px;">
+                                        <table class="table table-bordered table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Kode Material</th>
+                                                    <th>Material Description</th>
+                                                    <th>Quantity</th>
+                                                    <th>Unit</th>
+                                                    <th>Remark</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tbl-pr-body" class="mainbodynpo">
 
-                                        </tbody>
-                                    </table>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <button type="submit" class="btn bg-blue pull-right" id="btn-post" style="margin-left:5px;">
-                                    <i class="material-icons">save</i> <span>SAVE</span>
-                                </button>
-                                <button type="button" id="btn-dlg-add-item" class="btn bg-blue pull-right">
-                                    <i class="material-icons">playlist_add</i> <span>ADD ITEM</span>
-                                </button>
+                                        <i class="material-icons">save</i> <span>SAVE</span>
+                                    </button>
+                                    <button type="button" id="btn-dlg-add-item" class="btn bg-blue pull-right">
+                                        <i class="material-icons">playlist_add</i> <span>ADD ITEM</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -170,9 +177,11 @@
             var imgupload         = [];
             var count = 0;
 
-            $('#namabrg').on('input', function(){
-                // autocomplete_produk($('#namabrg').val())
-            })
+            function materialExists(material) {
+                return detail_order_beli.some(function(el) {
+                    return el.material === material;
+                }); 
+            }
 
             loaddatabarang();
             function loaddatabarang(){
@@ -195,66 +204,82 @@
                     var table = $('#list-barang').DataTable();
                     selected_data = [];
                     selected_data = table.row($(this).closest('tr')).data();
-                    
-                    kodebrg = selected_data.material;
-                    $('#namabrg').val(selected_data.matdesc);
-                    $('#satuan').val(selected_data.matunit);
-                    // $('#barangModal').modal('hide');
+                    if(materialExists(selected_data.material)){
 
-                    count = count+1;
-                    html = '';
-                    html = `
-                        <tr counter="`+ count +`" id="tr`+ count +`">
-                            <td class="nurut"> 
-                                `+ count +`
-                                <input type="hidden" name="itm_no[]" value="`+ count +`" />
-                            </td>
-                            <td> 
-                                <input type="text" name="itm_material[]" counter="`+count+`" id="material`+count+`" class="form-control materialCode" style="width:150px;" required="true" value="`+ selected_data.material +`" />
-                            </td>
-                            <td> 
-                                <input type="text" name="itm_matdesc[]" counter="`+count+`" id="matdesc`+count+`" class="form-control" style="width:300px;" value="`+ selected_data.matdesc +`"/>
-                            </td>
-                            <td> 
-                                <input type="text" name="itm_qty[]" counter="`+count+`" id="poqty`+count+`"  class="form-control inputNumber" style="width:100px; text-align:right;" required="true" />
-                            </td>
-                            <td> 
-                                <input type="text" name="itm_unit[]" counter="`+count+`" id="unit`+count+`" class="form-control" style="width:80px;" required="true" value="`+ selected_data.matunit +`"/>
-                            </td>
-                            <td> 
-                                <input type="text" name="itm_remark[]" class="form-control" style="width:200px;" counter="`+count+`" id="poprice`+count+`"/>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-danger btn-sm removePO hideComponent" counter="`+count+`">Remove</button>
-                            </td>
-                        </tr>
-                    `;
-                    $('#tbl-pr-body').append(html);
-                    renumberRows();
+                    }else{
+                        detail_order_beli.push(selected_data);
+                        kodebrg = selected_data.material;
+                        $('#namabrg').val(selected_data.matdesc);
+                        $('#satuan').val(selected_data.matunit);
 
-                    $('.removePO').on('click', function(e){
-                        e.preventDefault();
-                        $(this).closest("tr").remove();
+                        count = count+1;
+                        html = '';
+                        html = `
+                            <tr counter="`+ count +`" id="tr`+ count +`">
+                                <td class="nurut"> 
+                                    `+ count +`
+                                    <input type="hidden" name="itm_no[]" value="`+ count +`" />
+                                </td>
+                                <td> 
+                                    <input type="text" name="itm_material[]" counter="`+count+`" id="material`+count+`" class="form-control materialCode" style="width:150px;" required="true" value="`+ selected_data.material +`" readonly/>
+                                </td>
+                                <td> 
+                                    <input type="text" name="itm_matdesc[]" counter="`+count+`" id="matdesc`+count+`" class="form-control" style="width:300px;" value="`+ selected_data.matdesc +`" readonly/>
+                                </td>
+                                <td> 
+                                    <input type="text" name="itm_qty[]" counter="`+count+`" id="poqty`+count+`"  class="form-control inputNumber" style="width:100px; text-align:right;" required="true" />
+                                </td>
+                                <td> 
+                                    <input type="text" name="itm_unit[]" counter="`+count+`" id="unit`+count+`" class="form-control" style="width:80px;" required="true" value="`+ selected_data.matunit +`"/>
+                                </td>
+                                <td> 
+                                    <input type="text" name="itm_remark[]" class="form-control" style="width:200px;" counter="`+count+`" id="poprice`+count+`"/>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-sm removePO hideComponent" counter="`+count+`" id="btnRemove`+count+`">Remove</button>
+                                </td>
+                            </tr>
+                        `;
+                        $('#tbl-pr-body').append(html);
                         renumberRows();
-                    })
 
-                    $('.materialCode').on('change', function(){
-                        var xcounter = $(this).attr('counter');
-                        var kodebrg  = $('#material'+xcounter).val();
+                        $('#btnRemove'+count).on('click', function(e){
+                            e.preventDefault();
+                            var row_index = $(this).closest("tr").index();
+                            removeitem(row_index);                        
+                            $(this).closest("tr").remove();
+                            renumberRows();
+                            console.log(detail_order_beli)
+                        })
 
-                        getMaterialbyKode(kodebrg, function(d){
-                            console.log(d)
-                            $('#matdesc'+xcounter).val(d.matdesc);
-                            $('#unit'+xcounter).val(d.matunit);
+                        // $('.removePO').on('click', function(e){
+                        //     e.preventDefault();
+                        //     $(this).closest("tr").remove();
+                        //     renumberRows();
+                        // });
+
+                        $('.materialCode').on('change', function(){
+                            var xcounter = $(this).attr('counter');
+                            var kodebrg  = $('#material'+xcounter).val();
+
+                            getMaterialbyKode(kodebrg, function(d){
+                                console.log(d)
+                                $('#matdesc'+xcounter).val(d.matdesc);
+                                $('#unit'+xcounter).val(d.matunit);
+                            });
+                        })
+
+                        $('.inputNumber').on('change', function(){
+                            this.value = formatRupiah(this.value, '');
                         });
-                    })
-
-                    $('.inputNumber').on('change', function(){
-                        this.value = formatRupiah(this.value, '');
-                    });
+                    }
+                    
                 } );
             }
 
+            function removeitem(index){
+                detail_order_beli.splice(index, 1);
+            }
 
             function renumberRows() {
                 $(".mainbodynpo > tr").each(function(i, v) {

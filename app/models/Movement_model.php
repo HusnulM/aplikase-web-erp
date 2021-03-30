@@ -8,6 +8,12 @@ class Movement_model{
 		  $this->db = new Database;
     }
 
+    public function getWhsAuth(){
+        $user = $_SESSION['usr']['user'];
+        $data = $this->db->query("SELECT * FROM t_user_object_auth WHERE username = '$user' and ob_auth = 'OB_WAREHOUSE' limit 1");
+        return $this->db->single();
+    }
+
     public function getInvMovementByAuth(){
         $user = $_SESSION['usr']['user'];
         $this->db->query("CALL sp_GetInvMovementCatByObjAuth('$user')");
@@ -15,7 +21,13 @@ class Movement_model{
     }
 
     public function getPotoGR(){
-        $this->db->query("SELECT * FROM v_po002");
+        $user = $_SESSION['usr']['user'];
+        $whsAuth = $this->getWhsAuth();
+        if($whsAuth['ob_value'] === "*"){
+            $this->db->query("SELECT * FROM v_po002");
+        }else{
+            $this->db->query("SELECT * FROM v_po002 where warehouse in(select ob_value from t_user_object_auth where username='$user' and ob_auth = 'OB_WAREHOUSE')");
+        }  
 		return $this->db->resultSet();
     }
 
@@ -27,6 +39,11 @@ class Movement_model{
     public function readlockdata($object,$docnum){
         $this->db->query("SELECT * FROM t_lockdata WHERE object='$object' AND docnum = '$docnum'");
 		return $this->db->single();
+    }
+
+    public function getPOitemtoGR($ponum){
+        $this->db->query("SELECT *, ponum as 'refnum', poitem as 'refitem', '' as 'fromwhs', '-' as 'towhs' FROM t_po02 WHERE ponum = '$ponum' AND grstatus IS NULL AND final_approve = 'X'");
+        return $this->db->resultSet();
     }
 
     public function checkwhsauth($whsnum){
@@ -52,15 +69,9 @@ class Movement_model{
         $inpwhs  = implode("','",$myWhs);
         $this->db->query("SELECT *, '$inputqty' as 'inputqty' FROM t_stock WHERE material in('$array') AND warehouse in('$inpwhs')");
         return $this->db->resultSet();
-        // return $array;
     }
 
     public function checkStockwhs($material, $whs, $inputqty){
-        // $myArray = explode(',', $material);
-        // $myWhs   = explode(',', $whs);
-        // $array   = implode("','",$myArray);
-        // $inpwhs  = implode("','",$myWhs);
-
         $myArray = explode(',', $material);
         $myWhs   = explode(',', $whs);
         $array   = implode("','",$myArray);
@@ -103,6 +114,11 @@ class Movement_model{
         return $errmsg;
     }
 
+    public function generateBatch(){
+		$this->db->query("CALL sp_NextNriv('BATCH')");
+		return $this->db->single();
+	} 
+
     public function post($data, $mblnr){
 
         try {
@@ -115,24 +131,31 @@ class Movement_model{
             $lgort = $data['itm_whs'];
             $lgort2  = $data['itm_whs2'];
             $refnum  = $data['itm_refnum'];
-            $refitem = $data['itm_refitem'];
+            $refitem  = $data['itm_refitem'];
+            // $batchnum = $data['itm_batch'];
+
+            $user  = $_SESSION['usr']['user'];
+            $year  = date('Y');
 
             $query1 = "INSERT INTO t_inv_h(grnum,year,movement,movementdate,note,createdon,createdby)
                             VALUES(:grnum,:year,:movement,:movementdate,:note,:createdon,:createdby)";
         
-                $this->db->query($query1);
-                $this->db->bind('grnum',        $mblnr);
-                $this->db->bind('year',         date('Y'));
-                $this->db->bind('movement',     $data['immvt']);
-                $this->db->bind('movementdate', $data['mvdate']);
-                $this->db->bind('note',         $data['note']);
-                $this->db->bind('createdon',    date('Y-m-d'));
-                $this->db->bind('createdby',    $_SESSION['usr']['user']);
-                $this->db->execute();
-                $rows = 0;
-        
-                $query2 = "INSERT INTO t_inv_i(grnum,year,gritem,movement,material,matdesc,quantity,unit,ponum,poitem,resnum,resitem,remark,warehouse,warehouseto,shkzg,createdon,createdby)
-                VALUES(:grnum,:year,:gritem,:movement,:material,:matdesc,:quantity,:unit,:ponum,:poitem,:resnum,:resitem,:remark,:warehouse,:warehouseto,:shkzg,:createdon,:createdby)";
+            $this->db->query($query1);
+            $this->db->bind('grnum',        $mblnr);
+            $this->db->bind('year',         date('Y'));
+            $this->db->bind('movement',     $data['immvt']);
+            $this->db->bind('movementdate', $data['mvdate']);
+            $this->db->bind('note',         $data['note']);
+            $this->db->bind('createdon',    date('Y-m-d'));
+            $this->db->bind('createdby',    $_SESSION['usr']['user']);
+            $this->db->execute();
+            $rows = 0;
+
+            if($data['immvt'] === "101"){
+                $batch = $this->generateBatch();
+            
+                $query2 = "INSERT INTO t_inv_i(grnum,year,gritem,movement,batchnumber,material,matdesc,quantity,unit,ponum,poitem,resnum,resitem,remark,warehouse,warehouseto,shkzg,createdon,createdby)
+                VALUES(:grnum,:year,:gritem,:movement,:batchnumber,:material,:matdesc,:quantity,:unit,:ponum,:poitem,:resnum,:resitem,:remark,:warehouse,:warehouseto,:shkzg,:createdon,:createdby)";
                 $this->db->query($query2);
                 for($i = 0; $i < count($matnr); $i++){
                     $rows = $rows + 1;
@@ -140,35 +163,37 @@ class Movement_model{
                     $this->db->bind('year',     date('Y'));
                     $this->db->bind('gritem',   $rows);
                     $this->db->bind('movement', $data['immvt']);
+                    $this->db->bind('batchnumber', $batch['nextnumb']);
+                        
                     $this->db->bind('material', $matnr[$i]);
                     $this->db->bind('matdesc',  $maktx[$i]);
-                    
+                        
                     $_menge = "";
                     $_menge = str_replace(".", "",  $menge[$i]);
                     $_menge = str_replace(",", ".", $_menge);
                     $this->db->bind('quantity', $_menge);
                     $this->db->bind('unit',     $meins[$i]);
-        
-                    if($data['immvt'] === "101"){
-                        $this->db->bind('ponum',     $refnum[$i]);
-                        $this->db->bind('poitem',    $refitem[$i]);
-                        $this->db->bind('resnum',    null);
-                        $this->db->bind('resitem',   null);
-                        $this->db->bind('shkzg',   '+');
-                    }elseif($data['immvt'] === "201" || $data['immvt'] === "211"){
-                        $this->db->bind('ponum',     null);
-                        $this->db->bind('poitem',    null);
-                        $this->db->bind('resnum',    $refnum[$i]);
-                        $this->db->bind('resitem',   $refitem[$i]);
-                        $this->db->bind('shkzg',   '+');
-                    }elseif($data['immvt'] === "261"){
-                        $this->db->bind('ponum',     null);
-                        $this->db->bind('poitem',    null);
-                        $this->db->bind('resnum',    $refnum[$i]);
-                        $this->db->bind('resitem',   $refitem[$i]);
-                        $this->db->bind('shkzg',   '-');
-                    }
-        
+                    $this->db->bind('ponum',     $refnum[$i]);
+                    $this->db->bind('poitem',    $refitem[$i]);
+                    $this->db->bind('resnum',    null);
+                    $this->db->bind('resitem',   null);
+                    $this->db->bind('shkzg',   '+');
+            
+                    // if($data['immvt'] === "101"){
+                    // }elseif($data['immvt'] === "201" || $data['immvt'] === "211"){
+                    //     $this->db->bind('ponum',     null);
+                    //     $this->db->bind('poitem',    null);
+                    //     $this->db->bind('resnum',    $refnum[$i]);
+                    //     $this->db->bind('resitem',   $refitem[$i]);
+                    //     $this->db->bind('shkzg',   '+');
+                    // }elseif($data['immvt'] === "261"){
+                    //     $this->db->bind('ponum',     null);
+                    //     $this->db->bind('poitem',    null);
+                    //     $this->db->bind('resnum',    $refnum[$i]);
+                    //     $this->db->bind('resitem',   $refitem[$i]);
+                    //     $this->db->bind('shkzg',   '-');
+                    // }
+            
                     $this->db->bind('remark',      $txz01[$i]);
                     $this->db->bind('warehouse',   $lgort[$i]);
                     if($data['immvt'] === "101"){
@@ -178,49 +203,73 @@ class Movement_model{
                     }elseif($data['immvt'] === "261"){
                         $this->db->bind('warehouseto', null);
                     }
-                    
+                        
                     $this->db->bind('createdon',   date('Y-m-d'));
                     $this->db->bind('createdby',   $_SESSION['usr']['user']);
                     $this->db->execute();
                 }
-    
+            }else{
                 if($data['immvt'] === "201" || $data['immvt'] === "211"){
                     for($i = 0; $i < count($matnr); $i++){
-                        $rows = $rows + 1;
-                        $this->db->bind('grnum',    $mblnr);
-                        $this->db->bind('year',     date('Y'));
-                        $this->db->bind('gritem',   $rows);
-                        $this->db->bind('movement', $data['immvt']);
-                        $this->db->bind('material', $matnr[$i]);
-                        $this->db->bind('matdesc',  $maktx[$i]);
-                        
+                        $_matnr = $matnr[$i];
                         $_menge = "";
                         $_menge = str_replace(".", "",  $menge[$i]);
                         $_menge = str_replace(",", ".", $_menge);
-                        $this->db->bind('quantity', $_menge);
-                        $this->db->bind('unit',     $meins[$i]);
-                        $this->db->bind('ponum',     null);
-                        $this->db->bind('poitem',    null);
-                        $this->db->bind('resnum',    $refnum[$i]);
-                        $this->db->bind('resitem',   $refitem[$i]);
-                        $this->db->bind('shkzg',   '-');        
-                        $this->db->bind('remark',      $txz01[$i]);
-                        $this->db->bind('warehouse',   $lgort2[$i]);
-                        $this->db->bind('warehouseto', $lgort[$i]);                    
-                        $this->db->bind('createdon',   date('Y-m-d'));
-                        $this->db->bind('createdby',   $_SESSION['usr']['user']);
-                        $this->db->execute();
+                        $_maktx = $maktx[$i];
+                        $_meins = $meins[$i];
+                        $_refnum  = $refnum[$i];
+                        $_refitem = $refitem[$i];
+                        $_whs1    = $lgort[$i];
+                        $_whs2    = $lgort2[$i];
+
+                        if($data['immvt'] === "201"){
+                            $this->db->query("CALL getBatchByFIFO(
+                                '$_matnr',
+                                '$_whs1',
+                                '$_menge',
+                                '$mblnr',
+                                '$year',
+                                '201', 
+                                '$_maktx',
+                                '$_meins',
+                                '$_whs1',
+                                '$_whs2',
+                                '+',
+                                '$_refnum',
+                                '$_refitem',
+                                '$user'
+                            )");
+                            $this->db->execute(); 
+                        }else{
+                            $this->db->query("CALL getBatchByFIFO(
+                                '$_matnr',
+                                '$_whs1',
+                                '$_menge',
+                                '$mblnr',
+                                '$year',
+                                '211', 
+                                '$_maktx',
+                                '$_meins',
+                                '$_whs1',
+                                '$_whs2',
+                                '+',
+                                '',
+                                '',
+                                '$user'
+                            )");
+                            $this->db->execute(); 
+                        }
                     }
                 }
-                // return $this->db->rowCount();
+            }
 
-                $return = array(
-                    "msgtype" => "1",
-                    "message" => "Post Success",
-                    "data"    => null
-                );
+            $return = array(
+                "msgtype" => "1",
+                "message" => "Post Success",
+                "data"    => null
+            );
 
-                return 1;         
+            return 1;         
     
         } catch (Exception $e) {
             $message = 'Caught exception: '.  $e->getMessage(). "\n";

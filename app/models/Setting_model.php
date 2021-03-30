@@ -16,8 +16,8 @@ class Setting_model{
     public function savepsetting($data){
         $query1 = "UPDATE tblsetting SET company=:company, address=:address WHERE id=:id";
 		$this->db->query($query1);
-		$this->db->bind('id',       $data['id']);
-		$this->db->bind('company', 	$data['company']);
+		$this->db->bind('id',       $data['setid']);
+		$this->db->bind('company', 	$data['cname']);
 		$this->db->bind('address',	$data['address']);
 		
 		$this->db->execute();

@@ -1,4 +1,4 @@
-<section class="content">
+    <section class="content">
         <div class="container-fluid">
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -29,7 +29,7 @@
                                         </div>    
                                     </div>
 
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-8">
                                         <div class="form-group">
                                             <div class="form-line">
                                                 <label for="reqdate1">Select Warehouse</label>
@@ -42,7 +42,18 @@
                                             </div>
                                         </div>    
                                     </div>
+                                </div>
 
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <input type="checkbox" id="basic_checkbox_2" class="filled-in form-control"/>
+                                            <label for="basic_checkbox_2">Display Zero Stock</label>
+                                        </div>  
+                                    </div>
+                                </div>
+
+                                <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                         <div class="form-group">
                                             <button type="button" id="btn-process" class="btn btn-primary"  data-type="success">Show Data</button>
@@ -98,7 +109,18 @@
     <script src="<?= BASEURL; ?>/plugins/sweetalert/sweetalert.min.js"></script>
     <script>
         $(function(){
+
+            var _zerostock = 'N';
             
+            $('#basic_checkbox_2').on('change', function(){
+                if(_zerostock === 'N'){
+                    _zerostock = 'Y'
+                }else{
+                    _zerostock = 'N'
+                }
+                // alert(_zerostock)
+            });
+
             loaddatabarang();
             function loaddatabarang(){
                 $('#list-barang').dataTable({
@@ -131,15 +153,16 @@
             })
 
             $('#btn-process').on('click', function(){
+                // alert(_zerostock)
                 if($('#material').val() === "" && $('#warehouse').val() === ""){
-                    window.location.href = base_url+'/reports/stockview';    
+                    window.location.href = base_url+'/reports/stockview/null/null/'+_zerostock;    
                 }else if($('#material').val() != "" && $('#warehouse').val() === ""){
-                    window.location.href = base_url+'/reports/stockview/'+$('#material').val()
+                    window.location.href = base_url+'/reports/stockview/'+$('#material').val()+'/null/'+_zerostock
                 }else if($('#material').val() === "" && $('#warehouse').val() != ""){
-                    window.location.href = base_url+'/reports/stockview/null/'+$('#warehouse').val();
+                    window.location.href = base_url+'/reports/stockview/null/'+$('#warehouse').val()+'/'+_zerostock;
                 }
                 else{
-                    window.location.href = base_url+'/reports/stockview/'+$('#material').val()+'/'+$('#warehouse').val();
+                    window.location.href = base_url+'/reports/stockview/'+$('#material').val()+'/'+$('#warehouse').val()+'/'+_zerostock;
                 }
                 // window.location.href = base_url+'/reports/stockview/null/'+$('#warehouse').val();    
             })

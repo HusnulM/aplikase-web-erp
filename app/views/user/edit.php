@@ -34,6 +34,7 @@
 											<option value="<?= $data['user']['userlevel']; ?>"><?= $data['user']['userlevel']; ?></option>
 											<option value="Admin">Admin</option>
                                             <option value="Staff">Staff</option>
+                                            <option value="Vedor">Vendor</option>
 											<option value="Customer">Customer</option>
                                         </select>
                                     </div>
@@ -74,18 +75,7 @@
                                                 <input type="text" name="reffid" id="reffid" class="form-control" placeholder="reffid" value="<?= $data['user']['reffid']; ?>">
                                             </div>
                                         </div>
-                                    </div>	
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 divCustomer">
-                                        <div class="form-group">
-                                            <label for="customer">Customer</label>
-                                            <select name="customer" class="form-control" id="customer">
-                                                <option value="<?= $data['_cust']['cust_id']; ?>"><?= $data['_cust']['cust_name']; ?></option>
-                                                <?php foreach($data['cust'] as $cust) : ?>
-                                                    <option value="<?= $cust['cust_id']; ?>"><?= $cust['cust_name']; ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-                                    </div>								
+                                    </div>									
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -102,22 +92,3 @@
             </div>
         </div>
     </section>
-
-    <script>
-        $(function(){
-            var userLevel = "<?= $data['user']['userlevel']; ?>";
-            if(userLevel === "Customer"){
-                $('.divCustomer').show();
-            }else{
-                $('.divCustomer').hide();
-            }
-
-            $('#typeuser').on('change', function(){
-                if(this.value === "Customer"){
-                    $('.divCustomer').show();
-                }else{
-                    $('.divCustomer').hide();
-                }
-            })
-        })
-    </script>

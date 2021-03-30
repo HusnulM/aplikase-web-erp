@@ -12,10 +12,6 @@
                             <h2>
                                 Purchase Request
                             </h2>
-							
-                            <!-- <?php if($_SESSION['usr']['userlevel'] === 'Staff') : ?>
-                            
-                            <?php endif; ?> -->
                             <ul class="header-dropdown m-r--5">                                
 							<a href="<?= BASEURL; ?>/pr/create" class="btn btn-success waves-effect pull-right">Create Purchase Request</a>
 							</ul>
@@ -23,11 +19,13 @@
                         <div class="body">
                             <div class="table-responsive">
                                 <table id="prlist"></table>
-                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable" style="width:110%;">
                                     <thead>
                                         <tr>
                                             <th>No</th>
                                             <th>No. Request</th>
+                                            <th>Type PR</th>
+                                            <th>Warehouse</th>
                                             <th>Tanggal Request</th>
                                             <th>Keterangan</th>
                                             <th>Request By</th>
@@ -42,6 +40,14 @@
                                             <tr>
                                                 <td><?= $no; ?></td>
                                                 <td><?= $pr['prnum']; ?></td>
+                                                <td>
+                                                    <?php if($pr['typepr'] === "PR01") : ?>
+                                                        PR Stock
+                                                    <?php else: ?>
+                                                        PR Lokal
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td><?= $pr['whsname']; ?></td>
                                                 <td><?= $pr['prdate']; ?></td>
                                                 <td><?= $pr['note']; ?></td>
                                                 <td><?= $pr['requestby']; ?></td>

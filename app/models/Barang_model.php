@@ -32,6 +32,16 @@ class Barang_model{
 		  return $this->db->resultSet();
     }
 
+    public function getListMatType(){
+      $this->db->query("SELECT * FROM t_materialtype");
+		  return $this->db->resultSet();
+    }
+
+    public function geMatTypeById($mattype){
+      $this->db->query("SELECT * FROM t_materialtype WHERE mattype = '$mattype'");
+		  return $this->db->single();
+    }
+
     public function getBarangByKode($kodebrg)
     {
       $this->db->query("SELECT * FROM t_material WHERE material='$kodebrg'");
@@ -82,49 +92,37 @@ class Barang_model{
         }else{
           $material = $data['kodebrg'];
         }
-        // $kodebrg = $this->getNextNumber('BARANG');
-        $query = "INSERT INTO t_material (material,matdesc,partname,partnumber,color,size,matunit,minstock,orderunit,stdprice,stdpriceusd,active,createdon,createdby) 
-                      VALUES(:material,:matdesc,:partname,:partnumber,:color,:size,:matunit,:minstock,:orderunit,:stdprice,:stdpriceusd,:active,:createdon,:createdby)";
+        
+        $query = "INSERT INTO t_material (material,matdesc,mattype,partname,partnumber,color,size,matunit,minstock,orderunit,stdprice,stdpriceusd,active,createdon,createdby) 
+                      VALUES(:material,:matdesc,:mattype,:partname,:partnumber,:color,:size,:matunit,:minstock,:orderunit,:stdprice,:stdpriceusd,:active,:createdon,:createdby)";
         $this->db->query($query);
         
         $this->db->bind('material',  $material);
         $this->db->bind('matdesc',   $data['namabrg']);
+        $this->db->bind('mattype',   $data['mattype']);
         $this->db->bind('partname',  $data['partname']);
         $this->db->bind('partnumber',$data['partnumber']);
-        $this->db->bind('color',     $data['color']);
-        $this->db->bind('size',      $data['size']);
+        $this->db->bind('color',     null);
+        $this->db->bind('size',      null);
         $this->db->bind('matunit',   $data['satuan']);
 
         if($data['inp_min_stock'] === ""){
           $data['inp_min_stock'] = 0;
         }
-        $this->db->bind('minstock',  $data['inp_min_stock']);
-        $this->db->bind('orderunit', $data['inp_ounit']);
+        $this->db->bind('minstock',  0);
+        $this->db->bind('orderunit', $data['satuan']);
         
-        $idrprice = "";
-        $idrprice = str_replace(".", "",  $data['inp_stdprice']);
-        $idrprice = str_replace(",", ".", $idrprice);
-        if($idrprice === ""){
-          $idrprice = 0;
-        }
-        $this->db->bind('stdprice',  $idrprice);
-
-        $usdprice = "";
-        $usdprice = str_replace(".", "",  $data['inp_stdpriceusd']);
-        $usdprice = str_replace(",", ".", $usdprice);
-        if($usdprice === ""){
-          $usdprice = 0;
-        }
-        $this->db->bind('stdpriceusd',  $usdprice);
+        $this->db->bind('stdprice',  0);
+        $this->db->bind('stdpriceusd',  0);
         $this->db->bind('active',    '1');
         $this->db->bind('createdon', $currentDate);
         $this->db->bind('createdby', $_SESSION['usr']['user']);
         $this->db->execute();
 
-        $altuom = $data['altuom'];
-        if(count($altuom)>0){
-          $this->savealtuom($material, $data);
-        }
+        // $altuom = $data['altuom'];
+        // if(count($altuom)>0){
+        //   $this->savealtuom($material, $data);
+        // }
         
         return $this->db->rowCount();
     }
@@ -150,35 +148,14 @@ class Barang_model{
         $this->db->execute();
       }
 
-      // return $this->db->rowCount();
+      return $this->db->rowCount();
     }
 
     public function  update($data){
-
-        $checkprice = $this->checkauthdisplayprice();
-
-        $priceidr = 0;
-        $priceusd = 0;
-
-        if($checkprice['rows'] > 1){
-          $olddata = $this->getBarangByKode($data['kodebrg']);
-          $priceidr = $olddata['stdprice'];
-          $priceusd = $olddata['stdpriceusd'];
-        }
-
-        if(isset($data['inp_stdprice'])){
-          $priceidr = $data['inp_stdprice'];
-        }
-
-        if(isset($data['inp_stdpriceusd'])){
-          $priceusd = $data['inp_stdpriceusd'];
-        }
-      // $this->delete($data['kodebrg']);
-
       $currentDate = date('Y-m-d h:m:s');
-        $query = "INSERT INTO t_material (material,matdesc,partname,partnumber,color,size,matunit,minstock,orderunit,stdprice,stdpriceusd,active,createdon,createdby) 
-                      VALUES(:material,:matdesc,:partname,:partnumber,:color,:size,:matunit,:minstock,:orderunit,:stdprice,:stdpriceusd,:active,:createdon,:createdby)
-              ON DUPLICATE KEY UPDATE matdesc=:matdesc,partname=:partname,partnumber=:partnumber,color=:color,size=:size,matunit=:matunit,minstock=:minstock,orderunit=:orderunit,stdprice=:stdprice,stdpriceusd=:stdpriceusd";
+        $query = "INSERT INTO t_material (material,matdesc,mattype,partname,partnumber,color,size,matunit,minstock,orderunit,stdprice,stdpriceusd,active,createdon,createdby) 
+                      VALUES(:material,:matdesc,:mattype,:partname,:partnumber,:color,:size,:matunit,:minstock,:orderunit,:stdprice,:stdpriceusd,:active,:createdon,:createdby)
+              ON DUPLICATE KEY UPDATE matdesc=:matdesc,mattype=:mattype,partname=:partname,partnumber=:partnumber,color=:color,size=:size,matunit=:matunit,minstock=:minstock,orderunit=:orderunit,stdprice=:stdprice,stdpriceusd=:stdpriceusd";
         $this->db->query($query);
 
         if($data['inp_min_stock'] === ""){
@@ -187,43 +164,28 @@ class Barang_model{
         
         $this->db->bind('material',  $data['kodebrg']);
         $this->db->bind('matdesc',   $data['namabrg']);
+        $this->db->bind('mattype',   $data['mattype']);
         $this->db->bind('partname',  $data['partname']);
         $this->db->bind('partnumber',$data['partnumber']);
-        $this->db->bind('color',     $data['color']);
-        $this->db->bind('size',      $data['size']);
+        $this->db->bind('color',     null);
+        $this->db->bind('size',      null);
         $this->db->bind('matunit',   $data['satuan']);
-        $this->db->bind('minstock',  $data['inp_min_stock']);
-        $this->db->bind('orderunit', $data['inp_ounit']);
-        
-        $idrprice = "";
-        $idrprice = str_replace(".", "",  $priceidr);
-        $idrprice = str_replace(",", ".", $idrprice);
-
-        if($idrprice === ""){
-          $idrprice = 0;
-        }
-        $this->db->bind('stdprice',  $idrprice);
-        
-        $usdprice = "";
-        $usdprice = str_replace(".", "",  $priceusd);
-        $usdprice = str_replace(",", ".", $usdprice);
-        if($usdprice === ""){
-          $usdprice = 0;
-        }
-        $this->db->bind('stdpriceusd',  $usdprice);
+        $this->db->bind('minstock',  0);
+        $this->db->bind('orderunit', $data['satuan']);
+        $this->db->bind('stdprice',  0);
+        $this->db->bind('stdpriceusd',  '0');
 
         $this->db->bind('active',    '1');
         $this->db->bind('createdon', $currentDate);
         $this->db->bind('createdby', $_SESSION['usr']['user']);
         $this->db->execute();
-
-        // $this->savealtuom($data['kodebrg'], $data);
-        if(isset($data['altuom'])){
-          $altuom = $data['altuom'];
-          if(count($altuom)>0){
-            $this->savealtuom($data['kodebrg'], $data);
-          }
-        }
+        
+        // if(isset($data['altuom'])){
+        //   $altuom = $data['altuom'];
+        //   if(count($altuom)>0){
+        //     $this->savealtuom($data['kodebrg'], $data);
+        //   }
+        // }
         return $this->db->rowCount();
     }
 

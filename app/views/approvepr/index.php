@@ -22,7 +22,7 @@
                                             <th>No</th>
                                             <th>No. PR</th>
                                             <th>Tanggal Request</th>
-                                            <th>Keterangan</th>
+                                            <th>Note</th>
                                             <th>Request By</th>
                                             <th>Status</th>
                                             <th>Action</th>

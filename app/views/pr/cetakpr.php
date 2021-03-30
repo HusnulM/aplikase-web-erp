@@ -50,7 +50,7 @@
 
             $this->Cell(100,5,'Warehouse',0);
             $this->Cell(5,5,':',0);
-            $this->Cell(72,5,$this->hdata['deskripsi'],0);
+            $this->Cell(72,5,$this->hdata['whsname'],0);
             
             $this->Ln(10);
             $this->Cell(10,7,'',0,1);

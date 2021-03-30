@@ -83,9 +83,14 @@ class Menurole_model{
     }
 
     public function delete($roleid, $menuid){
+        $query1 = "DELETE FROM t_role_avtivity WHERE roleid=:roleid and menuid=:menuid";
+        $this->db->query($query1);
+        $this->db->bind('roleid', $roleid);
+        $this->db->bind('menuid', $menuid);
+        $this->db->execute();
+
         $query = "DELETE FROM t_rolemenu WHERE roleid=:roleid and menuid=:menuid";
         $this->db->query($query);
-
         $this->db->bind('roleid', $roleid);
         $this->db->bind('menuid', $menuid);
         $this->db->execute();

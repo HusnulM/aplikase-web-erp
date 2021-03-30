@@ -47,7 +47,7 @@
     <script>
         $(function(){
             $('#btn-process').on('click', function(){
-                window.location.href = base_url+'/reports/rpaymentview/'+$('#strdate').val()+'/'+$('#enddate').val()
+                window.location.href = base_url+'/reports/paymentview/'+$('#strdate').val()+'/'+$('#enddate').val()
             })
         })
     </script>

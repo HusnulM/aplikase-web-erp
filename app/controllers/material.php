@@ -37,6 +37,7 @@ class Material extends Controller {
             $data['appmenu']  = $this->model('Home_model')->getUsermenu();       
             
             $data['showprice'] = $this->model('Barang_model')->checkauthdisplayprice();
+            $data['mattype']   = $this->model('Barang_model')->getListMatType();
 
             $this->view('templates/header_a', $data);
             $this->view('material/create', $data);
@@ -62,6 +63,8 @@ class Material extends Controller {
             $data['material'] = $this->model('Barang_model')->getBarangByKode($material);
             $data['altuom']   = $this->model('Barang_model')->getBarangBaseUomByKode($material, $data['material']['matunit']);
             $data['showprice'] = $this->model('Barang_model')->checkauthdisplayprice();
+            $data['mattype']   = $this->model('Barang_model')->getListMatType();
+            $data['cmattype']  = $this->model('Barang_model')->geMatTypeById($data['material']['mattype']);
 
             $this->view('templates/header_a', $data);
             $this->view('material/edit', $data);
@@ -101,9 +104,9 @@ class Material extends Controller {
 			header('location: '. BASEURL . '/material');
 			exit;			
 		}else{
-			Flasher::setMessage('Gagal menyimpan data material,','','danger');
+			Flasher::setMessage('Material Berhasil di update','','success');
 			header('location: '. BASEURL . '/material');
-			exit;	
+			exit;
 		}
 	}
 

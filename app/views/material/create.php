@@ -24,16 +24,16 @@
                                         <i class="material-icons">description</i> Basic Data
                                     </a>
                                 </li>
-                                <li role="presentation">
+                                <!-- <li role="presentation">
                                     <a href="#alt_uom_view" data-toggle="tab">
                                         <i class="material-icons">line_weight</i> Alternative UOM
                                     </a>
-                                </li>
-                                <li role="presentation">
+                                </li> -->
+                                <!-- <li role="presentation">
                                     <a href="#purchasing_view" data-toggle="tab">
                                         <i class="material-icons">shopping_basket</i> Purchasing
                                     </a>
-                                </li>
+                                </li> -->
                             </ul>
 
                             <div class="tab-content">
@@ -43,27 +43,43 @@
                                         <div class="col-sm-4">
                                             <div class="form-group">
                                                 <div class="form-line">
-                                                    <input type="text" name="kodebrg" id="kodebrg" class="form-control" placeholder="Kode Material">
+                                                    <label for="">Kode Barang</label>
+                                                    <input type="text" name="kodebrg" id="kodebrg" class="form-control" placeholder="Kode Barang">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-8">
                                             <div class="form-group">
                                                 <div class="form-line">
-                                                    <input type="text" name="namabrg" id="namabrg" class="form-control" placeholder="Description" required="true">
+                                                    <label for="">Deskripsi</label>
+                                                    <input type="text" name="namabrg" id="namabrg" class="form-control" placeholder="Deskripsi" required="true">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <div class="form-group">
                                                 <div class="form-line">
+                                                    <label for="">Kategori</label>
+                                                    <select name="mattype" id="mattype" class="form-control">
+                                                        <?php foreach($data['mattype'] as $out) : ?>
+                                                            <option value="<?= $out['mattype']; ?>"><?= $out['mattype']; ?> - <?= $out['mattypedesc']; ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <div class="form-line">
+                                                    <label for="">Nama Part</label>
                                                     <input type="text" name="partname" id="partname" class="form-control" placeholder="Part Name">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <div class="form-group">
                                                 <div class="form-line">
+                                                    <label for="">Nomor Part</label>
                                                     <input type="text" name="partnumber" id="partnumber" class="form-control" placeholder="Part Number" required="true">
                                                 </div>
                                             </div>
@@ -71,24 +87,25 @@
                                         <div class="col-sm-4">
                                             <div class="form-group">
                                                 <div class="form-line">
+                                                    <label for="">Satuan</label>
                                                     <input type="text" name="satuan" id="satuan" class="form-control" placeholder="Base UOM" required="true">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <!-- <div class="col-sm-4">
                                             <div class="form-group">
                                                 <div class="form-line">
                                                     <input type="text" name="size" id="size" class="form-control" placeholder="Size">
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-sm-4">
+                                        </div> -->
+                                        <!-- <div class="col-sm-4">
                                             <div class="form-group">
                                                 <div class="form-line">
                                                     <input type="text" name="color" id="color" class="form-control" placeholder="Color">
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
 

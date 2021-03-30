@@ -10,6 +10,10 @@ class Reports extends Controller{
 		}
     }
 
+	public function index(){
+		header('location:'. BASEURL);
+	}
+
     public function reportpr(){
 		$check = $this->model('Home_model')->checkUsermenu('reports/reportpr','Read');
         if ($check){
@@ -29,7 +33,7 @@ class Reports extends Controller{
         }          
     }
 
-    public function reportprview($strdate, $enddate){
+    public function reportprview($strdate, $enddate, $status){
 		$check = $this->model('Home_model')->checkUsermenu('reports/reportpr','Read');
         if ($check){
 			$data['title']    = 'Report Purchase Request';
@@ -42,8 +46,9 @@ class Reports extends Controller{
 	
 			$data['strdate'] = $strdate;
 			$data['enddate'] = $enddate;
+			$data['status']  = $status;
 	
-			$data['prdata']  = $this->model('Laporan_model')->getPR($strdate, $enddate);
+			// $data['prdata']  = $this->model('Laporan_model')->getPR($strdate, $enddate, $status);
 	
 			$this->view('templates/header_a', $data);
 			$this->view('reports/laporanprview', $data);
@@ -53,8 +58,8 @@ class Reports extends Controller{
         }          
 	}
 	
-	public function laporanprdata($strdate, $enddate){
-		$data = $this->model('Laporan_model')->getPR($strdate, $enddate);
+	public function laporanprdata($strdate, $enddate, $status){
+		$data = $this->model('Laporan_model')->getPR($strdate, $enddate, $status);
 		echo json_encode($data);
     }
 
@@ -150,6 +155,106 @@ class Reports extends Controller{
 		echo json_encode($data);
     }
 
+	public function rservice(){
+		$check = $this->model('Home_model')->checkUsermenu('reports/rservice','Read');
+        if ($check){
+			$data['title']    = 'Report Service';
+			$data['menu']     = 'Report Service';
+			// Wajib di semua route ke view--------------------------------------------
+			$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
+			$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
+			//------------------------------------------------------------------------- 
+	
+			$this->view('templates/header_a', $data);
+			$this->view('reports/rservice', $data);
+			$this->view('templates/footer_a');
+		}else{
+            $this->view('templates/401');
+        }
+	}
+
+	public function rserviceview($strdate, $enddate, $whs){
+		$check = $this->model('Home_model')->checkUsermenu('reports/rservice','Read');
+        if ($check){
+			$data['title']    = 'Report Service';
+			$data['menu']     = 'Report Service';
+			// Wajib di semua route ke view--------------------------------------------
+			$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
+			$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
+			//------------------------------------------------------------------------- 
+			
+			$data['strdate'] = $strdate;
+			$data['enddate'] = $enddate;
+			$data['whs']     = $whs;
+
+			$this->view('templates/header_a', $data);
+			$this->view('reports/rserviceview', $data);
+			$this->view('templates/footer_a');
+		}else{
+            $this->view('templates/401');
+        }
+	}
+
+	public function rserviceheader($strdate, $enddate, $whs){
+		$data['data'] = $this->model('Laporan_model')->getHeaderService($strdate, $enddate, $whs);
+		echo json_encode($data);
+	}
+
+	public function rcost(){
+		$check = $this->model('Home_model')->checkUsermenu('reports/rcost','Read');
+        if ($check){
+			$data['title']    = 'Report Cost';
+			$data['menu']     = 'Report Cost';
+			// Wajib di semua route ke view--------------------------------------------
+			$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
+			$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
+			//------------------------------------------------------------------------- 
+	
+			$this->view('templates/header_a', $data);
+			$this->view('reports/rcost', $data);
+			$this->view('templates/footer_a');
+		}else{
+            $this->view('templates/401');
+        }
+	}
+
+	public function rcostview($strdate, $enddate, $whs){
+		$check = $this->model('Home_model')->checkUsermenu('reports/rcost','Read');
+        if ($check){
+			$data['title']    = 'Report Cost';
+			$data['menu']     = 'Report Cost';
+			// Wajib di semua route ke view--------------------------------------------
+			$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
+			$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
+			//------------------------------------------------------------------------- 
+			
+			$data['strdate'] = $strdate;
+			$data['enddate'] = $enddate;
+			$data['whs']     = $whs;
+
+			$this->view('templates/header_a', $data);
+			$this->view('reports/rcostview', $data);
+			$this->view('templates/footer_a');
+		}else{
+            $this->view('templates/401');
+        }
+	}
+
+	public function rcostheader($strdate, $enddate){
+		$data['data'] = $this->model('Laporan_model')->getHeaderServiceCost($strdate, $enddate);
+		echo json_encode($data);
+	}
+
+	public function rcostdetail($servicenum){
+		$data = $this->model('Laporan_model')->getServiceCostItem($servicenum);
+		echo json_encode($data);
+	}
+
+	public function rservicedetail($servicenum){
+		$data = $this->model('Laporan_model')->getDetailService($servicenum);
+		echo json_encode($data);
+	}
+
     public function stock(){
 		$check = $this->model('Home_model')->checkUsermenu('reports/stock','Read');
         if ($check){
@@ -173,18 +278,18 @@ class Reports extends Controller{
         }        
 	}
 
-	public function stockview($material = null,$warehouse = null){
+	public function stockview($material = null,$warehouse = null, $zerostock){
 		$check = $this->model('Home_model')->checkUsermenu('reports/stock','Read');
         if ($check){
-			$data['title']    = 'Laporan Stok Barang';
-			$data['menu']     = 'Laporan Stok Barang';
+			$data['title']    = 'Report Material Stock';
+			$data['menu']     = 'Report Material Stock';
 			
 			// Wajib di semua route ke view--------------------------------------------
 			$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
 			$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
 			//-------------------------------------------------------------------------  
 	
-			$data['stock'] = $this->model('Laporan_model')->getStock($material,$warehouse);   
+			$data['stock'] = $this->model('Laporan_model')->getStock($material,$warehouse,$zerostock);   
 			// echo json_encode($data['stock']);
 			$this->view('templates/header_a', $data);
 			$this->view('reports/rstockview', $data);
@@ -197,8 +302,8 @@ class Reports extends Controller{
 	public function allstockview(){
 		$check = $this->model('Home_model')->checkUsermenu('reports/allstockview','Read');
         if ($check){
-			$data['title']    = 'Laporan Stok Material';
-			$data['menu']     = 'Laporan Stok Material';
+			$data['title']    = 'Report Material Stock';
+			$data['menu']     = 'Report Material Stock';
 			
 			// Wajib di semua route ke view--------------------------------------------
 			$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
@@ -209,6 +314,48 @@ class Reports extends Controller{
 			// echo json_encode($data['stock']);
 			$this->view('templates/header_a', $data);
 			$this->view('reports/rtotalstock', $data);
+			$this->view('templates/footer_a');
+		}else{
+            $this->view('templates/401');
+        }
+	}
+
+	public function batchstock(){
+		$check = $this->model('Home_model')->checkUsermenu('reports/batchstock','Read');
+        if ($check){
+			$data['title']    = 'Report Batch Stock';
+			$data['menu']     = 'Report Batch Stock';
+			
+			// Wajib di semua route ke view--------------------------------------------
+			$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
+			$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
+			//-------------------------------------------------------------------------  
+			
+			$data['whs'] = $this->model('Warehouse_model')->getWarehouseByAuth();   
+
+			$this->view('templates/header_a', $data);
+			$this->view('reports/rbatchstock', $data);
+			$this->view('templates/footer_a');
+		}else{
+            $this->view('templates/401');
+        }
+	}
+
+	public function batchstockview($material = null,$warehouse = null){
+		$check = $this->model('Home_model')->checkUsermenu('reports/batchstock','Read');
+        if ($check){
+			$data['title']    = 'Report Batch Stock';
+			$data['menu']     = 'Report Batch Stock';
+			
+			// Wajib di semua route ke view--------------------------------------------
+			$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
+			$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
+			//-------------------------------------------------------------------------  
+	
+			$data['stock'] = $this->model('Laporan_model')->getBatchStock($material,$warehouse);   
+			// echo json_encode($data['stock']);
+			$this->view('templates/header_a', $data);
+			$this->view('reports/rbatchstockview', $data);
 			$this->view('templates/footer_a');
 		}else{
             $this->view('templates/401');
@@ -327,50 +474,53 @@ class Reports extends Controller{
         }  
 	}
 
-	public function wostracking(){
-		$check = $this->model('Home_model')->checkUsermenu('reports/wostracking','Read');
+	public function payment(){
+		$check = $this->model('Home_model')->checkUsermenu('reports/payment','Read');
         if ($check){
-			$data['title']    = 'Report Wos Tracking';
-			$data['menu']     = 'Report Wos Tracking';
-			
+			$data['title']    = 'Report Payment';
+			$data['menu']     = 'Report Payment';
 			// Wajib di semua route ke view--------------------------------------------
 			$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
 			$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
 			//------------------------------------------------------------------------- 
 	
 			$this->view('templates/header_a', $data);
-			$this->view('reports/wostracking', $data);
+			$this->view('reports/rpayment', $data);
 			$this->view('templates/footer_a');
 		}else{
             $this->view('templates/401');
-        } 
+        }
 	}
 
-	public function wostrackingview($strdate, $enddate){
-		$check = $this->model('Home_model')->checkUsermenu('reports/wostracking','Read');
+	public function paymentview($strdate, $enddate){
+		$check = $this->model('Home_model')->checkUsermenu('reports/payment','Read');
         if ($check){
-			$data['title']    = 'Report Wos Tracking';
-			$data['menu']     = 'Report Wos Tracking';
-			
+			$data['title']    = 'Report Payment';
+			$data['menu']     = 'Report Payment';
 			// Wajib di semua route ke view--------------------------------------------
 			$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
 			$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
 			//------------------------------------------------------------------------- 
 
+			// $data['ivdata']   = $this->model('Laporan_model')->getHeaderInvoice($strdate, $enddate);
 			$data['strdate'] = $strdate;
 			$data['enddate'] = $enddate;
-			$data['wosdata'] = $this->model('Laporan_model')->getWosData($strdate, $enddate);
 	
 			$this->view('templates/header_a', $data);
-			$this->view('reports/wostrackingview', $data);
+			$this->view('reports/rpaymentview', $data);
 			$this->view('templates/footer_a');
 		}else{
             $this->view('templates/401');
-        } 
+        }
 	}
 
-	public function getwostracking($wosid,$bomid){
-		$data = $this->model('Laporan_model')->getWosTracking($wosid,$bomid);
+	public function rpaymentheader($strdate, $enddate){
+		$data['data'] = $this->model('Laporan_model')->getHeaderInvoice($strdate, $enddate);
+		echo json_encode($data);
+	}
+
+	public function rpaymentdetail($ivnum){
+		$data = $this->model('Laporan_model')->getDetailInvoice($ivnum);
 		echo json_encode($data);
 	}
 

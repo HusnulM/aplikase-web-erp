@@ -7,7 +7,7 @@
     <title><?= $data['title']; ?></title>
     <!-- Favicon-->
     <!-- <link rel="icon" href="../../favicon.ico" type="image/x-icon"> -->
-    <link rel="icon" type="image/png" href="https://awsi.co.id/sitepad-data/uploads//2020/05/cropped-logo-fix-awsi-transparent-192x192.png" />
+    <link rel="icon" type="image/png" href="<?= BASEURL; ?>/images/logo.png" />
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
