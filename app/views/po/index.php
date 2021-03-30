@@ -23,12 +23,12 @@
                         </div>
                         <div class="body">
                             <div class="table-responsive">
+                                <!-- <table id="polist"></table> -->
                                 <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                     <thead>
                                         <tr>
                                             <th>No</th>
                                             <th>No. PO</th>
-                                            <th>Type PO</th>
                                             <th>Tanggal Order</th>
                                             <th>Vendor</th>
                                             <th>Keterangan</th>
@@ -43,13 +43,6 @@
                                             <tr>
                                                 <td><?= $no; ?></td>
                                                 <td><?= $podata['ponum']; ?></td>
-                                                <td>
-                                                    <?php if($podata['potype'] === "PO01") : ?>
-                                                        PO Stock
-                                                    <?php else: ?>
-                                                        PO Lokal
-                                                    <?php endif; ?>
-                                                </td>
                                                 <td><?= $podata['podat']; ?></td>
                                                 <td><?= $podata['namavendor']; ?></td>
                                                 <td><?= $podata['note']; ?></td>

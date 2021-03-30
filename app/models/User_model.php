@@ -42,8 +42,8 @@ class User_model{
 				$data['jabatan'] = "9";
 			}
 
-			$query = "INSERT INTO t_user (username, password, nama, userlevel, department, jabatan, reffid, createdby, createdon) 
-					  VALUES(:username, :password, :nama, :userlevel, :department, :jabatan, :reffid, :createdby, :createdon)";
+			$query = "INSERT INTO t_user (username, password, nama, userlevel, department, jabatan, reffid, cust_id, createdby, createdon) 
+					  VALUES(:username, :password, :nama, :userlevel, :department, :jabatan, :reffid, :cust_id, :createdby, :createdon)";
 			$this->db->query($query);
 			$this->db->bind('username',    $data['username']);
 			$this->db->bind('password',    $password);
@@ -52,6 +52,7 @@ class User_model{
 			$this->db->bind('department',  $data['department']);		
 			$this->db->bind('jabatan',     $data['jabatan']);
 			$this->db->bind('reffid',      $data['reffid']);
+			$this->db->bind('cust_id',     $data['customer']);
 			$this->db->bind('createdby',   $_SESSION['usr']['user']);
 			$this->db->bind('createdon',   $currentDate);			
 			$this->db->execute();
@@ -114,7 +115,7 @@ class User_model{
 			$password = password_hash($data['password'], PASSWORD_BCRYPT, $options);
 		}
 
-		$this->db->query('UPDATE t_user SET password=:password, nama=:nama, userlevel=:userlevel, department=:department, jabatan=:jabatan, reffid=:reffid WHERE username=:username');
+		$this->db->query('UPDATE t_user SET password=:password, nama=:nama, userlevel=:userlevel, department=:department, jabatan=:jabatan, reffid=:reffid, cust_id=:cust_id WHERE username=:username');
 		$this->db->bind('username',   $data['username']);
 		$this->db->bind('password',   $password);
 		$this->db->bind('nama',       $data['nama']);
@@ -122,6 +123,7 @@ class User_model{
 		$this->db->bind('department', $data['department']);
 		$this->db->bind('jabatan',    $data['jabatan']);
 		$this->db->bind('reffid',     $data['reffid']);
+		$this->db->bind('cust_id',     $data['customer']);
 		$this->db->execute();
 
 		return $this->db->rowCount();

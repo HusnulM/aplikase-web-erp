@@ -47,6 +47,7 @@ class User extends Controller{
 			$data['setting']    = $this->model('Setting_model')->getgensetting();
 			$data['department'] = $this->model('Department_model')->getList();
 			$data['jabatan']    = $this->model('Jabatan_model')->getList();
+			$data['cust']       = $this->model('Customer_model')->customerList();
 	
 			$this->view('templates/header_a', $data);
 			$this->view('user/create', $data);
@@ -145,6 +146,8 @@ class User extends Controller{
 			$data['user']       = $this->model('User_model')->getUserbyid($username);
 			$data['department'] = $this->model('Department_model')->getList();
 			$data['jabatan']    = $this->model('Jabatan_model')->getList();
+			$data['cust']       = $this->model('Customer_model')->customerList();
+			$data['_cust']      = $this->model('Customer_model')->getCustomerById($data['user']['cust_id']);
 			
 			// echo json_encode($data['user']);
 			$this->view('templates/header_a', $data);

@@ -35,7 +35,7 @@
              //header AWSI-F-PUR-01-04
              $this->Cell(5,4,'',0,1);
              $this->SetFont("Arial", "", 8);
-             $this->SetX($left); $this->Cell(0, 5, 'FORM-PO-V1', 0, 1,'R');
+             $this->SetX($left); $this->Cell(0, 5, 'AWSI-F-PUR-01-04', 0, 1,'R');
              $this->Ln(20);
             $this->Cell(10,7,'',0,1);
             $this->SetFont("Arial", "B", 16);
@@ -107,7 +107,6 @@
              $tax        = 0;
              $taxvalue   = 0;
              $totaltax   = 0;
-             $totalprice = 0;
 
              $this->SetFont('Arial','',8);
              $this->SetWidths(array(25,100,200,60,35,50,70,50,25,60,90));
@@ -133,26 +132,20 @@
                  ));
 
                  $totalharga = $totalharga + ($baris['price']*$baris['quantity']);
-                 $discount   = $discount + $baris['discount'];
-                 $totalprice = (($baris['price']*$baris['quantity'])-$baris['discount']);
-                 $taxvalue   = $taxvalue + ($totalprice*($baris['ppn']/100));
              }
-            // $ppn = 0;
-            // $ppn = $totalharga*($this->hdata['ppn']/100);
+            $ppn = 0;
+            $ppn = $totalharga*($this->hdata['ppn']/100);
 
             $this->SetFont('Arial','B',8);
             $this->Cell(440,15,'JUMLAH','L',0,'R');
             $this->Cell(30,15,'Rp.','',0,'R');
             $this->Cell(70,15,number_format($totalharga,0,",","."),'R',1,'R');
-            $this->Cell(440,15,'DISCOUNT','L',0,'R');
-            $this->Cell(30,15,'Rp.','',0,'R');
-            $this->Cell(70,15,number_format($discount,0,",","."),'R',1,'R');
             $this->Cell(440,15,'PPN','L',0,'R');
             $this->Cell(30,15,'Rp.','',0,'R');
-            $this->Cell(70,15,number_format($taxvalue,0,",","."),'R',1,'R');
+            $this->Cell(70,15,number_format($ppn,0,",","."),'R',1,'R');
             $this->Cell(440,15,'TOTAL','L,B',0,'R');
             $this->Cell(30,15,'Rp.','B',0,'R');
-            $this->Cell(70,15,number_format($totalharga+$taxvalue-$discount,0,",","."),'R,B',1,'R');
+            $this->Cell(70,15,number_format($totalharga+$ppn,0,",","."),'R,B',1,'R');
 
             $check = "";
             $checkbox_size = 5; 
@@ -161,62 +154,61 @@
             $ori_font_style = '';
 
             // Note
-            // $this->Cell(540,15,'NOTE: ABOVE PURCHASED PRODUCT (S) REQUIRE (S) FOLLOWING DOCUMENTS :','L,R',1,'C');
-            // $this->SetFont('ZapfDingbats','', 8);
-            // $this->Cell(15,15, chr(111), 'L', 0, 'R');
-            // $this->SetFont('Arial','B',8);
-            // $this->Cell(60,15, "TEST REPORT", '', 0, 'R');
-            // $this->SetFont('ZapfDingbats','', 8);
-            // $this->Cell(200,15, chr(111), '', 0, 'R');
-            // $this->SetFont('Arial','B',8);
-            // $this->Cell(265,15, "ENVIRONMENTAL CERTIFICATE", 'R', 1, 'L');
+            $this->Cell(540,15,'NOTE: ABOVE PURCHASED PRODUCT (S) REQUIRE (S) FOLLOWING DOCUMENTS :','L,R',1,'C');
+            $this->SetFont('ZapfDingbats','', 8);
+            $this->Cell(15,15, chr(111), 'L', 0, 'R');
+            $this->SetFont('Arial','B',8);
+            $this->Cell(60,15, "TEST REPORT", '', 0, 'R');
+            $this->SetFont('ZapfDingbats','', 8);
+            $this->Cell(200,15, chr(111), '', 0, 'R');
+            $this->SetFont('Arial','B',8);
+            $this->Cell(265,15, "ENVIRONMENTAL CERTIFICATE", 'R', 1, 'L');
             
-            // $this->SetFont('ZapfDingbats','', 8);
-            // $this->Cell(15,15, chr(111), 'L', 0, 'R');
-            // $this->SetFont('Arial','B',8);
-            // $this->Cell(60,15, "MATERIAL SAFETY DATA SHEET (MSDS)", '', 0, 'L');
-            // $this->SetFont('ZapfDingbats','', 8);
-            // $this->Cell(200,15, chr(111), '', 0, 'R');
-            // $this->SetFont('Arial','B',8);
-            // $this->Cell(265,15, "QUALITY SYSTEM MANAGEMENT CERTIFICATE", 'R', 1, 'L');
+            $this->SetFont('ZapfDingbats','', 8);
+            $this->Cell(15,15, chr(111), 'L', 0, 'R');
+            $this->SetFont('Arial','B',8);
+            $this->Cell(60,15, "MATERIAL SAFETY DATA SHEET (MSDS)", '', 0, 'L');
+            $this->SetFont('ZapfDingbats','', 8);
+            $this->Cell(200,15, chr(111), '', 0, 'R');
+            $this->SetFont('Arial','B',8);
+            $this->Cell(265,15, "QUALITY SYSTEM MANAGEMENT CERTIFICATE", 'R', 1, 'L');
             
             
-            // $this->SetFont('ZapfDingbats','', 8);
-            // $this->Cell(15,15, chr(111), 'L,B', 0, 'R');
-            // $this->SetFont('Arial','B',8);
-            // $this->Cell(60,15, "PRODUCT CERTIFICATE OF COMPLIANCE", 'B', 0, 'L');
-            // $this->SetFont('ZapfDingbats','', 8);
-            // $this->Cell(200,15, chr(111), 'B', 0, 'R');
-            // $this->SetFont('Arial','B',8);
-            // $this->Cell(265,15, "RoHS", 'B,R', 1, 'L');
+            $this->SetFont('ZapfDingbats','', 8);
+            $this->Cell(15,15, chr(111), 'L,B', 0, 'R');
+            $this->SetFont('Arial','B',8);
+            $this->Cell(60,15, "PRODUCT CERTIFICATE OF COMPLIANCE", 'B', 0, 'L');
+            $this->SetFont('ZapfDingbats','', 8);
+            $this->Cell(200,15, chr(111), 'B', 0, 'R');
+            $this->SetFont('Arial','B',8);
+            $this->Cell(265,15, "RoHS", 'B,R', 1, 'L');
             
-            // $this->Ln(5);
-            // $this->SetFont('Arial','B',10);
-            // $this->Cell(5,15,'','',0,'L');
-            // $this->Cell(15,15,'PRICE','',0,'L');
-            // $this->Cell(90,15,':','',0,'R');
-            // $this->Cell(150,15,$this->hdata['tf_price'],'',1,'L');
+            $this->Ln(5);
+            $this->SetFont('Arial','B',10);
+            $this->Cell(5,15,'','',0,'L');
+            $this->Cell(15,15,'PRICE','',0,'L');
+            $this->Cell(90,15,':','',0,'R');
+            $this->Cell(150,15,$this->hdata['tf_price'],'',1,'L');
 
-            // $this->Cell(5,15,'','',0,'L');
-            // $this->Cell(15,15,'DESTINATION','',0,'L');
-            // $this->Cell(90,15,':','',0,'R');
-            // $this->Cell(150,15,$this->hdata['tf_dest'],'',1,'L');
+            $this->Cell(5,15,'','',0,'L');
+            $this->Cell(15,15,'DESTINATION','',0,'L');
+            $this->Cell(90,15,':','',0,'R');
+            $this->Cell(150,15,$this->hdata['tf_dest'],'',1,'L');
 
-            // $this->Cell(5,15,'','',0,'L');
-            // $this->Cell(15,15,'SHIPMENT','',0,'L');
-            // $this->Cell(90,15,':','',0,'R');
-            // $this->Cell(150,15,$this->hdata['tf_shipment']. ", " . $this->hdata['tf_shipdate'],'',1,'L');
+            $this->Cell(5,15,'','',0,'L');
+            $this->Cell(15,15,'SHIPMENT','',0,'L');
+            $this->Cell(90,15,':','',0,'R');
+            $this->Cell(150,15,$this->hdata['tf_shipment']. ", " . $this->hdata['tf_shipdate'],'',1,'L');
 
-            // $this->Cell(5,15,'','',0,'L');
-            // $this->Cell(15,15,'PAYMENT','',0,'L');
-            // $this->Cell(90,15,':','',0,'R');
-            // $this->Cell(150,15,$this->hdata['tf_top'],'',1,'L');
+            $this->Cell(5,15,'','',0,'L');
+            $this->Cell(15,15,'PAYMENT','',0,'L');
+            $this->Cell(90,15,':','',0,'R');
+            $this->Cell(150,15,$this->hdata['tf_top'],'',1,'L');
 
-            // $this->Cell(5,15,'','',0,'L');
-            // $this->Cell(15,15,'PACKING','',0,'L');
-            // $this->Cell(90,15,':','',0,'R');
-            // $this->Cell(120,15,$this->hdata['tf_packing'],'',1,'L');
-            $this->Ln(20);
+            $this->Cell(5,15,'','',0,'L');
+            $this->Cell(15,15,'PACKING','',0,'L');
+            $this->Cell(90,15,':','',0,'R');
+            $this->Cell(120,15,$this->hdata['tf_packing'],'',1,'L');
             $this->SetFont('Arial','B',8);
             $this->Cell(5,15,'','',0,'L');
             $this->Cell(15,15,'','',0,'L');
@@ -225,11 +217,11 @@
             $this->Cell(120,15,'APPROVED BY,','',1,'C');
 
             $this->Ln(80);
-            $this->Cell(300,15,'','',0,'C');
-            $this->SetLineWidth(1);  
-            $this->Cell(140,15,'DIREKTUR','T',0,'C');
-            // $this->Cell(70,15,'','',0,'C');
-            // $this->Cell(120,15,'MANAGER PURCHASING','T',1,'C');
+            $this->Cell(270,15,'','',0,'C');
+            $this->SetLineWidth(2);  
+            $this->Cell(80,15,'DIRECTOR','T',0,'C');
+            $this->Cell(70,15,'','',0,'C');
+            $this->Cell(120,15,'PURCHASING MANAGER','T',1,'C');
             // $this->Cell(270,15,'Menyetujui',1,1,'C');
             // $this->Cell(270,50,'',1,0,'C');
             // $this->Cell(270,50,'',1,1,'C');

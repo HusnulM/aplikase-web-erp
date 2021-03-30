@@ -10,9 +10,7 @@
 
     // echo json_encode($prdata);
 ?>
-
-<div class="table-responsive">
-<table class="table table-bordered table-hover" Width='100%'>
+<table class="table table-bordered table-hover" Width='800'>
 <tr>
     <!-- <th> Order No. </th> -->
     <th> Item </th>
@@ -21,8 +19,6 @@
     <th style="text-align:right;"> Quantity </th>
     <th> Unit </th>
     <th> Remark </th>
-    <th> Status</th>
-    <th> Tanggal Approve/Reject</th>
 </tr>
 <?php foreach ($prdata as $data) : ?>
 <tr>
@@ -48,24 +44,6 @@
     <td>
         <?= $data['remark']; ?>
     </td>
-    <?php if($data['approvestat'] === '1') : ?>
-        <td style="background-color:yellow;color:black;font-weight: bold;">
-            Open
-        </td>
-    <?php elseif($data['approvestat'] === '5') : ?>
-        <td style="background-color:red;color:white;font-weight: bold;">
-            Rejected by <?= $data['approveby']; ?>
-        </td>             
-    <?php else : ?>
-        <td style="background-color:green;color:white;font-weight: bold;">
-            Approved by <?= $data['approveby']; ?>
-        </td> 
-    <?php endif; ?>
-
-    <td>
-        <?= $data['approvedate']; ?>
-    </td>
 </tr>
 <?php endforeach; ?>
 </table>
-</div>

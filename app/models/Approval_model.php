@@ -10,7 +10,7 @@ class Approval_model{
     }
 
     public function getmappingapproval(){
-        $this->db->query("SELECT * FROM t_approval ORDER BY object, creator, level");
+        $this->db->query("SELECT * FROM t_approval");
         return $this->db->resultSet();
     }
 
@@ -25,12 +25,11 @@ class Approval_model{
     }
 
     public function  save($data){
-        $query = "INSERT INTO t_approval (object,level,creator,approval) 
-                      VALUES(:object,:level,:creator,:approval)";
+        $query = "INSERT INTO t_approval (object,creator,approval) 
+                      VALUES(:object,:creator,:approval)";
         $this->db->query($query);
         
         $this->db->bind('object',   $data['object']);
-        $this->db->bind('level',   $data['level']);
         $this->db->bind('creator',  $data['creator']);
         $this->db->bind('approval', $data['approval']);
         $this->db->execute();

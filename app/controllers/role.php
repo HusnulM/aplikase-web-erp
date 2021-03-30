@@ -5,8 +5,8 @@ class Role extends Controller {
     public function index(){
         $check = $this->model('Home_model')->checkUsermenu('role','Read');
         if ($check){
-            $data['title'] = 'Role';
-            $data['menu']  = 'Role';
+            $data['title'] = 'role';
+            $data['menu']  = 'role';
 
             // Wajib di semua route ke view--------------------------------------------
             $data['setting']  = $this->model('Setting_model')->getgensetting();    //--

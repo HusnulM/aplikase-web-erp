@@ -388,51 +388,49 @@
 
             $('#btn-sel-ref').on('click', function(){
                 if($('#movement').val() === "GR01"){
-                    loaddatapotogr();
                     $('#referenceGR01Modal').modal('show');
                 }else if($('#movement').val() === "TF01"){
-                    loaddatareservasitotf();
                     $('#referenceTF01Modal').modal('show');
                 }
             })
 
             function readpoitem(ponum){
                 $.ajax({
-                    url: base_url+'/movement/getopenpoitem/data?ponum='+ponum,
+                    url: base_url+'/movement/checkporelstat/data?ponum='+ponum,
                     type: 'GET',
                     dataType: 'json',
                     cache:false,
                     success: function(result){
-                        // console.log(result)
-                        if(result.length > 0){
-                            append_data(result);
-                            $('.hideComponent').show();
-                        }else{
-                            $('#txt-message').html('No PO Items!');
+                        console.log(result)
+                        if(result.approvestat == "1" || result.approvestat == "3"){
+                            $('#txt-message').html('PO Not Approved yet or Rejected!');
                             $('.txt-message').show();
+                        }else if(result.approvestat == "2"){
+                            $.ajax({
+                                url: base_url+'/po/getopenpoitem/data?ponum='+ponum,
+                                type: 'GET',
+                                dataType: 'json',
+                                cache:false,
+                                success: function(result){
+                                    console.log(result)
+                                    if(result.length > 0){
+                                        append_data(result);
+                                        $('.hideComponent').show();
+                                    }else{
+                                        $('#txt-message').html('No PO Items!');
+                                        $('.txt-message').show();
+                                    }
+                                }
+                            }); 
                         }
                     }
                 }); 
-                // $.ajax({
-                //     url: base_url+'/movement/checkporelstat/data?ponum='+ponum,
-                //     type: 'GET',
-                //     dataType: 'json',
-                //     cache:false,
-                //     success: function(result){
-                //         console.log(result)
-                //         if(result.approvestat == "1" || result.approvestat == "3"){
-                //             $('#txt-message').html('PO Not Approved yet or Rejected!');
-                //             $('.txt-message').show();
-                //         }else if(result.approvestat == "2"){
-                //         }
-                //     }
-                // }); 
                 
             }
 
             function readreservationitem(rsnum){
                 $.ajax({
-                    url: base_url+'/movement/reservationitem/'+rsnum,
+                    url: base_url+'/reservation/reservationitem/'+rsnum,
                     type: 'GET',
                     dataType: 'json',
                     cache:false,
@@ -485,7 +483,6 @@
                             <td> 
                                 <input type="text" name="itm_matdesc[]" counter="`+count+`" id="matdesc`+count+`" class="form-control" style="width:300px;" value="`+ _data[i].matdesc +`" readonly/>
                             </td>
-                            
                             <td> 
                                 <input type="text" name="itm_qty[]" counter="`+count+`" id="inputqty`+count+`"  class="form-control inputNumber inputQty" style="width:100px; text-align:right;" required="true" value="`+ formatRupiah(selqty,'') +`" />
                             </td>
@@ -528,7 +525,6 @@
                         };
                         $("#whs"+count).html(listItems);
                         $('#_itm_whs'+count).val($('#whs'+count).val())
-                        
                         
                     }else if($('#movement').val() === "TF01"){
                         var listItems;
@@ -654,7 +650,6 @@
                             <td> 
                                 <input type="text" name="itm_matdesc[]" counter="`+count+`" id="matdesc`+count+`" class="form-control" style="width:300px;" value="`+ selected_data.matdesc +`" readonly/>
                             </td>
-                            
                             <td> 
                                 <input type="text" name="itm_qty[]" counter="`+count+`" id="inputqty`+count+`"  class="form-control inputNumber" style="width:100px; text-align:right;" required="true" />
                             </td>
@@ -790,7 +785,7 @@
             }
 
             // listreservasitotf
-            // loaddatapotogr();
+            loaddatapotogr();
             function loaddatapotogr(){
                 $('#list-po-togr').dataTable({
                     "ajax": base_url+'/movement/listpotogr',
@@ -816,7 +811,7 @@
                 });
             }
 
-            // loaddatareservasitotf();
+            loaddatareservasitotf();
             function loaddatareservasitotf(){
                 $('#list-reservasi-tf').dataTable({
                     "ajax": base_url+'/movement/listreservasitotf',

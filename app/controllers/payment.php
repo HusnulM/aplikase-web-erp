@@ -13,65 +13,32 @@ class Payment extends Controller{
     public function index(){
 		$data['title']    = 'Payment';
 		$data['menu']     = 'Payment';
-		
-		// Wajib di semua route ke view--------------------------------------------
-		$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
-		$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
-		//-------------------------------------------------------------------------
-
-		$data['grdata']   = $this->model('Invoice_model')->listpotoinvoice();
+		$data['menu-dsc'] = '';
+		$data['setting']  = $this->model('Setting_model')->getgensetting();
+		$data['grdata']   = $this->model('Invoice_model')->listgrtoinvoice();
 
 		$this->view('templates/header_a', $data);
 		$this->view('invoice/index', $data);
 		$this->view('templates/footer_a');
 	}
 	
-	public function process($ponum,$vendor){
+	public function process($grnum, $year, $vendor){
 		$data['title']    = 'Payment Process';
 		$data['menu']     = 'Payment Process';
-		
-		// Wajib di semua route ke view--------------------------------------------
-		$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
-		$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
-		//-------------------------------------------------------------------------
-
-		$data['pohead']   = $this->model('Invoice_model')->getPoHeader($ponum);
+		$data['menu-dsc'] = '';
+		$data['setting']  = $this->model('Setting_model')->getgensetting();
+		$data['grdata']   = $this->model('Invoice_model')->grdata($grnum, $year);
+		$data['grnum']    = $grnum;
+		$data['year']     = $year;
 		$data['vendor']   = $this->model('Vendor_model')->getVendorByKode($vendor);
-		$data['podata']   = $this->model('Invoice_model')->getpodata($ponum);
+		$data['grheader'] = $this->model('Invoice_model')->getGrHeader($grnum, $year);
 		$data['banklist'] = $this->model('Bank_model')->getBankAccount();
-		$data['ponum']	  = $ponum;
-
-		if(sizeof($data['podata']) > 0){
-			$this->view('templates/header_a', $data);
-			$this->view('invoice/process', $data);
-			$this->view('templates/footer_a');
-		}else{
-			Flasher::setMessage('PO', $ponum . ' already process','danger');
-			header('location:'. BASEURL . '/payment');
-		}
-	}
-
-	public function approvepayment($ivnum, $ponum, $vendor){
-		$data['title']    = 'Approve Payment';
-		$data['menu']     = 'Approve Payment';
-		
-		// Wajib di semua route ke view--------------------------------------------
-		$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
-		$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
-		//-------------------------------------------------------------------------
-
-		$data['podata']   = $this->model('Invoice_model')->getpodata($ponum);
-		$data['vendor']   = $this->model('Vendor_model')->getVendorByKode($vendor);
-		$data['paymenthead'] = $this->model('Invoice_model')->paymentheader($ivnum);
-		$data['ivnum']    = $ivnum;
-		$data['ponum']    = $ponum;
+		$data['file']     = $this->model('Invoice_model')->getFile($grnum);
 
 		$this->view('templates/header_a', $data);
-		$this->view('invoice/approvepayment', $data);
+		$this->view('invoice/process', $data);
 		$this->view('templates/footer_a');
 	}
-
-	
 
 	public function grdata($grnum, $year){
 		$data  = $this->model('Invoice_model')->grdata($grnum, $year);
@@ -96,17 +63,5 @@ class Payment extends Controller{
 			echo json_encode($result);
 			exit;
 		}
-	}
-
-	public function _approvepayment($ponum,$ivnum){
-		if( $this->model('Invoice_model')->_approvepayment($ponum, $ivnum) > 0 ) {
-			$result = ["msg"=>"sukses", $ponum];
-			echo json_encode('Approved');
-			exit;			
-		}else{
-			$result = ["msg"=>"error"];
-			echo json_encode($result);
-			exit;	
-		}		
 	}
 }

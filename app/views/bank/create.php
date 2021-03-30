@@ -11,7 +11,7 @@
                             <form action="<?= BASEURL; ?>/bank/save" method="POST">
                                 <div class="row clearfix">
                                     <div class="col-sm-12">
-                                        <select class="form-control show-tick" name="bankey" data-live-search="true">
+                                        <select class="form-control show-tick" name="bankey">
                                             <option value="">Bank ID</option>
                                             <?php foreach($data['banklist'] as $bank) : ?>
                                                 <option value="<?= $bank['bankey']; ?>"><?= $bank['bankey']; ?> - <?= $bank['deskripsi']; ?></option>
@@ -37,14 +37,6 @@
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <div class="form-line">
-                                                <label for="npwp">NPWP</label>
-                                                <input type="text" name="npwp" id="npwp" class="form-control" required="true">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <div class="col-sm-12">
-                                        <div class="form-group">
-                                            <div class="form-line">
                                                 <label for="balance">Opening Balance</label>
                                                 <input type="text" name="balance" id="balance" class="form-control" required="true">
                                             </div>
@@ -57,7 +49,7 @@
                                                 <option value="<?= $user['username']; ?>"><?= $user['username']; ?></option>
                                             <?php endforeach; ?>
                                         </select>
-                                    </div> -->
+                                    </div>
                                 </div>
                                 <div class="row clearfix">                            
                                     <div class="col-sm-6">

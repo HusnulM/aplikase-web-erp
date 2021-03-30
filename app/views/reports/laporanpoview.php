@@ -1,4 +1,4 @@
-    <section class="content">
+<section class="content">
         <div class="container-fluid">
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -53,7 +53,7 @@
                     height:400,
                     singleSelect:true,
                     resizable:true,
-                    fitColumns:true,
+                    fitColumns:false,
                     enableCellEditing:true,
                     pagination:true,
                     pageList:[10,20,50,100,150,200],
@@ -64,24 +64,24 @@
                         {field:'note',title:'Note',width:150,editor:'text',nowrap:true},
                         {field:'namavendor',title:'Vendor',width:200,editor:'text',nowrap:true},
                         {field:'createdby',title:'Created By',width:200,editor:'text',nowrap:true},
-                        {field:'podat',title:'PO Date',width:100,editor:'text'}
-                        // {field:'postat',title:'Approval Status',width:100,editor:'text',
-                        //     styler: function(value,row,index){
-                        //         if (row.approvestat == "1") {
-                        //             return 'background-color:yellow;color:black;font-weight: bold;';
-                        //         }else if (row.approvestat == "2") {
-                        //             return 'background-color:green;color:white;font-weight: bold;';
-                        //         }else if (row.approvestat == "3") {
-                        //             return 'background-color:red;color:white;font-weight: bold;';
-                        //         }else if (row.approvestat == "4") {
-                        //             return 'background-color:#c57530;color:white;font-weight: bold;';
-                        //         }else if (row.approvestat == "5") {
-                        //             return 'background-color:#c57530;color:white;font-weight: bold;';
-                        //         }else{
-                        //             return 'background-color:yellow;color:black;font-weight: bold;';
-                        //         }
-                        //     }
-                        // }
+                        {field:'podat',title:'PO Date',width:100,editor:'text'},
+                        {field:'postat',title:'Approval Status',width:100,editor:'text',
+                            styler: function(value,row,index){
+                                if (row.approvestat == "1") {
+                                    return 'background-color:yellow;color:black;font-weight: bold;';
+                                }else if (row.approvestat == "2") {
+                                    return 'background-color:green;color:white;font-weight: bold;';
+                                }else if (row.approvestat == "3") {
+                                    return 'background-color:red;color:white;font-weight: bold;';
+                                }else if (row.approvestat == "4") {
+                                    return 'background-color:#c57530;color:white;font-weight: bold;';
+                                }else if (row.approvestat == "5") {
+                                    return 'background-color:#c57530;color:white;font-weight: bold;';
+                                }else{
+                                    return 'background-color:yellow;color:black;font-weight: bold;';
+                                }
+                            }
+                        }
                     ]],				
             });
 

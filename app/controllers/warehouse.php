@@ -2,6 +2,13 @@
 
 class Warehouse extends Controller {
 
+    public function __construct(){
+		if( isset($_SESSION['usr']) ){
+		}else{
+			header('location:'. BASEURL);
+		}
+    }
+
     public function index(){
         $check = $this->model('Home_model')->checkUsermenu('warehouse','Read');
         if ($check){

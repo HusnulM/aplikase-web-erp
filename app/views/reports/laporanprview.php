@@ -30,7 +30,6 @@
 
         var strdate = "<?= $data['strdate']; ?>";
         var enddate = "<?= $data['enddate']; ?>";
-        var status  = "<?= $data['status']; ?>";
 
         $('#prlist').datagrid({
             view: detailview,
@@ -57,30 +56,30 @@
                     pagination:true,
                     pageList:[10,20,50,100,150,200],
                     idField:'prnum',
-                    url:base_url+'/reports/laporanprdata/'+strdate+'/'+enddate+'/'+status, 
+                    url:base_url+'/reports/laporanprdata/'+strdate+'/'+enddate, 
                     columns:[[
                         {field:'prnum',title:'PR Num',width:90},
                         {field:'note',title:'Note',width:150,editor:'text',nowrap:true},
                         {field:'createdby',title:'Created By',width:80,editor:'text'},
                         // {field:'createdon',title:'Created Date',width:80,editor:'text'},
                         {field:'prdate',title:'Required Date',width:100,editor:'text'},
-                        // {field:'status',title:'Aprooval Status',width:100,editor:'text',
-                        //     styler: function(value,row,index){
-                        //         if (row.approvestat == "1") {
-                        //             return 'background-color:yellow;color:black;font-weight: bold;';
-                        //         }else if (row.approvestat == "2") {
-                        //             return 'background-color:#3ea5ef;color:white;font-weight: bold;';
-                        //         }else if (row.approvestat == "3") {
-                        //             return 'background-color:red;color:white;font-weight: bold;';
-                        //         }else if (row.approvestat == "4") {
-                        //             return 'background-color:#c57530;color:white;font-weight: bold;';
-                        //         }else if (row.approvestat == "5") {
-                        //             return 'background-color:#c57530;color:white;font-weight: bold;';
-                        //         }else{
-                        //             return 'background-color:yellow;color:black;font-weight: bold;';
-                        //         }
-                        //     }
-                        // }
+                        {field:'status',title:'Aprooval Status',width:100,editor:'text',
+                            styler: function(value,row,index){
+                                if (row.approvestat == "1") {
+                                    return 'background-color:yellow;color:black;font-weight: bold;';
+                                }else if (row.approvestat == "2") {
+                                    return 'background-color:#3ea5ef;color:white;font-weight: bold;';
+                                }else if (row.approvestat == "3") {
+                                    return 'background-color:red;color:white;font-weight: bold;';
+                                }else if (row.approvestat == "4") {
+                                    return 'background-color:#c57530;color:white;font-weight: bold;';
+                                }else if (row.approvestat == "5") {
+                                    return 'background-color:#c57530;color:white;font-weight: bold;';
+                                }else{
+                                    return 'background-color:yellow;color:black;font-weight: bold;';
+                                }
+                            }
+                        }
                     ]],				
             });
 

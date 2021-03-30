@@ -78,11 +78,11 @@ class Pr extends Controller{
 
 			$data['prhead']   = $this->model('Pr_model')->getPRheader($prnum);
 			$data['pritem']   = $this->model('Pr_model')->getPRitem($prnum);
-			// $data['project']  = $this->model('Project_model')->projectList();
+			$data['project']  = $this->model('Project_model')->projectList();
 			$data['whs']      = $this->model('Warehouse_model')->getWarehouseByAuth();  
 			$data['_whs']     = $this->model('Warehouse_model')->getById($data['prhead']['warehouse']);
 			$data['prnum']    = $prnum;
-			// echo json_encode($data['prhead']);
+	
 			$this->view('templates/header_a', $data);
 			$this->view('pr/detail', $data);
 			$this->view('templates/footer_a');
@@ -133,14 +133,7 @@ class Pr extends Controller{
 	}
 
 	public function savepr(){
-		if($_POST['warehouse'] === "WH00"){
-			$nextNumb = $this->model('Pr_model')->getNextNumber('PR');
-		}elseif($_POST['warehouse'] === "WH01"){
-			$nextNumb = $this->model('Pr_model')->getNextNumber('PR2');
-		}elseif($_POST['warehouse'] === "WH02"){
-			$nextNumb = $this->model('Pr_model')->getNextNumber('PR3');
-		}
-
+		$nextNumb = $this->model('Pr_model')->getNextNumber('PR');
 		if( $this->model('Pr_model')->savepr($_POST, $nextNumb['nextnumb']) > 0 ) {
 			$result = ["msg"=>"sukses", $nextNumb];
 			echo json_encode($nextNumb['nextnumb']);

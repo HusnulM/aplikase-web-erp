@@ -22,18 +22,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- <div class="col-sm-12">
-                                        <div class="form-group">
-                                            <div class="form-line">
-                                                <label for="menuid">Menu</label>
-                                                <select class="form-control" name="menuid">
-                                                    <?php foreach($data['menus'] as $menu) : ?>
-                                                    <option value="<?= $menu['id']; ?>"><?= $menu['menu']; ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div> -->
                                 </div>
 
                                 <div class="card">
@@ -66,7 +54,7 @@
                                                     <button type="button" id="btn-dlg-add-item" class="btn bg-blue">
                                                         <i class="material-icons">playlist_add</i> <span>ADD MENU</span>
                                                     </button>
-                                                    <a href="<?= BASEURL; ?>/menurole" class="btn bg-red">
+                                                    <a href="<?= BASEURL; ?>/menu" class="btn bg-red">
                                                         <i class="material-icons">highlight_off</i> <span>CANCEL</span>
                                                     </a>
                                                     <button type="submit" class="btn bg-blue">

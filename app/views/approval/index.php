@@ -24,7 +24,6 @@
                                         <tr>
                                             <th style="width:50px;">No</th>
                                             <th>Object</th>
-                                            <th>Level</th>
                                             <th>Creator</th>
                                             <th>Approval</th>
                                             <th style="width:120px;"></th>
@@ -37,7 +36,6 @@
                                             <tr>
                                                 <td><?= $no; ?></td>
                                                 <td><?= $out['object']; ?></td>
-                                                <td><?= $out['level']; ?></td>
                                                 <td><?= $out['creator']; ?></td>
                                                 <td><?= $out['approval']; ?></td>
                                                 <td>

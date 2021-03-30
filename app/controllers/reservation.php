@@ -13,8 +13,7 @@ class Reservation extends Controller {
             $data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
             //-------------------------------------------------------------------------   
 
-            $data['whs']   = $this->model('Warehouse_model')->getWarehouseByAuth();
-            $data['whsto'] = $this->model('Reservation_model')->getWarehouseUtama();
+            $data['whs'] = $this->model('Warehouse_model')->getWarehouseByAuth();
 
             $this->view('templates/header_a', $data);
             $this->view('reservation/index', $data);

@@ -31,7 +31,12 @@ class Approvepo extends Controller{
         }  
     }
     
-    public function detail($ponum){
+    public function detail($params){
+
+		$url = parse_url($_SERVER['REQUEST_URI']);
+        $data = parse_str($url['query'], $params);
+		$ponum = $params['ponum'];
+
 		$check = $this->model('Home_model')->checkUsermenu('approvepo','Read');
         if ($check){
 			$data['title'] = 'Detail Purchase Request';
@@ -42,10 +47,8 @@ class Approvepo extends Controller{
             $data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
 			//-------------------------------------------------------------------------  
 
-			$data['pohead']   = $this->model('Approvepo_model')->getPOheader($ponum);
-			$data['poitem']   = $this->model('Approvepo_model')->getOpenPOItem($ponum);
-			$data['approvelevel'] = $this->model('Approvepo_model')->getApprovalLevel($_SESSION['usr']['user']);
-			$data['_whs']     = $this->model('Warehouse_model')->getById($data['pohead']['warehouse']);
+			$data['pohead']   = $this->model('Po_model')->getPOheader($ponum);
+			$data['poitem']   = $this->model('Po_model')->getPODetail($ponum);
 
 			$data['ponum'] = $ponum;
 	
@@ -57,7 +60,11 @@ class Approvepo extends Controller{
 		}
     }
     
-    public function approve($ponum){
+    public function approve($params){
+		$url = parse_url($_SERVER['REQUEST_URI']);
+        $data = parse_str($url['query'], $params);
+		$ponum = $params['ponum'];
+
         if( $this->model('Approvepo_model')->approvepo($ponum) > 0 ) {
 			Flasher::setMessage('PO', $ponum . ' Approved' ,'success');
 			header('location: '. BASEURL . '/approvepo');
@@ -80,44 +87,4 @@ class Approvepo extends Controller{
 			exit;	
 		}
     }
-
-	public function approvepoitem($ponum){
-		if( $this->model('Approvepo_model')->approvepoitem($ponum,$_POST['poitem']) > 0 ) {
-			$return = array(
-				"msgtype" => "1",
-				"message" => "PO Approved",
-				"docnum"  => $ponum
-			);
-			echo json_encode($return);
-			exit;			
-		}else{
-			$return = array(
-				"msgtype" => "2",
-				"message" => "Failed",
-				"docnum"  => ""
-			);
-			echo json_encode($return);
-			exit;	
-		}
-	}
-
-	public function rejectpritem($ponum){
-		if( $this->model('Approvepo_model')->rejectpoitem($ponum, $_POST['poitem']) > 0 ) {
-			$return = array(
-				"msgtype" => "1",
-				"message" => "PO Item Rejected",
-				"docnum"  => $ponum
-			);
-			echo json_encode($return);
-			exit;			
-		}else{
-			$return = array(
-				"msgtype" => "2",
-				"message" => "Failed",
-				"docnum"  => ""
-			);
-			echo json_encode($return);
-			exit;	
-		}
-	}
 }

@@ -8,4 +8,4 @@ require_once 'core/Auth.php';
 require_once 'config/config.php';
 require_once 'PHPMailer/PHPMailerAutoload.php';
 require_once 'core/third_party/PHPExcel.php';
-// require_once 'core/PHPivot.php';
+require_once 'core/PHPivot.php';

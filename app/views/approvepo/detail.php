@@ -1,4 +1,4 @@
-    <section class="content">
+<section class="content">
         <div class="container-fluid">
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -8,11 +8,12 @@
                             Display Purchase Order <?= $data['pohead']['ponum']; ?>
                             </h2> 
 
-                            <ul class="header-dropdown m-r--5">  
+                            <ul class="header-dropdown m-r--5">        
+                            <a href="<?= BASEURL; ?>/approvepo/approve/data?ponum=<?= $data['ponum']; ?>" id="btn-approve" class="btn btn-success waves-effect">Approve</a>  
 
-							<a href="<?= BASEURL; ?>/approvepo" class="btn bg-teal waves-effect">
-                                <i class="material-icons">backspace</i> <span>BACK</span>
-                            </a>
+                            <a href="<?= BASEURL; ?>/approvepo/reject/data?ponum<?= $data['ponum']; ?>" id="btn-approve" class="btn btn-danger waves-effect">Reject</a>  
+
+							<a href="<?= BASEURL; ?>/approvepo" class="btn btn-default waves-effect">Cancel</a>
 							</ul>
                         </div>
                         <div class="body">
@@ -23,55 +24,27 @@
                                         <div class="form-group">
                                             <div class="form-line">
                                                 <label for="vendor">Vendor</label>
-                                                <input type="text" name="vendor" id="vendor" class="form-control readOnly" placeholder="Vendor" value="<?= $data['pohead']['namavendor']; ?>" readonly>
+                                                <input type="text" name="vendor" id="vendor" class="form-control readOnly" placeholder="Vendor" value="<?= $data['pohead']['namavendor']; ?>">
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-                                        <div class="form-group">
-                                            <div class="form-line">
-                                                <label for="potype">Type PO</label>
-                                                <select class="form-control show-tick" name="potype" id="potype" disabled>
-                                                    <?php if($data['pohead']['potype'] === "PO01") : ?>
-                                                        <option value="PO01">PO Stock</option>
-                                                        <option value="PO02">PO Lokal</option>
-                                                    <?php else: ?>
-                                                        <option value="PO02">PO Lokal</option>
-                                                        <option value="PO01">PO Stock</option>
-                                                    <?php endif; ?>
-                                                </select>
-                                            </div>
-                                        </div>    
-                                    </div>
-
-                                    <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
-                                        <div class="form-group">
-                                            <div class="form-line">
-                                                <label for="warehouse">Warehouse</label>
-                                                <select class="form-control show-tick readOnly" name="warehouse" id="warehouse" disabled>
-                                                    <option value="<?= $data['_whs']['gudang']; ?>"><?= $data['_whs']['deskripsi']; ?></option>
-                                                </select>
-                                            </div>
-                                        </div>    
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <div class="form-group">
-                                            <div class="form-line">
-                                                <label for="regdate">PO Date</label>
-                                                <input type="date" name="reqdate" id="reqdate" class="datepicker form-control readOnly" value="<?= $data['pohead']['podat']; ?>" readonly>
-                                            </div>
-                                        </div>    
-                                    </div>
-
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-9">
                                         <div class="form-group">
                                             <div class="form-line">
                                                 <label for="note">Note</label>
-                                                <input type="text" name="note" id="note" class="form-control readOnly" placeholder="Note" value="<?= $data['pohead']['note']; ?>" readonly>
+                                                <input type="text" name="note" id="note" class="form-control readOnly" placeholder="Note" value="<?= $data['pohead']['note']; ?>">
                                             </div>
                                         </div>
+                                    </div>
+                                    
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <label for="regdate">Request Date</label>
+                                                <input type="date" name="reqdate" id="reqdate" class="datepicker form-control readOnly" value="<?= $data['pohead']['podat']; ?>">
+                                            </div>
+                                        </div>    
                                     </div>
                                 </div>
                             </form>
@@ -88,84 +61,27 @@
                         <div class="body">
                             <div class="row clearfix">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <table class="table table-responsive table-bordered table-striped" id="tbl-pr-item">
+                                    <table id="dg" class="easyui-datagrid" style="width:98%;height:200px" toolbar="#toolbar" fitColumns="true" singleSelect="true">
                                         <thead>
                                             <tr>
-                                                <th>
-                                                    <input type="checkbox" id="checkAll" class="filled-in" />
-                                                    <label for="checkAll"></label>
-                                                </th>
-                                                <th>PO Item</th>
-                                                <th>Kode Barang</th>
-                                                <th>Nama Barang</th>
-                                                <th>Kategori</th>
-                                                <th>Quantity</th>
-                                                <th>Unit</th>
-                                                <th>Price</th>
-                                                <th>Tax</th>
-                                                <th>Discount</th>
-                                                <th>Sub Total</th>
+                                                <th field="item"     width="50">PO Item</th>
+                                                <th field="kodebrg"  width="150">Material</th>
+                                                <th field="namabrg"  width="300">Material Desc</th>
+                                                <th field="quantity" width="100" align="right">Quantity</th>
+                                                <th field="unit"     width="80">Unit</th>
+                                                <th field="price"    width="100" align="right">Price</th>
+                                                <th field="subtot"   width="100" align="right">Sub Total</th>
+                                                <th field="remark"   width="350">Remark</th> 
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <?php $no = 0; ?>
-                                            <?php foreach ($data['poitem'] as $pr) : ?>
-                                                <?php $no++; ?>
-                                                <tr>
-                                                    <td>
-                                                        <?php if($pr['approvestat'] === $data['approvelevel']['level']) : ?>
-                                                            <input class="filled-in checkbox" type="checkbox" id="<?= $pr['poitem']; ?>" name="ID[]">
-                                                            <label for="<?= $pr['poitem']; ?>"></label>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                    <td><?= $pr['poitem']; ?></td>
-                                                    <td><?= $pr['material']; ?></td>
-                                                    <td><?= $pr['matdesc']; ?></td>
-                                                    <td><?= $pr['mattypedesc']; ?></td>
-                                                    <td style="text-align:right;">
-                                                        <?php if (strpos($pr['quantity'], '.00') !== false) {
-                                                            echo number_format($pr['quantity'], 0, ',', '.');
-                                                        }else{
-                                                            echo number_format($pr['quantity'], 2, ',', '.');
-                                                        } ?>
-                                                    </td>
-                                                    <td><?= $pr['unit']; ?></td>
-                                                    <td style="text-align:right;">
-                                                        <?php if (strpos($pr['price'], '.00') !== false) {
-                                                            echo number_format($pr['price'], 0, ',', '.');
-                                                        }else{
-                                                            echo number_format($pr['price'], 2, ',', '.');
-                                                        } ?>
-                                                    </td>
-                                                    <td style="text-align:right;"><?= $pr['ppn']; ?>%</td>
-                                                    <td style="text-align:right;">
-                                                        <?php if (strpos($pr['discount'], '.00') !== false) {
-                                                            echo number_format($pr['discount'], 0, ',', '.');
-                                                        }else{
-                                                            echo number_format($pr['discount'], 2, ',', '.');
-                                                        } ?>
-                                                    </td>
-                                                    <td style="text-align:right;">
-                                                        <?php if (strpos($pr['subtot'], '.00') !== false) {
-                                                            echo number_format($pr['subtot'], 0, ',', '.');
-                                                        }else{
-                                                            echo number_format($pr['subtot'], 2, ',', '.');
-                                                        } ?>
-                                                    </td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
                                     </table>
-                                    <ul class="pull-right">                                           
-                                        <button type="button" class="btn bg-red" id="btn-reject">
-                                            <i class="material-icons">highlight_off</i> <span>REJECT</span>
-                                        </button>
-                                        <button type="button" class="btn bg-green" id="btn-approve">
-                                            <i class="material-icons">done_all</i> <span>APPROVE</span>
-                                        </button>
-                                    </ul>
+                                    <div id="toolbar">
+                                        <button class="easyui-linkbutton hideComponent" iconCls="icon-add" plain="true" id="add-new-item">Add New Item</button>
+                                        <button class="easyui-linkbutton hideComponent" iconCls="icon-edit" plain="true" id="edit-pr-item">Change PR Item</button>
+                                        <button class="easyui-linkbutton hideComponent" iconCls="icon-remove" plain="true" id="delete-pr-item">Delete PR Item</button>
+                                    </div>
                                 </div>
-                            </div>  
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -177,106 +93,68 @@
     <script>
 
         $(function(){
+            let detail_order_beli = [];
+            var kodebrg           = '';
+            var namabrg           = '';
+            var action            = '';
+            var imgupload         = [];
 
             var sel_ponum = "<?= $data['pohead']['ponum']; ?>";
-            $('#checkAll').click(function(){
-                if(this.checked){
-                    $('.checkbox').each(function(){
-                        this.checked = true;
-                    });   
-                }else{
-                    $('.checkbox').each(function(){
-                        this.checked = false;
-                    });
-                } 
-            });
+            
 
-            $('#btn-approve').on('click', function(){
-                var tableControl= document.getElementById('tbl-pr-item');
-                var _splchecked = [];
-                $('input[name="ID[]"]:checkbox:checked', tableControl).each(function() {
-                    _splchecked.push($(this).parent().next().text())
-                }).get();
-                if(_splchecked.length > 0){
-                    console.log(_splchecked)
-                    var prtemchecked = {
-                        "poitem" : _splchecked
+            $.ajax({
+                url: base_url+'/po/getpoitem/data?ponum='+sel_ponum,
+                type: 'GET',
+                dataType: 'json',
+                cache:false,
+                success: function(result){
+                    console.log(result)
+                    for(var i=0; i<result.length; i++){	
+                        var count = $('#dg').datagrid('getRows');
+                        $('#dg').datagrid('appendRow',{
+                            item        : count.length + 1,
+                            kodebrg     : result[i].material,
+                            namabrg     : result[i].matdesc,
+                            quantity	: formatRupiah(result[i].quantity.replaceAll('.00',''),''),
+                            unit        : result[i].unit,
+                            price       : formatRupiah(result[i].price.replaceAll('.00',''),''),
+                            subtot      : formatRupiah(result[i].price.replaceAll('.00','')*result[i].quantity.replaceAll('.00',''),''),
+                            remark      : result[i].remark
+                        });
+
+                        $('#dg').datagrid('reload');
                     }
-                    $.ajax({
-                        url:base_url+'/approvepo/approvepoitem/'+sel_ponum,
-                        method:'post',
-                        data:prtemchecked,
-                        dataType:'JSON',
-                        beforeSend:function(){
-                            $('#btn-approve').attr('disabled','disabled');
-                        },
-                        success:function(data)
-                        {
-                        	
-                        },
-                        error:function(err){
-                            showErrorMessage(JSON.stringify(err))
-                        }
-                    }).done(function(data){
-                        console.log(data);
-                        $('#btn-approve').attr('disabled',false);
-                        showSuccessMessage('Selected PO Item Approved');                        
-                    })   
-                }else{
-                    alert('No record selected ');
+                },error: function(err){
                 }
             });
 
-            $('#btn-reject').on('click', function(){
-                var tableControl= document.getElementById('tbl-pr-item');
-                var _splchecked = [];
-                $('input[name="ID[]"]:checkbox:checked', tableControl).each(function() {
-                    _splchecked.push($(this).parent().next().text())
-                }).get();
-                if(_splchecked.length > 0){
-                    console.log(_splchecked)
-                    var prtemchecked = {
-                        "poitem" : _splchecked
-                    }
-                    $.ajax({
-                        url:base_url+'/approvepo/rejectpritem/'+sel_ponum,
-                        method:'post',
-                        data:prtemchecked,
-                        dataType:'JSON',
-                        beforeSend:function(){
-                            $('#btn-approve').attr('disabled','disabled');
-                        },
-                        success:function(data)
-                        {
-                        	
-                        },
-                        error:function(err){
-                            showErrorMessage(JSON.stringify(err))
-                        }
-                    }).done(function(data){
-                        console.log(data);
-                        $('#btn-approve').attr('disabled',false);
-                        showSuccessMessage('Selected PO Item Rejected');                        
-                    });
-                }else{
-                    alert('No record selected ');
+            $('.readOnly').attr("readonly", true);
+            $('.hideComponent').hide();
+        })
+
+        function formatRupiah(angka, prefix){
+                var number_string = angka.toString().replace(/[^,\d]/g, '').toString(),
+                split   		  = number_string.split(','),
+                sisa     		  = split[0].length % 3,
+                rupiah     		  = split[0].substr(0, sisa),
+                ribuan     		  = split[0].substr(sisa).match(/\d{3}/gi);
+            
+                // tambahkan titik jika yang di input sudah menjadi angka ribuan
+                if(ribuan){
+                    separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
                 }
-            });
+            
+                rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+                return prefix == undefined ? rupiah : (rupiah ? '' + rupiah : '');
+        }
 
-            function showBasicMessage() {
-                swal({title:"Loading...", text:"Mohon Menunggu", showConfirmButton: false});
+        function isNumber(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
             }
-
-            function showSuccessMessage(message) {
-                swal({title: "Success!", text: message, type: "success"},
-                    function(){ 
-                        window.location.href = base_url+'/approvepo';
-                    }
-                );
-            }
-
-            function showErrorMessage(message){
-                swal("Error", message, "error");
-            }
-        });    
+            return true;
+        }        
     </script>

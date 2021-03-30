@@ -1,6 +1,3 @@
-    <?php 
-        $totalprice = 0;
-    ?>
     <section class="content">
         <div class="container-fluid">
             <b>
@@ -9,20 +6,16 @@
                     <div class="card">
                         <div class="header">
                             <h2>
-                                Create Payment Purchase Order : <?= $data['ponum']; ?>
+                                Payment Process With Receipt Number : <?= $data['grnum']; ?>
                             </h2>
                             <ul class="header-dropdown m-r--2">
-                                <a href="<?= BASEURL; ?>/payment" type="button" id="btn-back" class="btn bg-red"  data-type="danger">
-                                    <i class="material-icons">backspace</i> <span>BACK</span>
-                                </a>
-                                <button type="button" id="btn-process" class="btn bg-blue"  data-type="success">
-                                    <i class="material-icons">save</i> <span>SAVE</span>
-                                </button>
+                            <a href="<?= BASEURL; ?>/payment" type="button" id="btn-back" class="btn btn-danger"  data-type="danger">Cancel</a>
+                                <button type="button" id="btn-process" class="btn btn-primary"  data-type="success">Post Data</button>
                             </ul>
                         </div>
                         <div class="body">
                             <div class="row clearfix">
-                                <div class="col-lg-9 col-md-6 col-sm-12 col-xs-12">
+                                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
                                     <div class="form-group">
                                         <div class="form-line">
                                             <input type="hidden" id="vendor" value="<?= $data['vendor']['vendor']; ?>">
@@ -31,7 +24,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                                     <div class="form-group">
                                         <div class="form-line">
                                             <label for="ivdate">Payment Date</label>
@@ -39,7 +32,7 @@
                                         </div>
                                     </div>    
                                 </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                     <div class="form-group">
                                         <div class="form-line">
                                             <label for="note">Note</label>
@@ -47,124 +40,53 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="hidden" id="idproject" value="<?= $data['grheader']['idproject']; ?>">
+                                            <label for="note">Project</label>
+                                            <input type="text" name="project" id="project" class="form-control" placeholder="Project" value="<?= $data['grheader']['namaproject']; ?>" readonly="true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                        <br>
+                                            <button id="btn-view-file" class="btn btn-success form-control">Preview File</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="form-group">
                                         <div class="form-line">
                                         <label id="paytotal">Total Payment</label>
-                                        <input type="text" name="total" id="totalprice" class="form-control" placeholder="Note" readonly>
                                         </div>
                                     </div>
-                                </div> -->
+                                </div>
                             </div>
                             <div class="table-responsive">
-                                    <table class="table table-responsive table-bordered table-striped" id="tbl-pr-item">
-                                        <thead>
-                                            <tr>
-                                                <th>PO Item</th>
-                                                <th>Kode Barang</th>
-                                                <th>Nama Barang</th>
-                                                <th>Kategori</th>
-                                                <th>Quantity</th>
-                                                <th>Unit</th>
-                                                <th>Price</th>
-                                                <th>Tax</th>
-                                                <th>Discount</th>
-                                                <th>Sub Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php $no = 0; ?>
-                                            <?php foreach ($data['podata'] as $pr) : ?>
-                                                <?php 
-                                                    $no++; 
-                                                    $totalprice = $totalprice + $pr['subtot'];
-                                                ?>
+                                <table id="dg" class="easyui-datagrid" style="width:98%;height:200px"  fitColumns="false" singleSelect="false">
+                                            <thead>
                                                 <tr>
-                                                    <td><?= $pr['poitem']; ?></td>
-                                                    <td><?= $pr['material']; ?></td>
-                                                    <td><?= $pr['matdesc']; ?></td>
-                                                    <td><?= $pr['mattypedesc']; ?></td>
-                                                    <td style="text-align:right;">
-                                                        <?php if (strpos($pr['quantity'], '.00') !== false) {
-                                                            echo number_format($pr['quantity'], 0, ',', '.');
-                                                        }else{
-                                                            echo number_format($pr['quantity'], 2, ',', '.');
-                                                        } ?>
-                                                    </td>
-                                                    <td><?= $pr['unit']; ?></td>
-                                                    <td style="text-align:right;">
-                                                        <?php if (strpos($pr['price'], '.00') !== false) {
-                                                            echo number_format($pr['price'], 0, ',', '.');
-                                                        }else{
-                                                            echo number_format($pr['price'], 2, ',', '.');
-                                                        } ?>
-                                                    </td>
-                                                    <td style="text-align:right;"><?= $pr['ppn']; ?>%</td>
-                                                    <td style="text-align:right;">
-                                                        <?php if (strpos($pr['discount'], '.00') !== false) {
-                                                            echo number_format($pr['discount'], 0, ',', '.');
-                                                        }else{
-                                                            echo number_format($pr['discount'], 2, ',', '.');
-                                                        } ?>
-                                                    </td>
-                                                    <td style="text-align:right;">
-                                                        <?php if (strpos($pr['subtot'], '.00') !== false) {
-                                                            echo number_format($pr['subtot'], 0, ',', '.');
-                                                        }else{
-                                                            echo number_format($pr['subtot'], 2, ',', '.');
-                                                        } ?>
-                                                    </td>
+                                                    <th field="gritem"   width="50">No</th>
+                                                    <th field="kodebrg"  width="100">Item Code</th>
+                                                    <th field="namabrg"  width="350">Item Name</th>
+                                                    <th field="jumlah"   width="100" align="right">Received Qty</th>
+                                                    <th field="satuan"   width="80">Unit</th>
+                                                    <th field="harga"    width="120" align="right">Price</th>
+                                                    <th field="total"    width="120" align="right">Total Price</th>
+                                                    <th field="ponum"    width="80">PO Number</th>
+                                                    <th field="poitem"   width="80">PO Item</th>
                                                 </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <td colspan="9" style="text-align:right;font-weight:bold;">
-                                                    Total Payment
-                                                </td>                                                
-                                                <td style="text-align:right;font-weight:bold;">
-                                                    <?= number_format($totalprice, 0, ',', '.'); ?>
-                                                </td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
+                                            </thead>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-            <!-- Modal Select Bank Payment Account -->
-            <div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="largeModalLabel">Select Bank Account</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row clearfix">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <select class="form-control show-tick" name="bankacc" id="bankacc" data-live-search="true">
-                                                <option value="">Bank Account</option>
-                                                <?php foreach($data['banklist'] as $bank) : ?>
-                                                    <option value="<?= $bank['bankno']; ?>"> <?= $bank['bankno']; ?> : <?= $bank['bankacc']; ?> - <?= $bank['deskripsi']; ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>               
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" id="btn-add-bank-account" class="btn btn-primary">OK</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- Modal Select Bank Payment Account -->
             <div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
@@ -197,15 +119,42 @@
             </div>
     </section>
 
-    
+    <!-- url="<?= BASEURL; ?>/payment/grdata/<?= $data['grnum']; ?>/<?= $data['year']; ?>" -->
     <script src="<?= BASEURL; ?>/plugins/sweetalert/sweetalert.min.js"></script>
     <script>
         $(function(){
-            var poitem = <?= json_encode($data['podata']); ?>;
-            var totalpayment = "<?= $totalprice; ?>";
-            $('#totalprice').val(formatRupiah(totalpayment,''))
-            
-            console.log(poitem)
+            var totalpayment = 0;
+            readpodata();
+            function readpodata(){
+                $.ajax({
+                    url: base_url+"/payment/grdata/<?= $data['grnum']; ?>/<?= $data['year']; ?>",
+                    type: 'GET',
+                    dataType: 'json',
+                    cache:false,
+                    success: function(result){
+                        console.log(result)
+                        for(var i = 0; i < result.length; i++){
+                            $('#dg').datagrid('appendRow',{
+                                gritem      : result[i].gritem,
+                                kodebrg     : result[i].kodebrg,
+                                namabrg     : result[i].namabrg,
+                                jumlah      : result[i].jumlah,
+                                satuan      : result[i].satuan,
+                                harga       : formatRupiah(result[i].harga,''),
+                                total       : formatRupiah(result[i].jumlah * result[i].harga,''),
+                                ponum       : result[i].ponum, 
+                                poitem      : result[i].poitem
+                            });
+
+                            totalpayment = totalpayment + (result[i].jumlah * result[i].harga);
+                        }
+
+                        $('#paytotal').html('Total Payment : '+formatRupiah(totalpayment,''))
+                        $('#dg').datagrid('reload');
+                    }
+                });
+            }
+
             function formatRupiah(angka, prefix){
                 var number_string = angka.toString().replace(/[^,\d]/g, '').toString(),
                 split   		  = number_string.split(','),
@@ -222,6 +171,15 @@
                 rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
                 return prefix == undefined ? rupiah : (rupiah ? '' + rupiah : '');
             }
+
+            $('#btn-view-file').on('click', function(){
+                var filename = "<?= $data['file']['filename']; ?>";
+                if(filename != ''){
+                    window.open(base_url+"/images/grfile/"+filename, '_blank');
+                }else{
+                    showErrorMessage('No file uploaded')
+                }
+            })
 
             $('#btn-process').on('click',function(){
                 $('#largeModal').modal('show');                
@@ -241,25 +199,43 @@
                 var ivdata  = {};
                 var ivhead  = [];
                 var ivitems = [];
-                for(var i = 0; i < poitem.length; i++){
+
+                var ivtotal = 0;
+
+                var rows = $('#dg').datagrid('getRows');
+                console.log(rows)
+                for(var i = 0; i < rows.length; i++){
                     let object = new Object();
                     object["ivitem"]       = i + 1;
-                    object["ponum"]        = poitem[i].ponum;
-                    object["poitem"]       = poitem[i].poitem;
-                    object["kodebrg"]      = poitem[i].material;
-                    object["namabrg"]      = poitem[i].matdesc;
-                    object["quantity"]     = poitem[i].quantity;
-                    object["unit"]         = poitem[i].unit;
-                    object["price"]        = poitem[i].price;
+                    object["ponum"]        = rows[i].ponum;
+                    object["poitem"]       = rows[i].poitem;
+                    object["kodebrg"]      = rows[i].kodebrg;
+                    object["namabrg"]      = rows[i].namabrg;
+                    object["quantity"]     = rows[i].jumlah;
+                    object["unit"]         = rows[i].satuan;
+
+                    var aharga     = rows[i].harga.split('.');
+                    var xharga = '';
+                    for(var x=0; x < aharga.length; x++){
+                        xharga = xharga+''+aharga[x];
+                    }
+
+                    object["price"]        = xharga;
+                    object["refdoc"]       = "<?= $data['grnum'] ?>";
+                    object["refdocitem"]   = rows[i].gritem;
                     object["ivdate"]       = $('#ivdate').val();
                     ivitems.push(object);
+
+                    ivtotal = ivtotal + (xharga * rows[i].jumlah)
                 }
 
                 oheader.vendor     = $('#vendor').val();
                 oheader.namavendor = $('#namavendor').val();
                 oheader.ivdate     = $('#ivdate').val();
                 oheader.note       = $('#note').val();
-                oheader.totalinv   = totalpayment;
+                oheader.project    = $('#idproject').val();
+                oheader.grnum      = "<?= $data['grnum'] ?>";
+                oheader.totalinv   = ivtotal;
                 oheader.bankacc    = $('#bankacc').val();
                 ivhead.push(oheader);
 
@@ -269,7 +245,8 @@
                 }
 
                 console.log(ivdata)
-
+                showBasicMessage();
+                $("#btn-process").attr("disabled", true);
                 $.ajax({
                     url: base_url+'/payment/post',
                     data: ivdata,

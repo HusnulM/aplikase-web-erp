@@ -70,31 +70,12 @@ class Movement extends Controller {
         echo json_encode($data);
     }
 
-    public function getopenpoitem(){
-        $url = parse_url($_SERVER['REQUEST_URI']);
-        $data = parse_str($url['query'], $params);
-		$ponum = $params['ponum'];
-
-		$data = $this->model('Movement_model')->getPOitemtoGR($ponum);
-		echo json_encode($data);
-    }
-
-    public function reservationitem($resnum){
-        $check = $this->model('Home_model')->checkUsermenu('movement', 'Create');
-        if ($check){
-            $data = $this->model('Reservation_model')->getReservation02($resnum);
-            echo json_encode($data);
-        }else{
-            echo json_encode("unauthorize!");
-        }
-    }
-
     public function post(){
         try {
             if($_POST['immvt'] === "101"){
-                $data = $this->model('Movement_model')->getPOitemtoGR($_POST['itm_refnum'][0]);
+                $data = $this->model('Po_model')->getPOHeader($_POST['itm_refnum'][0]);
                 $lock = $this->model('Movement_model')->readlockdata('PO',$_POST['itm_refnum'][0]);
-                if($data[0]['approvestat'] === "2"){
+                if($data['approvestat'] === "2"){
                     if($lock){
                         $return = array(
                             "msgtype" => "3",

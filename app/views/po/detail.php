@@ -11,16 +11,13 @@
 
                                 <ul class="header-dropdown m-r--5">   
                                      
-                                    <!-- <a href="<?= BASEURL ?>/po" type="button" id="btn-cancel" class="btn btn-sm bg-red hideComponent">
+                                    <a href="<?= BASEURL ?>/po" type="button" id="btn-cancel" class="btn btn-sm bg-red hideComponent">
                                         <i class="material-icons">highlight_off</i> <span>CANCEL</span>
                                     </a>
                                     <button type="submit" id="btn-save" class="btn btn-sm bg-green hideComponent">
                                         <i class="material-icons">save</i> 
                                         <span>SAVE</span>
-                                    </button> -->
-                                    <a href="<?= BASEURL; ?>/po" class="btn bg-teal waves-effect">
-                                        <i class="material-icons">backspace</i> <span>BACK</span>
-                                    </a>
+                                    </button>
 
                                     <button type="button" id="btn-change" class="btn bg-blue ">
                                         <i class="material-icons" id="_icon">edit</i> 
@@ -29,78 +26,127 @@
                                 </ul>
                             </div>
                             <div class="body">
-                                <div class="row clearfix">
-                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                                        <div class="form-group">
-                                            <div class="form-line">
-                                                <label for="vendor">Vendor</label>
-                                                <input type="text" name="namavendor" id="namavendor" class="form-control readOnly" value="<?= $data['vendor']['namavendor']; ?>" required>
-                                                <input type="hidden" name="vendor" id="vendor" value="<?= $data['pohead']['vendor']; ?>">
+                            <b>
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active">
+                                        <a href="#basic_data_view" data-toggle="tab">
+                                            <i class="material-icons">description</i> Header Data
+                                        </a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="#alt_uom_view" data-toggle="tab">
+                                            <i class="material-icons">line_weight</i> Additional Data
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade in active" id="basic_data_view">
+                                        <div class="row clearfix">
+                                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <label for="vendor">Vendor</label>
+                                                        <input type="text" name="namavendor" id="namavendor" class="form-control readOnly" value="<?= $data['vendor']['namavendor']; ?>" required>
+                                                        <input type="hidden" name="vendor" id="vendor" value="<?= $data['pohead']['vendor']; ?>">
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 hideComponent">
-                                        <div class="form-group">
-                                            <div class="form-line">
-                                                <br>
-                                                <button class="btn bg-blue form-control hideComponent" type="button" id="btn-search-vendor">
-                                                <i class="material-icons">format_list_bulleted</i> <span>Choose Vendor</span>
-                                                </button>
+                                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 hideComponent">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <br>
+                                                        <button class="btn bg-blue form-control hideComponent" type="button" id="btn-search-vendor">
+                                                        <i class="material-icons">format_list_bulleted</i> <span>Choose Vendor</span>
+                                                        </button>
+                                                    </div>
+                                                </div>    
                                             </div>
-                                        </div>    
-                                    </div>
-                                    
-                                    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                                        <div class="form-group">
-                                            <div class="form-line">
-                                                <label for="potype">Type PO</label>
-                                                <select class="form-control show-tick" name="potype" id="potype">
-                                                    <?php if($data['pohead']['potype'] === "PO01") : ?>
-                                                        <option value="PO01">PO Stock</option>
-                                                        <option value="PO02">PO Lokal</option>
+                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <label for="note">Note</label>
+                                                        <input type="text" name="note" id="note" class="form-control readOnly" placeholder="Note" value="<?= $data['pohead']['note']; ?>">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <label for="podate">PO Date</label>
+                                                        <input type="date" name="podate" id="podate" class="datepicker form-control readOnly" placeholder="" required value="<?= $data['pohead']['podat']; ?>">
+                                                    </div>
+                                                </div>    
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                                <div class="form-group">
+                                                    <?php if($data['pohead']['ppn'] > 0): ?>
+                                                        <input type="checkbox" id="basic_checkbox_2" class="filled-in form-control readOnly" checked/>
                                                     <?php else: ?>
-                                                        <option value="PO02">PO Lokal</option>
-                                                        <option value="PO01">PO Stock</option>
+                                                        <input type="checkbox" id="basic_checkbox_2" class="filled-in form-control readOnly"/>
                                                     <?php endif; ?>
-                                                </select>
-                                            </div>
-                                        </div>    
-                                    </div>
-
-                                    <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
-                                        <div class="form-group">
-                                            <div class="form-line">
-                                                <label for="warehouse">Warehouse</label>
-                                                <select class="form-control show-tick readOnly" name="warehouse" id="warehouse">
-                                                    <option value="<?= $data['_whs']['gudang']; ?>"><?= $data['_whs']['deskripsi']; ?></option>
-                                                    <?php foreach($data['whs'] as $whs): ?>
-                                                        <?php if($data['_whs']['gudang'] !== $whs['gudang']) :?>
-                                                            <option value="<?= $whs['gudang']; ?>"><?= $whs['deskripsi']; ?></option>
-                                                        <?php endif; ?>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-                                        </div>    
-                                    </div>   
-                                    
-                                    <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
-                                        <div class="form-group">
-                                            <div class="form-line">
-                                                <label for="podate">PO Date</label>
-                                                <input type="date" name="podate" id="podate" class="datepicker form-control readOnly" placeholder="" required value="<?= $data['pohead']['podat']; ?>">
-                                            </div>
-                                        </div>    
-                                    </div>
-
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <div class="form-group">
-                                            <div class="form-line">
-                                                <label for="note">Note</label>
-                                                <input type="text" name="note" id="note" class="form-control readOnly" placeholder="Note" value="<?= $data['pohead']['note']; ?>">
+                                                    <label for="basic_checkbox_2">PPN (10%)</label>
+                                                    <input type="hidden" name="ppnval" id="ppnval" value="<?= $data['pohead']['ppn']; ?>">
+                                                </div>  
                                             </div>
                                         </div>
                                     </div>
-                                </div>                                
+
+                                    <div role="tabpanel" class="tab-pane fade" id="alt_uom_view">
+                                        <div class="row clearfix">
+                                            <div class="col-lg-6 col-md-3 col-sm-3 col-xs-3">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <label for="price">PRICE</label>
+                                                        <input type="text" class="form-control readOnly" name="tf_price" value="<?= $data['pohead']['tf_price']; ?>">
+                                                    </div>
+                                                </div> 
+                                            </div>
+                                            <div class="col-lg-6 col-md-3 col-sm-3 col-xs-3">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <label for="dest">DESTINATION</label>
+                                                        <input type="text" class="form-control readOnly" name="tf_dest" value="<?= $data['pohead']['tf_dest']; ?>">
+                                                    </div>
+                                                </div> 
+                                            </div>
+                                            <div class="col-lg-6 col-md-3 col-sm-3 col-xs-3">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <label for="dest">SHIPMENT</label>
+                                                        <input type="text" class="form-control readOnly" name="tf_shipment" value="<?= $data['pohead']['tf_shipment']; ?>">
+                                                    </div>
+                                                </div> 
+                                            </div>
+                                            <div class="col-lg-6 col-md-3 col-sm-3 col-xs-3">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <label for="shipdate">Shipment Date</label>
+                                                        <input type="date" name="tf_shipdate" id="tf_shipdate" class="datepicker form-control readOnly" value="<?= $data['pohead']['tf_shipdate']; ?>" >
+                                                    </div>
+                                                </div>    
+                                            </div>
+                                            <div class="col-lg-6 col-md-3 col-sm-3 col-xs-3">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <label for="dest">PAYMENT TERM</label>
+                                                        <input type="text" class="form-control readOnly" name="tf_top" value="<?= $data['pohead']['tf_top']; ?>">
+                                                    </div>
+                                                </div> 
+                                            </div>
+                                            <div class="col-lg-6 col-md-3 col-sm-3 col-xs-3">
+                                                <div class="form-group">
+                                                    <div class="form-line">
+                                                        <label for="dest">PACKING</label>
+                                                        <input type="text" class="form-control readOnly" name="tf_packing" value="<?= $data['pohead']['tf_packing']; ?>">
+                                                    </div>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
 
@@ -111,17 +157,16 @@
                                 </h2>
                                         
                                 <ul class="header-dropdown m-r--5">          
-                                    <!-- <button type="button" id="btn-add-poitem-from-pr" class="btn bg-blue hideComponent">
+                                    <button type="button" id="btn-add-poitem-from-pr" class="btn bg-blue hideComponent">
                                         <i class="material-icons">playlist_add</i> <span>ADD ITEM FROM PR</span>
                                     </button>
 
                                     <button type="button" id="btn-add-poitem" class="btn bg-blue hideComponent">
                                         <i class="material-icons">playlist_add</i> <span>ADD ITEM</span>
-                                    </button> -->
+                                    </button>
                                 </ul>
                             </div>
                             <div class="body">
-                                <div class="row">
                                     <div class="table-responsive">
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <table class="table table-bordered table-striped table-hover">
@@ -133,8 +178,6 @@
                                                         <th>Quantity</th>
                                                         <th>Unit</th>
                                                         <th>Price Unit</th>
-                                                        <th>Tax</th>
-                                                        <th>Discount</th>
                                                         <th>PR Number</th>
                                                         <th class="hideComponent">Action</th>
                                                     </tr>
@@ -146,27 +189,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <ul class="pull-right">          
-                                            <button type="button" id="btn-add-poitem-from-pr" class="btn bg-blue hideComponent">
-                                                <i class="material-icons">playlist_add</i> <span>ADD ITEM FROM PR</span>
-                                            </button>
-
-                                            <button type="button" id="btn-add-poitem" class="btn bg-blue hideComponent">
-                                                <i class="material-icons">playlist_add</i> <span>ADD ITEM</span>
-                                            </button>
-
-                                            <!-- <a href="<?= BASEURL ?>/po" type="button" id="btn-cancel" class="btn bg-red hideComponent">
-                                                <i class="material-icons">highlight_off</i> <span>CANCEL</span>
-                                            </a> -->
-                                            <button type="submit" id="btn-save" class="btn bg-green waves-effect hideComponent">
-                                                <i class="material-icons">save</i> <span>SAVE</span>
-                                            </button>
-                                        </ul>
-                                    </div>
-                                </div>                                                                
                             </div>
                         </div>
                     </div>
@@ -184,7 +206,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="table-responsive">
-                                <table class="table table-responsive" id="list-pr" style="width:100%;">
+                                <table class="table table-responsive" id="list-pr">
                                     <thead>
                                         <tr>
                                             <th>No PR</th>
@@ -254,7 +276,7 @@
                                             <th>Part Name</th>
                                             <th>Part Number</th>
                                             <th>Unit</th>
-                                            <!-- <th>Order Unit</th> -->
+                                            <th>Order Unit</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -266,7 +288,7 @@
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <!-- <td></td> -->
+                                            <td></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -285,7 +307,6 @@
         var vendor            = "<?= $data['pohead']['vendor']; ?>";
         var namavendor        = '';
         var _ppnchecked       = '';
-        let detail_order_beli = [];
 
         var sel_ponum = "<?= $data['pohead']['ponum']; ?>";
 
@@ -298,28 +319,21 @@
             });
         });
 
-        function materialExists(material) {
-            return detail_order_beli.some(function(el) {
-                return el.material === material;
-            }); 
-        }
-
-        function pritemExists(prnum, pritem) {
-            return detail_order_beli.some(function(el) {
-                console.log(el)
-                if(el.prnum === prnum && el.pritem === pritem){
-                    return true;
-                }else{
-                    return false;
-                }
-            }); 
-        }
-
-        function removeitem(index){
-            detail_order_beli.splice(index, 1);
-        }
-
         $(document).ready(function(){
+
+            var ppn = $('#ppnval').val().replaceAll('.00','');
+            if(ppn > 0){
+                _ppnchecked = 'X';
+            }
+            $('#basic_checkbox_2').on('change', function(){
+                if(_ppnchecked === ''){
+                    _ppnchecked = 'X'
+                    $('#ppnval').val('10');
+                }else{
+                    _ppnchecked = ''
+                    $('#ppnval').val('0');
+                }
+            });
 
             loaddatabarang();
             function loaddatabarang(){
@@ -331,7 +345,7 @@
                         { "data": "partname" },
                         { "data": "partnumber" },
                         { "data": "matunit" },
-                        // { "data": "orderunit" },
+                        { "data": "orderunit" },
                         {"defaultContent": "<button class='btn btn-primary btn-xs'>Pilih</button>"}
                     ],
                     "bDestroy": true,
@@ -343,104 +357,83 @@
                     var table = $('#list-barang').DataTable();
                     selected_data = [];
                     selected_data = table.row($(this).closest('tr')).data();
-                    if(materialExists(selected_data.material)){
-
-                    }else{
-                        detail_order_beli.push(selected_data);
-                        kodebrg = selected_data.material;
-
-                        count = count+1;
-                        html = '';
-                        html = `
-                            <tr counter="`+ count +`" id="tr`+ count +`">
-                                <td class="nurut"> 
-                                    `+ count +`
-                                    <input type="hidden" name="no[]" value="`+ count +`" />
-                                </td>
-                                <td> 
-                                    <input type="text" name="itm_material[]" counter="`+count+`" id="material`+count+`" class="form-control materialCode" style="width:120px;" required="true" value="`+ selected_data.material +`" readonly />
-                                </td>
-                                <td> 
-                                    <input type="text" name="itm_matdesc[]" counter="`+count+`" id="matdesc`+count+`" class="form-control" style="width:250px;" value="`+ selected_data.matdesc +`" readonly/>
-                                </td>
-                                <td> 
-                                    <input type="text" name="itm_qty[]" counter="`+count+`" id="poqty`+count+`"  class="form-control inputNumber" style="width:100px; text-align:right;" required="true" autocomplete="off"/>
-                                </td>
-                                <td> 
-                                    <select name="itm_unit[]" counter="`+count+`" id="unit`+count+`" class="form-control whsCode" required style="width:100px;"></select>                               
-                                </td>
-                                <td> 
-                                    <input type="text" name="itm_price[]" class="form-control disableInput inputNumber" style="width:100px;text-align: right;" counter="`+count+`" id="poprice`+count+`" required="true" autocomplete="off"/>
-                                </td>
-                                <td> 
-                                    <select name="itm_ppn[]" counter="`+count+`" id="ppn`+count+`" class="form-control"  style="width:120px;">
-                                        <option value="0"> </option>
-                                        <option value="10"> PPN 10% </option>
-                                    </select>
-                                </td>
-                                <td> 
-                                    <input type="text" name="itm_discount[]" class="form-control disableInput inputNumber" style="width:100px;text-align: right;" counter="`+count+`" id="discount`+count+`" autocomplete="off"/>
-                                </td>
-                                <td> 
-                                    <input type="text" name="prnum[]" counter="`+count+`" id="prnum`+count+`" class="form-control" style="width:130px;" readonly/>
-
-                                    <input type="hidden" name="itm_prnum[]" value="NULL" />
-                                    <input type="hidden" name="itm_pritem[]" value="NULL" />
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-danger btn-sm removePO hideComponent" counter="`+count+`" id="btnRemove`+count+`">Remove</button>
-                                </td>
-                            </tr>
-                        `;
-                        $('#tbl-po-body').append(html);
-                        renumberRows();
-                        var listItems;
-                                listItems += "<option class='form-control' value='"+ selected_data.matunit +"'>"+ selected_data.matunit +"</option>";
-                        $.ajax({
-                            url: base_url+'/barang/getmaterialunit/data?material='+selected_data.material+'&&unit='+selected_data.matunit,
-                            type: 'GET',
-                            dataType: 'json',
-                            cache:false,
-                            success: function(result){
-                                console.log(result)
-                                for (var i = 0; i < result.length; i++) {
-                                    listItems += "<option class='form-control' value='"+ result[i].altuom +"'>"+ result[i].altuom +"</option>";
-                                };
-                                $("#unit"+count).html(listItems);
-                            }
-                        });
-
-                        $('#btnRemove'+count).on('click', function(e){
-                                e.preventDefault();
-                                var row_index = $(this).closest("tr").index();
-                                removeitem(row_index);                        
-                                $(this).closest("tr").remove();
-                                renumberRows();
-                                console.log(detail_order_beli)
-                        });
-                        // $('.removePO').on('click', function(e){
-                        //     e.preventDefault();
-                        //     $(this).closest("tr").remove();
-                        //     renumberRows();
-                        // })
-
-                        $('.materialCode').on('change', function(){
-                            var xcounter = $(this).attr('counter');
-                            var kodebrg  = $('#material'+xcounter).val();
-
-                            getMaterialbyKode(kodebrg, function(d){
-                                console.log(d)
-                                $('#matdesc'+xcounter).val(d.matdesc);
-                                $('#unit'+xcounter).val(d.matunit);
-                            });
-                        });
-
-                        $('.inputNumber').on('change', function(){
-                            this.value = formatRupiah(this.value, '');
-                        })
-
-                    }
                     
+                    kodebrg = selected_data.material;
+
+                    count = count+1;
+                    html = '';
+                    html = `
+                        <tr counter="`+ count +`" id="tr`+ count +`">
+                            <td class="nurut"> 
+                                `+ count +`
+                                <input type="hidden" name="no[]" value="`+ count +`" />
+                            </td>
+                            <td> 
+                                <input type="text" name="itm_material[]" counter="`+count+`" id="material`+count+`" class="form-control materialCode" style="width:120px;" required="true" value="`+ selected_data.material +`" />
+                            </td>
+                            <td> 
+                                <input type="text" name="itm_matdesc[]" counter="`+count+`" id="matdesc`+count+`" class="form-control" style="width:250px;" value="`+ selected_data.matdesc +`"/>
+                            </td>
+                            <td> 
+                                <input type="text" name="itm_qty[]" counter="`+count+`" id="poqty`+count+`"  class="form-control inputNumber" style="width:100px; text-align:right;" required="true" autocomplete="off"/>
+                            </td>
+                            <td> 
+                                <select name="itm_unit[]" counter="`+count+`" id="unit`+count+`" class="form-control whsCode" required style="width:100px;"></select>
+
+                               
+                            </td>
+                            <td> 
+                                <input type="text" name="itm_price[]" class="form-control disableInput inputNumber" style="width:100px;text-align: right;" counter="`+count+`" id="poprice`+count+`" required="true" autocomplete="off"/>
+                            </td>
+                            <td> 
+                                <input type="text" name="prnum[]" counter="`+count+`" id="prnum`+count+`" class="form-control" style="width:130px;" readonly/>
+
+                                <input type="hidden" name="itm_prnum[]" value="NULL" />
+                                <input type="hidden" name="itm_pritem[]" value="NULL" />
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm removePO hideComponent" counter="`+count+`">Remove</button>
+                            </td>
+                        </tr>
+                    `;
+                    $('#tbl-po-body').append(html);
+                    renumberRows();
+                    var listItems;
+                            listItems += "<option class='form-control' value='"+ selected_data.orderunit +"'>"+ selected_data.orderunit +"</option>";
+                    $.ajax({
+                        url: base_url+'/barang/getmaterialunit/data?material='+selected_data.material+'&&unit='+selected_data.orderunit,
+                        type: 'GET',
+                        dataType: 'json',
+                        cache:false,
+                        success: function(result){
+                            console.log(result)
+                            for (var i = 0; i < result.length; i++) {
+                                listItems += "<option class='form-control' value='"+ result[i].altuom +"'>"+ result[i].altuom +"</option>";
+                            };
+                            $("#unit"+count).html(listItems);
+                        }
+                    });
+
+                    $('.removePO').on('click', function(e){
+                        e.preventDefault();
+                        $(this).closest("tr").remove();
+                        renumberRows();
+                    })
+
+                    $('.materialCode').on('change', function(){
+                        var xcounter = $(this).attr('counter');
+                        var kodebrg  = $('#material'+xcounter).val();
+
+                        getMaterialbyKode(kodebrg, function(d){
+                            console.log(d)
+                            $('#matdesc'+xcounter).val(d.matdesc);
+                            $('#unit'+xcounter).val(d.matunit);
+                        });
+                    })
+
+                    $('.inputNumber').on('change', function(){
+                        this.value = formatRupiah(this.value, '');
+                    })
                 } );
             }
 
@@ -520,17 +513,11 @@
                     success: function(result){
                         // console.log(result)
                         for(var i=0; i<result.length; i++){
-                            detail_order_beli.push(result[i]);
                             var stringprnum = '';
                             if(result[i].prnum == null){
                                 
                             }else{
                                 stringprnum = result[i].prnum + ' | ' + result[i].pritem;
-                            }
-
-                            var ppntext = '';
-                            if(result[i].ppn > 0){
-                                ppntext = 'PPN 10%';
                             }
                             count = count+1;
                             html = '';
@@ -556,42 +543,24 @@
                                         <input type="text" name="itm_price[]" class="form-control disableInput inputNumber readOnly" style="width:100px;text-align: right;" counter="`+count+`" id="poprice`+count+`" required="true" value="`+ formatRupiah(result[i].price.replaceAll('.00',''),'') +`"/>
                                     </td>
                                     <td> 
-                                        <select name="itm_ppn[]" counter="`+count+`" id="ppn`+count+`" class="form-control readOnly" style="width:120px;">
-                                            <option value="`+ result[i].ppn +`"> `+ ppntext +`</option>
-                                            <option value="0"> </option>
-                                            <option value="10"> PPN 10% </option>
-                                        </select>
-                                    </td>
-                                    <td> 
-                                        <input type="text" name="itm_discount[]" class="form-control disableInput inputNumber readOnly" style="width:100px;text-align: right;" counter="`+count+`" id="discount`+count+`" autocomplete="off" value="`+ formatRupiah(result[i].discount.replaceAll('.00',''),'') +`"/>
-                                    </td>
-                                    <td> 
+
                                         <input type="text" name="prnum[]" counter="`+count+`" id="prnum`+count+`" class="form-control" style="width:130px;" readonly value="`+ stringprnum +`"/>
 
                                         <input type="hidden" name="itm_prnum[]" value="`+ result[i].prnum +`" />
                                         <input type="hidden" name="itm_pritem[]" value="`+ result[i].pritem +`" />
                                     </td>
                                     <td class="hideComponent">
-                                        <button type="button" class="btn btn-danger btn-sm removePO hideComponent" counter="`+count+`" id="btnRemove`+count+`">Remove</button>
+                                        <button type="button" class="btn btn-danger btn-sm removePO hideComponent" counter="`+count+`">Remove</button>
                                     </td>
                                 </tr>
                             `;
                             $('#tbl-po-body').append(html);
                             renumberRows();
 
-                            // $('.removePO').on('click', function(e){
-                            //     e.preventDefault();
-                            //     $(this).closest("tr").remove();
-                            //     renumberRows();
-                            // });
-                            
-                            $('#btnRemove'+count).on('click', function(e){
+                            $('.removePO').on('click', function(e){
                                 e.preventDefault();
-                                var row_index = $(this).closest("tr").index();
-                                removeitem(row_index);                        
                                 $(this).closest("tr").remove();
                                 renumberRows();
-                                console.log(detail_order_beli)
                             });
 
                             $('.readOnly').attr('readonly', true);
@@ -614,8 +583,6 @@
                             $('.hideComponent').hide();
                         }
                     }
-                }).done(function(){
-                    console.log(detail_order_beli)
                 });
             }
 
@@ -659,6 +626,7 @@
                         { "data": "matdesc" },
                         { "data": "quantity" },
                         { "data": "unit" },
+                        { "data": "whsname" },
                         {"defaultContent": "<button class='btn btn-primary btn-xs'>Select</button>"}
                     ],
                     "bDestroy": true,
@@ -670,96 +638,75 @@
                     var table = $('#list-pr').DataTable();
                     selected_data = [];
                     selected_data = table.row($(this).closest('tr')).data();
-                    if(pritemExists(selected_data.prnum, selected_data.pritem)){
-                    }else{
-                        detail_order_beli.push(selected_data);
-                        var selqty = '0';
-                        selqty     = selected_data.quantity.replaceAll('.00','');
-                        selqty     = selqty.replaceAll('.',',');
-                        count = count+1;
-                        html = '';
-                        html = `
-                            <tr counter="`+ count +`" id="tr`+ count +`">
-                                <td class="nurut"> 
-                                    `+ count +`
-                                    <input type="hidden" name="no[]" value="`+ count +`" />
-                                </td>
-                                <td> 
-                                    <input type="text" name="itm_material[]" counter="`+count+`" id="material`+count+`" class="form-control" style="width:150px;" value="`+ selected_data.material +`" required="true" />
-                                </td>
-                                <td> 
-                                    <input type="text" name="itm_matdesc[]" counter="`+count+`" id="matdesc`+count+`" class="form-control" style="width:250px;" value="`+ selected_data.matdesc +`" required="true"/>
-                                </td>
-                                <td> 
-                                    <input type="text" name="itm_qty[]" counter="`+count+`" id="poqty`+count+`"  class="form-control inputNumber" style="width:100px;text-align:right;" value="`+ formatRupiah(selqty,'') +`" required="true" autocomplete="off"/>
-                                </td>
-                                <td> 
-                                    <select name="itm_unit[]" counter="`+count+`" id="unit`+count+`" class="form-control whsCode" required style="width:100px;"></select>
-                                    
-                                </td>
-                                <td> 
-                                    <input type="text" name="itm_price[]" class="form-control disableInput inputNumber" style="width:100px;text-align: right;" counter="`+count+`" id="poprice`+count+`" required="true" />
-                                </td>
-                                <td> 
-                                    <select name="itm_ppn[]" counter="`+count+`" id="ppn`+count+`" class="form-control"  style="width:120px;">
-                                        <option value="0"> </option>
-                                        <option value="10"> PPN 10% </option>
-                                    </select>
-                                </td>
-                                <td> 
-                                    <input type="text" name="itm_discount[]" class="form-control disableInput inputNumber" style="width:100px;text-align: right;" counter="`+count+`" id="discount`+count+`"  autocomplete="off"/>
-                                </td>
-                                <td> 
-                                    <input type="text" name="prnum[]" counter="`+count+`" id="prnum`+count+`" class="form-control" style="width:130px;" value="`+ selected_data.prnum +` | `+ selected_data.pritem +`" readonly/>
+                    
+                    count = count+1;
+                    html = '';
+                    html = `
+                        <tr counter="`+ count +`" id="tr`+ count +`">
+                            <td class="nurut"> 
+                                `+ count +`
+                                <input type="hidden" name="no[]" value="`+ count +`" />
+                            </td>
+                            <td> 
+                                <input type="text" name="itm_material[]" counter="`+count+`" id="material`+count+`" class="form-control" style="width:120px;" value="`+ selected_data.material +`" required="true" />
+                            </td>
+                            <td> 
+                                <input type="text" name="itm_matdesc[]" counter="`+count+`" id="matdesc`+count+`" class="form-control" style="width:250px;" value="`+ selected_data.matdesc +`" required="true"/>
+                            </td>
+                            <td> 
+                                <input type="text" name="itm_qty[]" counter="`+count+`" id="poqty`+count+`"  class="form-control inputNumber" style="width:100px;text-align:right;" value="`+ formatRupiah(selected_data.quantity.replaceAll('.00',''),'') +`" required="true" />
+                            </td>
+                            <td> 
+                                <select name="itm_unit[]" counter="`+count+`" id="unit`+count+`" class="form-control whsCode" required style="width:100px;"></select>
+                            </td>
+                            <td> 
+                                <input type="text" name="itm_price[]" class="form-control disableInput inputNumber" style="width:100px;text-align: right;" counter="`+count+`" id="poprice`+count+`" required="true" />
+                            </td>
+                            <td> 
+                                <input type="text" name="prnum[]" counter="`+count+`" id="prnum`+count+`" class="form-control" style="width:130px;" value="`+ selected_data.prnum +` | `+ selected_data.pritem +`" readonly/>
 
-                                    <input type="hidden" name="itm_prnum[]" value="`+ selected_data.prnum +`" />
-                                    <input type="hidden" name="itm_pritem[]" value="`+ selected_data.pritem +`" />
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-danger btn-sm removePO hideComponent" counter="`+count+`" id="btnRemove`+count+`">Remove</button>
-                                </td>
-                            </tr>
-                        `;
-                        $('#tbl-po-body').append(html);
+                                <input type="hidden" name="itm_prnum[]" value="`+ selected_data.prnum +`" />
+                                <input type="hidden" name="itm_pritem[]" value="`+ selected_data.pritem +`" />
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm removePO hideComponent" counter="`+count+`">Remove</button>
+                            </td>
+                        </tr>
+                    `;
+                    $('#tbl-po-body').append(html);
+                    renumberRows();
+
+                    var listItems;
+                            listItems += "<option class='form-control' value='"+ selected_data.unit +"'>"+ selected_data.unit +"</option>";
+                            
+                    $.ajax({
+                        url: base_url+'/barang/getmaterialunit/data?material='+selected_data.material+'&&unit='+selected_data.orderunit,
+                        type: 'GET',
+                        dataType: 'json',
+                        cache:false,
+                        success: function(result){
+                            console.log(result)
+                            
+                            for (var i = 0; i < result.length; i++) {
+                                listItems += "<option class='form-control' value='"+ result[i].altuom +"'>"+ result[i].altuom +"</option>";
+                            };
+                            $("#unit"+count).html(listItems);
+                        }
+                    });
+
+                    $('.removePO').on('click', function(e){
+                        e.preventDefault();
+                        $(this).closest("tr").remove();
                         renumberRows();
+                    });   
+                    
+                    $('.inputNumber').on('change', function(){
+                        this.value = formatRupiah(this.value, '');
+                    })
 
-                        var listItems;
-                                listItems += "<option class='form-control' value='"+ selected_data.unit +"'>"+ selected_data.unit +"</option>";
-                                
-                        $.ajax({
-                            url: base_url+'/barang/getmaterialunit/data?material='+selected_data.material+'&&unit='+selected_data.orderunit,
-                            type: 'GET',
-                            dataType: 'json',
-                            cache:false,
-                            success: function(result){
-                                console.log(result)
-                                
-                                for (var i = 0; i < result.length; i++) {
-                                    listItems += "<option class='form-control' value='"+ result[i].altuom +"'>"+ result[i].altuom +"</option>";
-                                };
-                                $("#unit"+count).html(listItems);
-                            }
-                        });
+                    console.log(selected_data)
+                    // $('#prListModal').modal('hide');
 
-                        $('#btnRemove'+count).on('click', function(e){
-                            e.preventDefault();
-                            var row_index = $(this).closest("tr").index();
-                            removeitem(row_index);                        
-                            $(this).closest("tr").remove();
-                            renumberRows();
-                            console.log(detail_order_beli)
-                        });
-
-                        // $('.removePO').on('click', function(e){
-                        //     e.preventDefault();
-                        //     $(this).closest("tr").remove();
-                        //     renumberRows();
-                        // });   
-                        
-                        $('.inputNumber').on('change', function(){
-                            this.value = formatRupiah(this.value, '');
-                        });
-                    }
                 } );                
             }
 
