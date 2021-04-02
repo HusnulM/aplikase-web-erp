@@ -409,7 +409,7 @@ class Reports extends Controller{
         }        
 	}
 	
-	public function movementview($strdate, $enddate){
+	public function movementview($strdate, $enddate, $movement){
 		$check = $this->model('Home_model')->checkUsermenu('reports/movement','Read');
         if ($check){
 			$data['title']    = 'Inventory Movement';
@@ -420,10 +420,11 @@ class Reports extends Controller{
 			$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
 			//------------------------------------------------------------------------- 
 	
-			$data['mvdata']   = $this->model('Laporan_model')->getMovementData($strdate, $enddate);
+			$data['mvdata']   = $this->model('Laporan_model')->getMovementData($strdate, $enddate, $movement);
 			$data['strdate'] = $strdate;
 			$data['enddate'] = $enddate;
-	
+			$data['movement'] = $movement;
+			// echo json_encode($data['mvdata']);
 			$this->view('templates/header_a', $data);
 			$this->view('reports/rmovementview', $data);
 			$this->view('templates/footer_a');

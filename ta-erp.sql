@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 28, 2021 at 04:36 AM
+-- Generation Time: Apr 02, 2021 at 12:22 PM
 -- Server version: 5.5.16
 -- PHP Version: 7.2.1
 
@@ -637,10 +637,10 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `fGetTotalQtyReq` (`pBomid` VARCHAR(3
 	RETURN (hasil);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fGetTotalValuePO` (`pPonum` VARCHAR(20)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
+CREATE DEFINER=`root`@`localhost` FUNCTION `fGetTotalValuePO` (`pPonum` VARCHAR(20)) RETURNS VARCHAR(20) CHARSET latin1 BEGIN
     DECLARE hasil VARCHAR(20);
 	
-    SET hasil = (SELECT sum(subtotal) from v_po004 where ponum = pPonum and paymentstat is null);
+    SET hasil = (SELECT sum(subtotal) from v_po004 where ponum = pPonum and paymentstat is null and approvestat <> 5);
     	-- return the customer level
 	RETURN (hasil);
 END$$
@@ -945,6 +945,18 @@ CREATE TABLE `t_batch_stock` (
   `batch` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `quantity` decimal(15,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Batch Stock';
+
+--
+-- Dumping data for table `t_batch_stock`
+--
+
+INSERT INTO `t_batch_stock` (`material`, `warehouse`, `batch`, `quantity`) VALUES
+('MAT0001', 'WH00', '7900000001', '145.00'),
+('MAT0001', 'WH00', '7900000002', '100.00'),
+('MAT0002', 'WH00', '7900000001', '60.00'),
+('MAT0003', 'WH00', '7900000002', '100.00'),
+('MAT0004', 'WH00', '7900000002', '50.00'),
+('MAT0005', 'WH00', '7900000000', '2.00');
 
 -- --------------------------------------------------------
 
@@ -1532,6 +1544,14 @@ CREATE TABLE `t_invoice01` (
   `approvedate` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `t_invoice01`
+--
+
+INSERT INTO `t_invoice01` (`ivnum`, `ivyear`, `vendor`, `total_invoice`, `note`, `bankacc`, `ivdate`, `createdby`, `createdon`, `approvestat`, `approvedate`) VALUES
+('5000000019', 2021, '3000000000', '1028500.00', 'Pembayaran PO', '5204181811', '2021-04-02', 'sys-admin', '2021-04-02', 'X', '2021-04-02'),
+('5000000020', 2021, '3000000000', '174900.00', '', '999999999', '2021-04-02', 'sys-admin', '2021-04-02', NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -1548,6 +1568,16 @@ CREATE TABLE `t_invoice02` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
+-- Dumping data for table `t_invoice02`
+--
+
+INSERT INTO `t_invoice02` (`ivnum`, `ivyear`, `ivitem`, `ponum`, `poitem`, `ivdate`) VALUES
+('5000000019', 2021, 1, '2000000000', 1, '2021-04-02'),
+('5000000019', 2021, 2, '2000000000', 2, '2021-04-02'),
+('5000000020', 2021, 1, '2000000001', 1, '2021-04-02'),
+('5000000020', 2021, 2, '2000000001', 2, '2021-04-02');
+
+--
 -- Triggers `t_invoice02`
 --
 DELIMITER $$
@@ -1562,15 +1592,26 @@ DELIMITER ;
 --
 
 CREATE TABLE `t_inv_h` (
-  `grnum` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `year` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `movement` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `grnum` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `year` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `movement` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `movementdate` date DEFAULT NULL,
-  `note` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `refnum` varchar(30) DEFAULT NULL,
+  `note` text COLLATE utf8mb4_unicode_ci,
+  `refnum` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `createdon` date NOT NULL,
-  `createdby` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+  `createdby` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Table Header Penerimaan PO';
+
+--
+-- Dumping data for table `t_inv_h`
+--
+
+INSERT INTO `t_inv_h` (`grnum`, `year`, `movement`, `movementdate`, `note`, `refnum`, `createdon`, `createdby`) VALUES
+('4000000000', '2021', '261', '2021-03-28', 'Service Kendaraan', 'SRV-8900000000', '2021-03-28', 'sys-admin'),
+('4000000001', '2021', '101', '2021-04-02', 'Terima PO', NULL, '2021-04-02', 'sys-admin'),
+('4000000002', '2021', '101', '2021-04-04', 'Terima Barang', NULL, '2021-04-02', 'sys-admin'),
+('5100000000', '2021', '561', '2021-03-28', 'Test Update Stock', NULL, '2021-03-28', 'sys-admin'),
+('6100000000', '2021', '261', '2021-04-02', 'Service Kendaraan Baru', 'SRV-8900000001', '2021-04-02', 'sys-admin');
 
 --
 -- Triggers `t_inv_h`
@@ -1587,28 +1628,44 @@ DELIMITER ;
 --
 
 CREATE TABLE `t_inv_i` (
-  `grnum` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `year` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `grnum` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `year` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
   `gritem` int(11) NOT NULL,
-  `movement` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `batchnumber` varchar(30) DEFAULT NULL,
-  `material` varchar(70) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `matdesc` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `movement` varchar(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `batchnumber` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `material` varchar(70) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `matdesc` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `quantity` decimal(15,2) DEFAULT NULL,
-  `unit` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `unit` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `price` decimal(15,2) DEFAULT NULL,
-  `ponum` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ponum` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `poitem` int(11) DEFAULT NULL,
-  `resnum` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `resnum` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `resitem` int(11) DEFAULT NULL,
-  `cancel` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `warehouse` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `warehouseto` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shkzg` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cancel` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `remark` text COLLATE utf8mb4_unicode_ci,
+  `warehouse` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `warehouseto` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shkzg` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `createdon` date DEFAULT NULL,
-  `createdby` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `createdby` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Table Detail Inventory Movements';
+
+--
+-- Dumping data for table `t_inv_i`
+--
+
+INSERT INTO `t_inv_i` (`grnum`, `year`, `gritem`, `movement`, `batchnumber`, `material`, `matdesc`, `quantity`, `unit`, `price`, `ponum`, `poitem`, `resnum`, `resitem`, `cancel`, `remark`, `warehouse`, `warehouseto`, `shkzg`, `createdon`, `createdby`) VALUES
+('4000000000', '2021', 1, '261', '7900000000', 'MAT0005', 'AKI Bekas', '2.00', 'PC', '50000.00', NULL, NULL, 'SRV-8900000000', 1, NULL, NULL, 'WH00', '', '+', '2021-03-28', 'sys-admin'),
+('4000000001', '2021', 1, '101', '7900000001', 'MAT0001', 'Material 001', '150.00', 'PC', '4583.33', '2000000000', 1, NULL, NULL, NULL, '', 'WH00', NULL, '+', '2021-04-02', 'sys-admin'),
+('4000000001', '2021', 2, '101', '7900000001', 'MAT0002', 'Material 002', '70.00', 'PC', '4871.43', '2000000000', 2, NULL, NULL, NULL, '', 'WH00', NULL, '+', '2021-04-02', 'sys-admin'),
+('4000000002', '2021', 1, '101', '7900000002', 'MAT0001', 'Material 001', '100.00', 'PC', '750.00', '2000000001', 1, NULL, NULL, NULL, '', 'WH00', NULL, '+', '2021-04-02', 'sys-admin'),
+('4000000002', '2021', 2, '101', '7900000002', 'MAT0003', 'Material 003', '100.00', 'PC', '999.00', '2000000001', 2, NULL, NULL, NULL, '', 'WH00', NULL, '+', '2021-04-02', 'sys-admin'),
+('4000000002', '2021', 3, '101', '7900000002', 'MAT0004', 'Material 004', '50.00', 'PC', '1500.00', '2000000001', 3, NULL, NULL, NULL, '', 'WH00', NULL, '+', '2021-04-02', 'sys-admin'),
+('5100000000', '2021', 1, '561', '7900000000', 'MAT0005', 'AKI Bekas', '5.00', 'PC', '50000.00', NULL, NULL, NULL, NULL, NULL, 'Aki Bekas', 'WH00', NULL, '+', '2021-03-28', 'sys-admin'),
+('6100000000', '2021', 1, '261', '7900000001', 'MAT0001', 'Material 001', '5.00', 'PC', '4583.33', NULL, NULL, 'SRV-8900000001', 1, NULL, NULL, 'WH00', '', '+', '2021-04-02', 'sys-admin'),
+('6100000000', '2021', 2, '261', '7900000001', 'MAT0002', 'Material 002', '10.00', 'PC', '4871.43', NULL, NULL, 'SRV-8900000001', 2, NULL, NULL, 'WH00', '', '+', '2021-04-02', 'sys-admin'),
+('6100000000', '2021', 3, '261', '7900000000', 'MAT0005', 'AKI Bekas', '1.00', 'PC', '50000.00', NULL, NULL, 'SRV-8900000001', 3, NULL, NULL, 'WH00', '', '+', '2021-04-02', 'sys-admin');
 
 --
 -- Triggers `t_inv_i`
@@ -2006,10 +2063,10 @@ INSERT INTO `t_menus` (`id`, `menu`, `route`, `type`, `icon`, `grouping`, `creat
 --
 
 CREATE TABLE `t_nriv` (
-  `object` varchar(15) NOT NULL,
-  `fromnum` varchar(15) NOT NULL,
-  `tonumber` varchar(15) NOT NULL,
-  `currentnum` varchar(15) NOT NULL
+  `object` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fromnum` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tonumber` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `currentnum` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -2018,17 +2075,18 @@ CREATE TABLE `t_nriv` (
 
 INSERT INTO `t_nriv` (`object`, `fromnum`, `tonumber`, `currentnum`) VALUES
 ('BARANG', '1000000000', '1999999999', ''),
-('BATCH', '7900000000', '7999999999', ''),
-('GROTHER', '5100000000', '5999999999', ''),
-('GRPO', '4000000000', '4999999999', ''),
-('IV', '5000000000', '5999999999', '5000000019'),
+('BATCH', '7900000000', '7999999999', '7900000003'),
+('GI', '6100000000', '6999999999', '6100000001'),
+('GROTHER', '5100000000', '5999999999', '5100000001'),
+('GRPO', '4000000000', '4999999999', '4000000003'),
+('IV', '5000000000', '5999999999', '5000000021'),
 ('JURNAL', '6000000000', '6999999999', ''),
-('PO', '2000000000', '2999999999', ''),
-('PR', '1000000000', '3999999999', ''),
+('PO', '2000000000', '2999999999', '2000000002'),
+('PR', '1000000000', '3999999999', '1000000002'),
 ('PR2', '2000000000', '3999999999', '2000000001'),
 ('PR3', '3000000000', '3999999999', '3000000001'),
 ('RSRV', '4000000000', '4999999999', ''),
-('SERVICE', '8900000000', '8999999999', ''),
+('SERVICE', '8900000000', '8999999999', '8900000002'),
 ('VENDOR', '3000000000', '3999999999', '3000000001');
 
 -- --------------------------------------------------------
@@ -2089,6 +2147,14 @@ CREATE TABLE `t_po01` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Purchase Order Header';
 
 --
+-- Dumping data for table `t_po01`
+--
+
+INSERT INTO `t_po01` (`ponum`, `ext_ponum`, `potype`, `podat`, `vendor`, `note`, `currency`, `approvestat`, `appby`, `completed`, `warehouse`, `createdon`, `createdby`) VALUES
+('2000000000', '2000000000', 'PO01', '2021-03-30', '3000000000', 'PO Pertama', 'IDR', '1', NULL, NULL, 'WH00', '2021-03-30 09:03:51', 'sys-admin'),
+('2000000001', '2000000001', 'PO01', '2021-04-02', '3000000000', 'Test PO', 'IDR', '1', NULL, NULL, 'WH00', '2021-04-02 01:04:18', 'sys-admin');
+
+--
 -- Triggers `t_po01`
 --
 DELIMITER $$
@@ -2127,6 +2193,17 @@ CREATE TABLE `t_po02` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='PO Item';
 
 --
+-- Dumping data for table `t_po02`
+--
+
+INSERT INTO `t_po02` (`ponum`, `poitem`, `material`, `matdesc`, `quantity`, `unit`, `price`, `ppn`, `discount`, `grqty`, `prnum`, `pritem`, `grstatus`, `pocomplete`, `paymentstat`, `approvestat`, `approvedby`, `final_approve`, `approvedate`, `createdon`, `createdby`) VALUES
+('2000000000', 1, 'MAT0001', 'Material 001', '150.00', 'PC', '4500.00', 10, '50000.00', '150.00', NULL, NULL, 'X', NULL, 'X', '2', 'direktur', 'X', '2021-04-02', '2021-03-30', 'sys-admin'),
+('2000000000', 2, 'MAT0002', 'Material 002', '70.00', 'PC', '5500.00', 10, '75000.00', '70.00', NULL, NULL, 'X', NULL, 'X', '2', 'direktur', 'X', '2021-04-02', '2021-03-30', 'sys-admin'),
+('2000000001', 1, 'MAT0001', 'Material 001', '100.00', 'PC', '750.00', 0, '0.00', '100.00', '1000000000', 1, 'X', NULL, 'O', '2', 'direktur', 'X', '2021-04-02', '2021-04-02', 'sys-admin'),
+('2000000001', 2, 'MAT0003', 'Material 003', '100.00', 'PC', '999.00', 0, '0.00', '100.00', '1000000001', 1, 'X', NULL, 'O', '2', 'direktur', 'X', '2021-04-02', '2021-04-02', 'sys-admin'),
+('2000000001', 3, 'MAT0004', 'Material 004', '50.00', 'PC', '1500.00', 0, '0.00', '50.00', '1000000001', 2, 'X', NULL, NULL, '5', 'direktur', 'X', '2021-04-02', '2021-04-02', 'sys-admin');
+
+--
 -- Triggers `t_po02`
 --
 DELIMITER $$
@@ -2160,6 +2237,14 @@ CREATE TABLE `t_pr01` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Purchase Requisition Header';
 
 --
+-- Dumping data for table `t_pr01`
+--
+
+INSERT INTO `t_pr01` (`prnum`, `typepr`, `note`, `prdate`, `relgroup`, `approvestat`, `requestby`, `warehouse`, `idproject`, `appby`, `createdon`, `createdby`) VALUES
+('1000000000', 'PR01', 'Tes', '2021-03-30', NULL, '1', 'Admin', 'WH00', NULL, NULL, '2021-03-30 00:00:00', 'sys-admin'),
+('1000000001', 'PR01', 'Test PR', '2021-04-02', NULL, '1', 'Admin', 'WH00', NULL, NULL, '2021-04-02 00:00:00', 'sys-admin');
+
+--
 -- Triggers `t_pr01`
 --
 DELIMITER $$
@@ -2190,6 +2275,17 @@ CREATE TABLE `t_pr02` (
   `createdon` datetime DEFAULT NULL,
   `createdby` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Purchase Order Item';
+
+--
+-- Dumping data for table `t_pr02`
+--
+
+INSERT INTO `t_pr02` (`prnum`, `pritem`, `material`, `matdesc`, `quantity`, `unit`, `warehouse`, `pocreated`, `approvestat`, `approveby`, `final_approve`, `approvedate`, `remark`, `createdon`, `createdby`) VALUES
+('1000000000', 1, 'MAT0001', 'Material 001', '100.00', 'PC', NULL, 'X', '3', 'direktur', 'X', '2021-04-02', '', '2021-03-30 00:00:00', 'sys-admin'),
+('1000000000', 2, 'MAT0002', 'Material 002', '50.00', 'PC', NULL, NULL, '5', 'ka-adm-ws', 'X', '2021-04-02', '', '2021-03-30 00:00:00', 'sys-admin'),
+('1000000000', 3, 'MAT0003', 'Material 003', '40.00', 'PC', NULL, NULL, '5', 'ka-adm-ws', 'X', '2021-04-02', '', '2021-03-30 00:00:00', 'sys-admin'),
+('1000000001', 1, 'MAT0003', 'Material 003', '100.00', 'PC', NULL, 'X', '3', 'direktur', 'X', '2021-04-02', 'tes', '2021-04-02 00:00:00', 'sys-admin'),
+('1000000001', 2, 'MAT0004', 'Material 004', '50.00', 'PC', NULL, 'X', '3', 'direktur', 'X', '2021-04-02', 'tes', '2021-04-02 00:00:00', 'sys-admin');
 
 -- --------------------------------------------------------
 
@@ -2326,6 +2422,7 @@ INSERT INTO `t_rolemenu` (`roleid`, `menuid`, `createdon`, `createdby`) VALUES
 (29, 25, '2021-03-09 00:00:00', 'sys-admin'),
 (29, 26, '2021-03-09 00:00:00', 'sys-admin'),
 (29, 33, '2021-03-09 00:00:00', 'sys-admin'),
+(29, 55, '2021-04-02 00:00:00', 'sys-admin'),
 (30, 11, '2021-03-04 00:00:00', 'sys-admin'),
 (30, 15, '2021-03-07 00:00:00', 'sys-admin'),
 (30, 16, '2021-03-07 00:00:00', 'sys-admin'),
@@ -2535,6 +2632,10 @@ INSERT INTO `t_role_avtivity` (`roleid`, `menuid`, `activity`, `status`, `create
 (29, 33, 'Delete', 0, '2021-03-09'),
 (29, 33, 'Read', 1, '2021-03-09'),
 (29, 33, 'Update', 0, '2021-03-09'),
+(29, 55, 'Create', 1, '2021-04-02'),
+(29, 55, 'Delete', 1, '2021-04-02'),
+(29, 55, 'Read', 1, '2021-04-02'),
+(29, 55, 'Update', 1, '2021-04-02'),
 (30, 11, 'Create', 0, '2021-03-04'),
 (30, 11, 'Delete', 0, '2021-03-04'),
 (30, 11, 'Read', 1, '2021-03-04'),
@@ -2688,6 +2789,14 @@ CREATE TABLE `t_service01` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
+-- Dumping data for table `t_service01`
+--
+
+INSERT INTO `t_service01` (`servicenum`, `servicedate`, `note`, `mekanik`, `nopol`, `refnum`, `servicestatus`, `warehouse`, `createdon`, `createdby`) VALUES
+('SRV-8900000000', '2021-03-28', 'Service Kendaraan', 'Udin', 'D 1677 AIH', NULL, 'X', 'WH00', '2021-03-28 09:45:59', 'sys-admin'),
+('SRV-8900000001', '2021-04-02', 'Service Kendaraan Baru', 'Cecep', 'DR 3557 L', NULL, 'X', 'WH00', '2021-04-02 14:19:51', 'sys-admin');
+
+--
 -- Triggers `t_service01`
 --
 DELIMITER $$
@@ -2713,6 +2822,16 @@ CREATE TABLE `t_service02` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
+-- Dumping data for table `t_service02`
+--
+
+INSERT INTO `t_service02` (`servicenum`, `serviceitem`, `material`, `warehouse`, `quantity`, `unit`, `createdon`, `createdby`) VALUES
+('SRV-8900000000', 1, 'MAT0005', 'WH00', '2.00', 'PC', '2021-03-28 09:45:59', 'sys-admin'),
+('SRV-8900000001', 1, 'MAT0001', 'WH00', '5.00', 'PC', '2021-04-02 14:19:51', 'sys-admin'),
+('SRV-8900000001', 2, 'MAT0002', 'WH00', '10.00', 'PC', '2021-04-02 14:19:51', 'sys-admin'),
+('SRV-8900000001', 3, 'MAT0005', 'WH00', '1.00', 'PC', '2021-04-02 14:19:52', 'sys-admin');
+
+--
 -- Triggers `t_service02`
 --
 DELIMITER $$
@@ -2732,6 +2851,17 @@ CREATE TABLE `t_stock` (
   `quantity` decimal(15,2) NOT NULL,
   `blockqty` decimal(15,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Inventory Stock';
+
+--
+-- Dumping data for table `t_stock`
+--
+
+INSERT INTO `t_stock` (`material`, `warehouse`, `quantity`, `blockqty`) VALUES
+('MAT0001', 'WH00', '245.00', '0.00'),
+('MAT0002', 'WH00', '60.00', '0.00'),
+('MAT0003', 'WH00', '100.00', '0.00'),
+('MAT0004', 'WH00', '50.00', '0.00'),
+('MAT0005', 'WH00', '2.00', '0.00');
 
 -- --------------------------------------------------------
 
@@ -2782,16 +2912,16 @@ INSERT INTO `t_uom` (`uom`, `description`, `decimalval`, `createdon`, `createdby
 --
 
 CREATE TABLE `t_user` (
-  `username` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nama` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `userlevel` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `username` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nama` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `userlevel` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `department` int(11) DEFAULT NULL,
   `jabatan` int(11) DEFAULT NULL,
-  `section` varchar(50) DEFAULT NULL,
-  `approval` varchar(50) DEFAULT NULL,
-  `reffid` varchar(30) DEFAULT NULL,
-  `createdby` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `section` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `approval` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `reffid` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `createdby` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `createdon` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -2887,6 +3017,7 @@ CREATE TABLE `t_vendor` (
   `notelp` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fax` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `npwp` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   `createdon` datetime DEFAULT NULL,
   `createdby` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
@@ -2896,8 +3027,8 @@ CREATE TABLE `t_vendor` (
 -- Dumping data for table `t_vendor`
 --
 
-INSERT INTO `t_vendor` (`vendor`, `namavendor`, `alamat`, `kota`, `provinsi`, `kodepos`, `notelp`, `email`, `fax`, `active`, `createdon`, `createdby`) VALUES
-('3000000000', 'PT Maju Merdeka', 'Jalan Merdeka No 50 Kota Jakarta Pusat, Indonesia Raya', NULL, NULL, NULL, '02144444', 'husnulmub@gmail.com', NULL, NULL, '2020-12-30 00:00:00', 'sys-admin');
+INSERT INTO `t_vendor` (`vendor`, `namavendor`, `alamat`, `kota`, `provinsi`, `kodepos`, `notelp`, `email`, `fax`, `npwp`, `active`, `createdon`, `createdby`) VALUES
+('3000000000', 'PT Maju Merdeka', 'Jalan Merdeka No 50 Kota Jakarta Pusat, Indonesia Raya', NULL, NULL, NULL, '02144444', 'husnulmub@gmail.com', NULL, '94.981.043.6-409.000', NULL, '2020-12-30 00:00:00', 'sys-admin');
 
 -- --------------------------------------------------------
 
@@ -3129,7 +3260,7 @@ CREATE TABLE `v_inventory03` (
 ,`gritem` int(11)
 ,`movement` varchar(5)
 ,`movementdate` date
-,`movemventtext` varchar(23)
+,`movemventtext` varchar(20)
 ,`note` text
 ,`batchnumber` varchar(30)
 ,`material` varchar(70)
@@ -3529,6 +3660,8 @@ CREATE TABLE `v_rinvoice01` (
 ,`approvedate` date
 ,`namavendor` varchar(60)
 ,`ivstat` varchar(8)
+,`alamat` text
+,`npwp` varchar(20)
 );
 
 -- --------------------------------------------------------
@@ -3625,6 +3758,29 @@ CREATE TABLE `v_service02` (
 ,`unit` varchar(10)
 ,`price` decimal(15,2)
 ,`subtotal` decimal(15,2)
+,`warehouse` varchar(10)
+,`whsname` varchar(40)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_service03`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_service03` (
+`servicenum` varchar(20)
+,`servicedate` date
+,`note` text
+,`mekanik` varchar(50)
+,`nopol` varchar(15)
+,`whsname` varchar(40)
+,`servicestatus` varchar(2)
+,`serviceitem` int(11)
+,`material` varchar(70)
+,`matdesc` varchar(100)
+,`quantity` decimal(15,2)
+,`unit` varchar(10)
 );
 
 -- --------------------------------------------------------
@@ -3852,7 +4008,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_inventory03`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_inventory03`  AS  select `b`.`grnum` AS `grnum`,`b`.`year` AS `year`,`a`.`gritem` AS `gritem`,`b`.`movement` AS `movement`,`b`.`movementdate` AS `movementdate`,(case when (`a`.`movement` = '101') then 'Receipt PO' when (`a`.`movement` = '201') then 'Transfer to reservation' when (`a`.`movement` = '211') then 'Transfer other' when (`a`.`movement` = '261') then 'Goods issue material' end) AS `movemventtext`,`b`.`note` AS `note`,`a`.`batchnumber` AS `batchnumber`,`a`.`material` AS `material`,`a`.`matdesc` AS `matdesc`,`a`.`quantity` AS `quantity`,`a`.`unit` AS `unit`,`a`.`ponum` AS `ponum`,`a`.`poitem` AS `poitem`,`a`.`resnum` AS `resnum`,`a`.`resitem` AS `resitem`,`a`.`remark` AS `remark`,`a`.`warehouse` AS `warehouse`,`fGetWarehouseName`(`a`.`warehouse`) AS `whsname`,`a`.`warehouseto` AS `warehouseto`,`fGetWarehouseName`(`a`.`warehouseto`) AS `whsdest`,`a`.`shkzg` AS `shkzg`,`a`.`createdby` AS `createdby`,`fGetUserDepartment`(`a`.`createdby`) AS `department` from (`t_inv_i` `a` join `t_inv_h` `b` on(((`a`.`grnum` = `b`.`grnum`) and (`a`.`year` = `b`.`year`)))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_inventory03`  AS  select `b`.`grnum` AS `grnum`,`b`.`year` AS `year`,`a`.`gritem` AS `gritem`,`b`.`movement` AS `movement`,`b`.`movementdate` AS `movementdate`,(case when (`a`.`movement` = '101') then 'Penerimaan PO' when (`a`.`movement` = '201') then 'Transfer reservation' when (`a`.`movement` = '211') then 'Transfer other' when (`a`.`movement` = '261') then 'Pemakain Material' when (`a`.`movement` = '561') then 'Penerimaan Lain-lain' end) AS `movemventtext`,`b`.`note` AS `note`,`a`.`batchnumber` AS `batchnumber`,`a`.`material` AS `material`,`a`.`matdesc` AS `matdesc`,`a`.`quantity` AS `quantity`,`a`.`unit` AS `unit`,`a`.`ponum` AS `ponum`,`a`.`poitem` AS `poitem`,`a`.`resnum` AS `resnum`,`a`.`resitem` AS `resitem`,`a`.`remark` AS `remark`,`a`.`warehouse` AS `warehouse`,`fGetWarehouseName`(`a`.`warehouse`) AS `whsname`,`a`.`warehouseto` AS `warehouseto`,`fGetWarehouseName`(`a`.`warehouseto`) AS `whsdest`,`a`.`shkzg` AS `shkzg`,`a`.`createdby` AS `createdby`,`fGetUserDepartment`(`a`.`createdby`) AS `department` from (`t_inv_i` `a` join `t_inv_h` `b` on(((`a`.`grnum` = `b`.`grnum`) and (`a`.`year` = `b`.`year`)))) ;
 
 -- --------------------------------------------------------
 
@@ -3861,7 +4017,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_payment01`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_payment01`  AS  select distinct `a`.`ponum` AS `ponum`,`a`.`podat` AS `podat`,`a`.`note` AS `note`,`a`.`vendor` AS `vendor`,`b`.`namavendor` AS `namavendor`,cast(`fGetTotalValuePO`(`a`.`ponum`) as decimal(15,2)) AS `povalue` from ((`t_po01` `a` join `t_vendor` `b` on((`a`.`vendor` = `b`.`vendor`))) join `t_po02` `c` on((`a`.`ponum` = `c`.`ponum`))) where ((`c`.`final_approve` = 'X') and isnull(`c`.`paymentstat`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_payment01`  AS  select distinct `a`.`ponum` AS `ponum`,`a`.`podat` AS `podat`,`a`.`note` AS `note`,`a`.`vendor` AS `vendor`,`b`.`namavendor` AS `namavendor`,cast(`fGetTotalValuePO`(`a`.`ponum`) as decimal(15,2)) AS `povalue` from ((`t_po01` `a` join `t_vendor` `b` on((`a`.`vendor` = `b`.`vendor`))) join `t_po02` `c` on((`a`.`ponum` = `c`.`ponum`))) where ((`c`.`final_approve` = 'X') and isnull(`c`.`paymentstat`) and (`c`.`approvestat` <> 5)) ;
 
 -- --------------------------------------------------------
 
@@ -3951,7 +4107,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_pr005`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pr005`  AS  select `a`.`prnum` AS `prnum`,`a`.`pritem` AS `pritem`,`b`.`warehouse` AS `warehouse`,`c`.`deskripsi` AS `whsname`,`a`.`material` AS `material`,`a`.`matdesc` AS `matdesc`,`a`.`quantity` AS `quantity`,(case when ((`a`.`quantity` - `fGetOpenPRQty`(`a`.`prnum`,`a`.`pritem`)) > 0) then (`a`.`quantity` - `fGetOpenPRQty`(`a`.`prnum`,`a`.`pritem`)) else `a`.`quantity` end) AS `openqty`,`a`.`unit` AS `unit`,`a`.`pocreated` AS `pocreated` from ((`t_pr02` `a` join `t_pr01` `b` on((`a`.`prnum` = `b`.`prnum`))) left join `t_gudang` `c` on((`b`.`warehouse` = `c`.`gudang`))) where ((`a`.`final_approve` = 'X') and isnull(`a`.`pocreated`)) order by `a`.`prnum`,`a`.`pritem` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pr005`  AS  select `a`.`prnum` AS `prnum`,`a`.`pritem` AS `pritem`,`b`.`warehouse` AS `warehouse`,`c`.`deskripsi` AS `whsname`,`a`.`material` AS `material`,`a`.`matdesc` AS `matdesc`,`a`.`quantity` AS `quantity`,(case when ((`a`.`quantity` - `fGetOpenPRQty`(`a`.`prnum`,`a`.`pritem`)) > 0) then (`a`.`quantity` - `fGetOpenPRQty`(`a`.`prnum`,`a`.`pritem`)) else `a`.`quantity` end) AS `openqty`,`a`.`unit` AS `unit`,`a`.`pocreated` AS `pocreated` from ((`t_pr02` `a` join `t_pr01` `b` on((`a`.`prnum` = `b`.`prnum`))) left join `t_gudang` `c` on((`b`.`warehouse` = `c`.`gudang`))) where ((`a`.`final_approve` = 'X') and (`a`.`approvestat` <> 5) and isnull(`a`.`pocreated`)) order by `a`.`prnum`,`a`.`pritem` ;
 
 -- --------------------------------------------------------
 
@@ -4014,7 +4170,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_rinvoice01`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_rinvoice01`  AS  select `a`.`ivnum` AS `ivnum`,`a`.`ivyear` AS `ivyear`,`a`.`vendor` AS `vendor`,`a`.`total_invoice` AS `total_invoice`,`a`.`note` AS `note`,`a`.`bankacc` AS `bankacc`,`a`.`ivdate` AS `ivdate`,`a`.`createdby` AS `createdby`,`a`.`createdon` AS `createdon`,`a`.`approvestat` AS `approvestat`,`a`.`approvedate` AS `approvedate`,`b`.`namavendor` AS `namavendor`,(case when isnull(`a`.`approvestat`) then 'Open' else 'Approved' end) AS `ivstat` from (`t_invoice01` `a` join `t_vendor` `b` on((`a`.`vendor` = `b`.`vendor`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_rinvoice01`  AS  select `a`.`ivnum` AS `ivnum`,`a`.`ivyear` AS `ivyear`,`a`.`vendor` AS `vendor`,`a`.`total_invoice` AS `total_invoice`,`a`.`note` AS `note`,`a`.`bankacc` AS `bankacc`,`a`.`ivdate` AS `ivdate`,`a`.`createdby` AS `createdby`,`a`.`createdon` AS `createdon`,`a`.`approvestat` AS `approvestat`,`a`.`approvedate` AS `approvedate`,`b`.`namavendor` AS `namavendor`,(case when isnull(`a`.`approvestat`) then 'Open' else 'Approved' end) AS `ivstat`,`b`.`alamat` AS `alamat`,`b`.`npwp` AS `npwp` from (`t_invoice01` `a` join `t_vendor` `b` on((`a`.`vendor` = `b`.`vendor`))) ;
 
 -- --------------------------------------------------------
 
@@ -4059,7 +4215,16 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_service02`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_service02`  AS  select `a`.`servicenum` AS `servicenum`,`b`.`resitem` AS `resitem`,`a`.`servicedate` AS `servicedate`,`a`.`note` AS `note`,`a`.`mekanik` AS `mekanik`,`a`.`nopol` AS `nopol`,`b`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,`b`.`batchnumber` AS `batchnumber`,`b`.`quantity` AS `quantity`,`b`.`unit` AS `unit`,`b`.`price` AS `price`,cast((`b`.`price` * `b`.`quantity`) as decimal(15,2)) AS `subtotal` from (`t_service01` `a` join `t_inv_i` `b` on((`a`.`servicenum` = `b`.`resnum`))) where (`b`.`movement` = '261') ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_service02`  AS  select `a`.`servicenum` AS `servicenum`,`b`.`resitem` AS `resitem`,`a`.`servicedate` AS `servicedate`,`a`.`note` AS `note`,`a`.`mekanik` AS `mekanik`,`a`.`nopol` AS `nopol`,`b`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,`b`.`batchnumber` AS `batchnumber`,`b`.`quantity` AS `quantity`,`b`.`unit` AS `unit`,`b`.`price` AS `price`,cast((`b`.`price` * `b`.`quantity`) as decimal(15,2)) AS `subtotal`,`b`.`warehouse` AS `warehouse`,`c`.`deskripsi` AS `whsname` from ((`t_service01` `a` join `t_inv_i` `b` on((`a`.`servicenum` = `b`.`resnum`))) left join `t_gudang` `c` on((`b`.`warehouse` = `c`.`gudang`))) where (`b`.`movement` = '261') ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_service03`
+--
+DROP TABLE IF EXISTS `v_service03`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_service03`  AS  select `a`.`servicenum` AS `servicenum`,`a`.`servicedate` AS `servicedate`,`a`.`note` AS `note`,`a`.`mekanik` AS `mekanik`,`a`.`nopol` AS `nopol`,`c`.`deskripsi` AS `whsname`,`a`.`servicestatus` AS `servicestatus`,`b`.`serviceitem` AS `serviceitem`,`b`.`material` AS `material`,`d`.`matdesc` AS `matdesc`,`b`.`quantity` AS `quantity`,`b`.`unit` AS `unit` from (((`t_service01` `a` join `t_service02` `b` on((`a`.`servicenum` = `b`.`servicenum`))) left join `t_gudang` `c` on((`a`.`warehouse` = `c`.`gudang`))) left join `t_material` `d` on((`b`.`material` = `d`.`material`))) order by `a`.`servicenum`,`b`.`serviceitem` ;
 
 -- --------------------------------------------------------
 

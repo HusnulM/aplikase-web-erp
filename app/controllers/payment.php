@@ -79,23 +79,23 @@ class Payment extends Controller{
 	}
 
 	public function post(){
-		$saldo = $this->model('Setoran_model')->getsaldobyakun($_POST['header'][0]['bankacc']);
-		if($saldo['saldo_akhir'] > $_POST['header'][0]['totalinv']){
-			$nextNumb = $this->model('Pr_model')->getNextNumber('IV');
-			if( $this->model('Invoice_model')->postdata($_POST, $nextNumb['nextnumb']) > 0 ) {
-				$result = ["msg"=>"sukses", $nextNumb];
-				echo json_encode($nextNumb['nextnumb']);
-				exit;			
-			}else{
-				$result = ["msg"=>"error"];
-				echo json_encode($result);
-				exit;	
-			}
+		$nextNumb = $this->model('Pr_model')->getNextNumber('IV');
+		if( $this->model('Invoice_model')->postdata($_POST, $nextNumb['nextnumb']) > 0 ) {
+			$result = ["msg"=>"sukses", $nextNumb];
+			echo json_encode($nextNumb['nextnumb']);
+			exit;			
 		}else{
-			$result = ["msg"=>"error", "text"=>"Saldo tidak mencukupi!"];
+			$result = ["msg"=>"error"];
 			echo json_encode($result);
-			exit;
+			exit;	
 		}
+		// $saldo = $this->model('Setoran_model')->getsaldobyakun($_POST['header'][0]['bankacc']);
+		// if($saldo['saldo_akhir'] > $_POST['header'][0]['totalinv']){
+		// }else{
+		// 	$result = ["msg"=>"error", "text"=>"Saldo tidak mencukupi!"];
+		// 	echo json_encode($result);
+		// 	exit;
+		// }
 	}
 
 	public function _approvepayment($ponum,$ivnum){
@@ -108,5 +108,13 @@ class Payment extends Controller{
 			echo json_encode($result);
 			exit;	
 		}		
+	}
+
+	public function printinvoice($ivnum){
+		$data['setting']  = $this->model('Setting_model')->getgensetting();
+		$data['header']   = $this->model('Invoice_model')->getHeaderInvoice($ivnum);
+		$data['ivitem']   = $this->model('Invoice_model')->getDetailInvoice($ivnum);
+		$this->view('invoice/cetak', $data);
+		// echo json_encode($data);
 	}
 }

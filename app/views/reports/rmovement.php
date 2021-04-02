@@ -31,6 +31,20 @@
 
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                         <div class="form-group">
+                                            <div class="form-line">
+                                                <label for="reqdate1">Movement</label>
+                                                <select name="movement" id="movement" class="form-control">
+                                                    <option value="All">All</option>
+                                                    <option value="1">Penerimaan</option>
+                                                    <option value="2">Pengeluaran</option>
+                                                </select>
+                                            </div>
+                                        </div>    
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <div class="form-group">
                                             <button type="button" id="btn-process" class="btn btn-primary"  data-type="success">Show Data</button>
                                         </div>    
                                     </div>
@@ -46,7 +60,10 @@
     <script>
         $(function(){
             $('#btn-process').on('click', function(){
-                window.location.href = base_url+'/reports/movementview/'+$('#strdate').val()+'/'+$('#enddate').val()
+                var movement = $('#movement').val();
+                var strdate  = $('#strdate').val();
+                var enddate  = $('#enddate').val();
+                window.location.href = base_url+'/reports/movementview/'+strdate+'/'+enddate+'/'+movement
             })
         })
     </script>

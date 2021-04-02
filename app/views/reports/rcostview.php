@@ -8,7 +8,12 @@
                             <h2>
                                 <?= $data['menu']; ?>
                             </h2>
-                            <ul class="header-dropdown m-r--5">                                
+                            <ul class="header-dropdown m-r--5">   
+
+                                <a href="<?= BASEURL; ?>/exportdata/exportcostreport/<?= $data['strdate']; ?>/<?= $data['enddate']; ?>" target="_blank" class="btn bg-blue">
+                                   <i class="material-icons">cloud_download</i> EXPORT DATA
+                                </a>
+
                                 <a href="<?= BASEURL; ?>/reports/rcost" class="btn bg-blue">
                                    <i class="material-icons">backspace</i> BACK
                                 </a>
@@ -65,12 +70,28 @@
                         for(var i = 0; i < results.length; i++){
                             var qty = '';
                             var price = '';
+                            var _totalprice = 0;
+                            var _unitprice = 0;
                             qty   = results[i].quantity;
                             price = results[i].price;
-                            qty   = qty.replaceAll('.00','');
-                            qty   = qty.replaceAll('.',',');
-                            price = price.replaceAll('.00','');
-                            price = price.replaceAll('.',',');
+                            qty   = qty.replace('.00','');
+                            qty   = qty.replace('.',',');
+                            qty   = qty.replace('.',',');
+                            qty   = qty.replace('.',',');
+                            qty   = qty.replace('.',',');
+                            price = price.replace('.00','');
+                            price = price.replace('.',',');
+                            price = price.replace('.',',');
+                            price = price.replace('.',',');
+                            price = price.replace('.',',');
+                            price = price.replace('.',',');
+
+                            price = price.replace(',','.');
+
+                            _unitprice  = price;
+                            _totalprice = price*qty;
+                            _totalprice = _totalprice.toString().replace('.',',');
+                            _unitprice  = _unitprice.toString().replace('.',',');
                             html +=`
                             <tr>
                                     <td style="text-align:right;"> `+ results[i].resitem +` </td> 
@@ -79,13 +100,17 @@
                                     <td> `+ results[i].batchnumber +` </td>
                                     <td style="text-align:right;"> `+ formatRupiah(qty,'') +` </td>
                                     <td> `+ results[i].unit +` </td>
-                                    <td style="text-align:right;"> `+ formatRupiah(price,'') +` </td>
-                                    <td style="text-align:right;"> `+ formatRupiah(price*qty,'') +` </td>
+                                    <td style="text-align:right;"> `+ formatRupiah(_unitprice,'') +` </td>
+                                    <td style="text-align:right;"> `+ formatRupiah(_totalprice,'') +` </td>
                             </tr>
                             `;
 
-                            grandtotal = grandtotal + (price*qty);
+                            grandtotal = grandtotal + (price*1)*(qty*1);
                         }
+
+                        grandtotal = grandtotal.toFixed(2);
+
+                        grandtotal = grandtotal.toString().replace('.',',');
 
                 html +=`</tbody>
                         <tfoot>

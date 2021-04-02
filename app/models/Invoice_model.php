@@ -13,6 +13,16 @@ class Invoice_model{
 		return $this->db->single();
   }
 
+  public function getHeaderInvoice($ivnum){
+    $this->db->query("SELECT a.*, b.bankacc as 'bankaccname', c.deskripsi as 'bankname' FROM v_rinvoice01 as a left join t_bank as b on a.bankacc = b.bankno left join t_bank_list as c on b.bankid = c.bankey WHERE a.ivnum='$ivnum'");
+    return $this->db->single();
+  }
+
+  public function getDetailInvoice($ivnum){
+    $this->db->query("SELECT * FROM v_rinvoice02 WHERE ivnum='$ivnum'");
+    return $this->db->resultSet();
+  }
+
   public function getFile($grnum){
     $this->db->query("SELECT * FROM t_file WHERE object = 'GRPO' and refdoc='$grnum'");
     return $this->db->single();
@@ -34,7 +44,7 @@ class Invoice_model{
   }
 
   public function getpodata($ponum){
-    $this->db->query("SELECT *, CAST(subtotal AS DECIMAL(15,2)) as 'subtot' FROM v_po004 WHERE ponum = '$ponum' AND paymentstat is null");
+    $this->db->query("SELECT *, CAST(subtotal AS DECIMAL(15,2)) as 'subtot' FROM v_po004 WHERE ponum = '$ponum' AND paymentstat is null and approvestat <> 5");
     return $this->db->resultSet();
   }
 

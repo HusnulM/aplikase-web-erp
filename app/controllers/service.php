@@ -189,7 +189,7 @@ class Service extends Controller{
             );
             echo json_encode($return);
         }elseif(count($checkstock) == 0){
-            $nextNumb = $this->model('Home_model')->getNextNumber('GRPO');
+            $nextNumb = $this->model('Home_model')->getNextNumber('GI');
             if( $this->model('Service_model')->postconfirmservice($_POST, $nextNumb['nextnumb']) > 0 ) {
                 $return = array(
                     "msgtype" => "1",

@@ -18,6 +18,11 @@ class Service_model{
 
     }
 
+    public function getExportService($strdate,$enddate){
+        $this->db->query("SELECT * FROM v_service03 WHERE servicedate BETWEEN '$strdate' AND '$enddate'");
+        return $this->db->resultSet();
+    }
+
     public function getNextPONumber($object){
 		$this->db->query("CALL sp_NextNriv('$object')");
 		return $this->db->single();

@@ -135,11 +135,17 @@ class Laporan_model{
 		return $this->db->resultSet();
     }
 
-    public function getMovementData($strdate, $enddate)
+    public function getMovementData($strdate, $enddate,$movement)
     {
         $user = $_SESSION['usr']['user'];
         $dept = $_SESSION['usr']['department'];
-        $this->db->query("SELECT * FROM v_inventory03 WHERE movementdate BETWEEN '$strdate' AND '$enddate'");
+        if($movement === 'All'){
+            $this->db->query("SELECT * FROM v_inventory03 WHERE movementdate BETWEEN '$strdate' AND '$enddate'");
+        }elseif($movement === '1'){
+            $this->db->query("SELECT * FROM v_inventory03 WHERE movementdate BETWEEN '$strdate' AND '$enddate' AND movement in('101','561')");
+        }else{
+            $this->db->query("SELECT * FROM v_inventory03 WHERE movementdate BETWEEN '$strdate' AND '$enddate' AND movement not in('101','561')");
+        }
 		return $this->db->resultSet();
     }
 
@@ -199,6 +205,11 @@ class Laporan_model{
 
     public function getDetailInvoice($ivnum){
         $this->db->query("SELECT * FROM v_rinvoice02 WHERE ivnum='$ivnum'");
+        return $this->db->resultSet();
+    }
+
+    public function getExportCostReport($strdate,$enddate){
+        $this->db->query("SELECT * FROM v_service02 WHERE servicedate BETWEEN '$strdate' AND '$enddate' order by servicenum, resitem asc");
         return $this->db->resultSet();
     }
 }

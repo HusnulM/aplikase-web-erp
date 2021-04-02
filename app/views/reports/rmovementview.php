@@ -8,9 +8,13 @@
                                 Report Inventory Movement
                             </h2>
                             <ul class="header-dropdown m-r--5">                                
-							<a href="<?= BASEURL; ?>/reports/movement" type="button" class="btn bg-teal">
-                            <i class="material-icons">backspace</i> <span>BACK</span>
-                            </a>
+                                <a href="<?= BASEURL; ?>/exportdata/exportmovement/<?= $data['strdate']; ?>/<?= $data['enddate']; ?>/<?= $data['movement']; ?>" target="_blank" class="btn bg-teal">
+                                   <i class="material-icons">cloud_download</i> EXPORT DATA
+                                </a>
+
+                                <a href="<?= BASEURL; ?>/reports/movement" type="button" class="btn bg-teal">
+                                    <i class="material-icons">backspace</i> <span>BACK</span>
+                                </a>
 							</ul>
                         </div>
                         <div class="body">                                

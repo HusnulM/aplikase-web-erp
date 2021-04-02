@@ -16,9 +16,10 @@
                         </div>
                         <div class="body">                                
                             <div class="table-responsive">
-                                <table id="example" class="table table-bordered table-striped table-hover" style="width:100%;font-size: 12px; font-weight:bold;">
+                                <table id="example" class="table table-bordered table-striped table-hover" style="width:120%;font-size: 12px; font-weight:bold;">
                                     <thead>
                                         <tr>
+                                            <th></th>
                                             <th></th>
                                             <th>Invoice</th>
                                             <th>Tanggal Invoice</th>
@@ -27,6 +28,7 @@
                                             <th>No. Rekening</th>
                                             <th>Total Invoice</th>
                                             <th>Status</th>
+                                            <th>Approved Date</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -144,6 +146,7 @@
                         "data":           null,
                         "defaultContent": ''
                     },
+                    {"defaultContent": "<button class='btn btn-primary btn-xs'>Print</button>"},
                     { "data": "ivnum" },
                     { "data": "ivdate" },
                     { "data": "note" },
@@ -159,7 +162,8 @@
                             return formatRupiah(data,'');
                         }
                     },
-                    { "data": "ivstat" }
+                    { "data": "ivstat" },
+                    { "data": "approvedate" }
                 ],
                 "order": [[1, 'asc']],
                 "pageLength": 50,
@@ -167,7 +171,16 @@
             } );
             
             // Add event listener for opening and closing details
+            $('#example tbody').on( 'click', 'button', function () {
+                var table = $('#example').DataTable();
+                selected_data = [];
+                selected_data = table.row($(this).closest('tr')).data();
+                console.log(selected_data);
+
+                window.open(base_url+"/payment/printinvoice/"+selected_data.ivnum, '_blank');
+            } );  
             $('#example tbody').on('click', 'td.details-control', function () {
+                // alert('Tes')
                 var tr = $(this).closest('tr');
                 var row = table.row( tr );
                 

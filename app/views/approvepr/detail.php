@@ -96,6 +96,7 @@
                                                 <th>Kategori</th>
                                                 <th>Quantity</th>
                                                 <th>Unit</th>
+                                                <th>Remark</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
@@ -122,6 +123,7 @@
                                                         } ?>  
                                                     </td>
                                                     <td><?= $pr['unit']; ?></td>
+                                                    <td><?= $pr['remark']; ?></td>
                                                     <td>Open</td>
                                                 </tr>
                                             <?php endforeach; ?>
