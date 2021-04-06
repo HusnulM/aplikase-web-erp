@@ -127,6 +127,13 @@ class Service extends Controller{
         }        
     }
 
+    public function printservice($servicenum){
+        $data['setting']  = $this->model('Setting_model')->getgensetting();
+		$data['header']   = $this->model('Service_model')->getOpenServiceByID($servicenum);
+		$data['items']    = $this->model('Service_model')->getOpenServiceItemByID($servicenum);
+		$this->view('service/cetak', $data);
+    }
+
     // Action
     public function listbatchstock(){
         $data['data'] = $this->model('Service_model')->getBatchStock();  
@@ -149,17 +156,34 @@ class Service extends Controller{
     }
 
     public function save(){
-		$nextNumb = $this->model('Service_model')->getNextPONumber('SERVICE');
-		if( $this->model('Service_model')->save($_POST, 'SRV-'.$nextNumb['nextnumb']) > 0 ) {			
-			Flasher::setMessage('Service ', 'SRV-'.$nextNumb['nextnumb'] . ' created!', 'success');
-			header('location: '. BASEURL . '/service');
-			exit;			
-		}else{
-			// $this->model('Service_model')->delete_error('SRV-'.$nextNumb['nextnumb']);
-			$result = ["msg"=>"error"];
-			header('location: '. BASEURL . '/service');
-			exit;	
-		}
+        $checkstock = $this->model('Service_model')->checkinventorystock($_POST);
+        if(count($checkstock) > 0){
+            $return = array(
+                "msgtype" => "3",
+                "message" => $checkstock
+            );
+            echo json_encode($return);
+        }else{
+            $nextNumb = $this->model('Service_model')->getNextPONumber('SERVICE');
+            if( $this->model('Service_model')->save($_POST, 'SRV-'.$nextNumb['nextnumb']) > 0 ) {			
+                $return = array(
+                    "msgtype" => "1",
+                    "message" => "Service Order Created",
+                    "docnum"  => $nextNumb['nextnumb']
+                );
+                echo json_encode($return);
+                exit;			
+            }else{
+                $return = array(
+                    "msgtype" => "2",
+                    "message" => "Error!",
+                    "docnum"  => ''
+                );
+                $this->model('Service_model')->delete($nextNumb['nextnumb']);
+                echo json_encode($return);
+                exit;	
+            }
+        }
 	}
 
     public function update(){
@@ -200,11 +224,11 @@ class Service extends Controller{
                 exit;			
             }else{
                 $return = array(
-                    "msgtype" => "3",
+                    "msgtype" => "2",
                     "message" => "Error!",
                     "data"    => Flasher::errorMessage()
                 );
-                $this->model('Service_model')->delete($nextNumb['nextnumb']);
+                // $this->model('Service_model')->delete($nextNumb['nextnumb']);
                 echo json_encode($return);
                 exit;	
             }

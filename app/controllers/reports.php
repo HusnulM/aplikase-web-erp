@@ -289,7 +289,10 @@ class Reports extends Controller{
 			$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
 			//-------------------------------------------------------------------------  
 	
-			$data['stock'] = $this->model('Laporan_model')->getStock($material,$warehouse,$zerostock);   
+			$data['stock'] = $this->model('Laporan_model')->getStock($material,$warehouse,$zerostock); 
+			$data['material']  = $material;
+			$data['warehouse'] = $warehouse;
+			$data['zerostock'] = $zerostock;
 			// echo json_encode($data['stock']);
 			$this->view('templates/header_a', $data);
 			$this->view('reports/rstockview', $data);
@@ -354,6 +357,10 @@ class Reports extends Controller{
 	
 			$data['stock'] = $this->model('Laporan_model')->getBatchStock($material,$warehouse);   
 			// echo json_encode($data['stock']);
+
+			$data['material']  = $material;
+			$data['warehouse'] = $warehouse;
+			
 			$this->view('templates/header_a', $data);
 			$this->view('reports/rbatchstockview', $data);
 			$this->view('templates/footer_a');

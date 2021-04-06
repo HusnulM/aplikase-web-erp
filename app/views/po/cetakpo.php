@@ -222,12 +222,17 @@
             $this->Cell(15,15,'','',0,'L');
             $this->Cell(90,15,'','',0,'R');
             $this->Cell(200,15,'','',0,'L');
-            $this->Cell(120,15,'APPROVED BY,','',1,'C');
+            $this->Cell(300,15,'APPROVED BY,','',1,'C');
 
-            $this->Ln(80);
-            $this->Cell(300,15,'','',0,'C');
+            $this->Ln(50);
+            $this->Cell(390,15,'','',0,'C');
             $this->SetLineWidth(1);  
             $this->Cell(140,15,'DIREKTUR','T',0,'C');
+
+            $this->Ln(10);
+            $this->Cell(390,15,'','',0,'C');
+            $this->SetLineWidth(1);  
+            $this->Cell(140,15,$this->hdata['appdate'],'',0,'C');
             // $this->Cell(70,15,'','',0,'C');
             // $this->Cell(120,15,'MANAGER PURCHASING','T',1,'C');
             // $this->Cell(270,15,'Menyetujui',1,1,'C');

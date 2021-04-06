@@ -8,7 +8,10 @@
                             <h2>
                                 Report Material Stock
                             </h2>
-                            <ul class="header-dropdown m-r--5">                                
+                            <ul class="header-dropdown m-r--5">       
+                                <a href="<?= BASEURL; ?>/exportdata/exportstock/<?= $data['material']; ?>/<?= $data['warehouse']; ?>/<?= $data['zerostock']; ?>" target="_blank" class="btn bg-blue">
+                                   <i class="material-icons">cloud_download</i> EXPORT DATA
+                                </a>                         
                                 <a href="<?= BASEURL; ?>/reports/stock" class="btn bg-blue">
                                    <i class="material-icons">backspace</i> BACK
                                 </a>
@@ -34,20 +37,20 @@
                                             <?php foreach ($data['stock'] as $stock) : ?>
                                                 <?php $no++; ?>
                                                 <tr>
-                                        <td><?= $no; ?></td>
-                                        <td><?= $stock['material']; ?></td>
-                                        <td><?= $stock['matdesc']; ?></td>
-                                        <td><?= $stock['partname']; ?></td>
-                                        <td><?= $stock['partnumber']; ?></td>
-                                        <td><?= $stock['warehouse']; ?> - <?= $stock['deskripsi']; ?></td>
-                                        <td style="text-align:right;">
-                                            <?php if (strpos($stock['quantity'], '.00') !== false) {
-                                                echo number_format($stock['quantity'], 0, ',', '.');
-                                            }else{
-                                                echo number_format($stock['quantity'], 2, ',', '.');
-                                            } ?>
-                                        </td>
-                                        <td><?= $stock['matunit']; ?></td>
+                                                    <td><?= $no; ?></td>
+                                                    <td><?= $stock['material']; ?></td>
+                                                    <td><?= $stock['matdesc']; ?></td>
+                                                    <td><?= $stock['partname']; ?></td>
+                                                    <td><?= $stock['partnumber']; ?></td>
+                                                    <td><?= $stock['warehouse']; ?> - <?= $stock['deskripsi']; ?></td>
+                                                    <td style="text-align:right;">
+                                                        <?php if (strpos($stock['quantity'], '.00') !== false) {
+                                                            echo number_format($stock['quantity'], 0, ',', '.');
+                                                        }else{
+                                                            echo number_format($stock['quantity'], 2, ',', '.');
+                                                        } ?>
+                                                    </td>
+                                                    <td><?= $stock['matunit']; ?></td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>

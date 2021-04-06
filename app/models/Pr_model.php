@@ -41,7 +41,7 @@ class Pr_model{
     }    
 
     public function getPRheader($prnum){
-		$this->db->query("SELECT a.*, b.deskripsi as 'whsname', fGetNamaUser(a.createdby) as 'crtby' From t_pr01 as a left join t_gudang as b on a.warehouse = b.gudang Where a.prnum = '$prnum'");
+		$this->db->query("SELECT a.*, b.deskripsi as 'whsname', fGetNamaUser(a.createdby) as 'crtby', fGetApproveDatePR(a.prnum) as 'appdate' From t_pr01 as a left join t_gudang as b on a.warehouse = b.gudang Where a.prnum = '$prnum'");
 		return $this->db->single();
     }
 

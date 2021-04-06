@@ -30,88 +30,111 @@
              $this->AddPage();
              $this->SetAutoPageBreak(true,60);
              $this->AliasNbPages();
-             $left = 10;
+             $left = 25;
       
              //header
-            
-            $this->Cell(10,7,'',0,1);
-            $this->SetFont("Arial", "B", 16);
-            $this->SetX($left); $this->Cell(0, 10, 'PURCHASE REQUISITION', 0, 1,'C');
-            $this->Image('aws-logo.png',480,20,90,80);
+             $this->Cell(10,7,'',0,1);
+             $this->SetFont("Arial", "B", 16);
+             $this->SetX($left); $this->Cell(0, 10, 'SERVICE ORDER', 0, 1,'C');
+            //  $this->Image('logo.png',480,20,90,80);
 
             // $this->SetFont("Arial", "B", 16);
-            // $this->SetX($left); $this->Cell(0, 10, 'PURCHASE ORDER', 0, 1,'C');
-            $this->Ln(60);
-            $this->SetFont('Helvetica','B',10);
+            // $this->SetX($left); $this->Cell(0, 10, 'PENERIMAAN BARANG', 0, 1,'C');
+            $this->Ln(20);
+            $this->SetFont('Arial','B',10);
             $this->Cell(10,7,'',0,1);    
-            $this->Cell(100,5,'Create Date',0);
-            $this->Cell(5,5,':',0);
-            $this->Cell(200,5, $this->hdata['createdon'],0);
+            $this->Cell(120,5,'Nomor Service',0);
+            $this->Cell(10,5,':',0);
+            $this->Cell(200,5, $this->hdata['servicenum'],0);
 
-            $this->Cell(100,5,'Warehouse',0);
-            $this->Cell(5,5,':',0);
-            $this->Cell(72,5,$this->hdata['whsname'],0);
-            
+            $this->Cell(100,5,'Tanggal Service',0);
+            $this->Cell(10,5,':',0);
+            $this->Cell(75,5,$this->hdata['servicedate'],0);
+
             $this->Ln(10);
             $this->Cell(10,7,'',0,1);
-            $this->Cell(100,5,'Requirement Date',0);
-            $this->Cell(5,5,':',0);
-            $this->Cell(200,5,$this->hdata['prdate'],0);
+            $this->Cell(120,5,'Note',0);
+            $this->Cell(10,5,':',0);
+            $this->Cell(200,5,$this->hdata['note'],0);
+            
+            $this->Cell(100,5,'Mekanik',0);
+            $this->Cell(10,5,':',0);
+            $this->Cell(100,7,$this->hdata['mekanik'],0,1);
 
-            $this->Cell(100,5,'Created By',0);
-            $this->Cell(5,5,':',0);
+            $this->Ln(10);
+            $this->Cell(120,5,'No. Polisi',0);
+            $this->Cell(10,5,':',0);
+            $this->Cell(200,7,$this->hdata['nopol'],0);
+
+            $this->Cell(100,5,'Dibuat Oleh',0);
+            $this->Cell(10,5,':',0);
             $this->Cell(100,5,$this->hdata['createdby'],0,1);
 
-            $this->Ln(5);
-            $this->Cell(10,7,'',0,1);
-            $this->Cell(100,5,'PR Number',0);
-            $this->Cell(5,5,':',0);
-            $this->Cell(200,5,$this->hdata['prnum'],0);
+            // $this->Cell(10,7,'',0,1);
+            $this->Ln(10);
+            $this->Cell(120,5,'Warehouse',0);
+            $this->Cell(10,5,':',0);
+            $this->Cell(200,7,$this->hdata['whsname'],0,1);
 
-            // $this->Cell(100,5,'Note',0);
-            // $this->Cell(5,5,':',0);
-            // $this->Cell(150,5,$this->hdata['note'],0,1);
+            // $this->Cell(100,7,'NPWP NO',0);
+            // $this->Cell(10,5,':',0);
+            // $this->Cell(100,5,'94.981.043.6-409.000',0,1);
 
+            // $this->Cell(120,5,'No. Rekening',0);
+            // $this->Cell(10,5,':',0);
+            // $this->Cell(100,7,$this->hdata['bankacc'] . " - ". $this->hdata['bankname'] . " a/n ". $this->hdata['bankaccname'] ,0,1);
+            
             $this->Ln(10);
              $h = 20;
-             $left = 10;
+             $left = 40;
              $top = 80;
              #tableheader
              $this->SetFillColor(200,200,200);
              $left = $this->GetX();
              $this->SetFont('Arial','B',9);
-             $this->Cell(25,$h,'No',1,0,'L',true);
-             $this->SetX($left += 25); $this->Cell(100, $h, 'Material', 1, 0, 'C',true);
-             $this->SetX($left += 100); $this->Cell(170, $h, 'Description', 1, 0, 'C',true);
-             $this->SetX($left += 170); $this->Cell(50, $h, 'Quantity', 1, 0, 'C',true);
-             $this->SetX($left += 50); $this->Cell(35, $h, 'Unit', 1, 0, 'C',true);
-             $this->SetX($left += 35); $this->Cell(160, $h, 'Item Remark', 1, 1, 'C',true);
+             $this->Cell(65,$h,'Service Item',1,0,'C',true);
+            //  $this->SetX($left += 25); $this->Cell(65, $h, 'Service Item', 1, 0, 'C',true);
+             $this->SetX($left += 65); $this->Cell(150, $h, 'Kode Barang', 1, 0, 'C',true);
+             $this->SetX($left += 150); $this->Cell(200, $h, 'Nama Barang', 1, 0, 'C',true);
+             $this->SetX($left += 200); $this->Cell(65, $h, 'Quantity', 1, 0, 'C',true);
+             $this->SetX($left += 65); $this->Cell(55, $h, 'Unit', 1, 1, 'C',true);
              //$this->Ln(20);
              $totalharga = 0;
              $discount   = 0;
              $tax        = 0;
              $taxvalue   = 0;
              $totaltax   = 0;
+             $totalprice = 0;
 
-             $this->SetFont('Helvetica','',8);
-             $this->SetWidths(array(25,100,170,50,35,160,50,25,60,90));
-             $this->SetAligns(array('C','L','L','R','L','L','C','L','R','R','R','R'));
+             $this->SetFont('Arial','',8);
+             $this->SetWidths(array(65,150,200,65,55,65,65,65,65,90));
+             $this->SetAligns(array('C','L','L','R','C','R','C','R','R','R','R'));
              $no = 1; $this->SetFillColor(255);
              foreach ($this->data as $baris) {
                  $this->Row(
-                     array($no++,
+                     array(
+                        // $no++,
+                     $baris['serviceitem'],
                      $baris['material'],
                      $baris['matdesc'],
-                     number_format($baris['quantity'], 0, ',', '.'),
-                     $baris['unit'],
-                     $baris['remark'],
+                     number_format($baris['quantity'],0,",","."),
+                     $baris['unit']                   
                  ));
              }
-             $this->Ln(10);
-             $this->SetFont('Helvetica','B',10);
-             $this->Cell(540,15,'Note :','',1,'L');
-             $this->SetFont('Helvetica','',10);
-             $this->Cell(540,10,$this->hdata['note'],'',1,'L');
+            
+            // $this->SetFont('Arial','B',8);
+            // $this->Cell(770,15,'JUMLAH','L',0,'R');
+            // $this->Cell(30,15,'Rp.','',0,'R');
+            // $this->Cell(70,15,number_format($totalharga,0,",","."),'R',1,'R');
+            // $this->Cell(770,15,'DISCOUNT','L',0,'R');
+            // $this->Cell(30,15,'Rp.','',0,'R');
+            // $this->Cell(70,15,number_format($discount,0,",","."),'R',1,'R');
+            // $this->Cell(770,15,'PPN','L',0,'R');
+            // $this->Cell(30,15,'Rp.','',0,'R');
+            // $this->Cell(70,15,number_format($taxvalue,0,",","."),'R',1,'R');
+            // $this->Cell(770,15,'TOTAL','L,B',0,'R');
+            // $this->Cell(30,15,'Rp.','B',0,'R');
+            // $this->Cell(70,15,number_format($totalharga+$taxvalue-$discount,0,",","."),'R,B',1,'R');
 
             $check = "";
             $checkbox_size = 5; 
@@ -125,17 +148,17 @@
             $this->Cell(15,15,'','',0,'L');
             $this->Cell(90,15,'','',0,'R');
             $this->Cell(200,15,'','',0,'L');
-            $this->Cell(300,15,'APPROVED BY,','',1,'C');
+            $this->Cell(120,15,'APPROVED BY,','',1,'C');
 
             $this->Ln(50);
-            $this->Cell(390,15,'','',0,'C');
+            $this->Cell(300,15,'','',0,'C');
             $this->SetLineWidth(1);  
             $this->Cell(140,15,'DIREKTUR','T',0,'C');
 
             $this->Ln(10);
-            $this->Cell(390,15,'','',0,'C');
+            $this->Cell(300,15,'','',0,'C');
             $this->SetLineWidth(1);  
-            $this->Cell(140,15,$this->hdata['appdate'],'',0,'C');
+            $this->Cell(140,15,$this->hdata['confirmdate'],'',0,'C');
          }
       
          public function printPDF () {
@@ -261,7 +284,7 @@
      } //end of class
       
      //contoh penggunaan
-     $pdata = $data['pritem'];
+     $pdata = $data['items'];
      $hdata = $data['header'];
       
      //pilihan

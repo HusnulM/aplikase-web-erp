@@ -30,7 +30,7 @@ class Po_model{
     }
 
     public function getOrderHeaderPrint($ponum){
-        $this->db->query("SELECT a.*, b.namavendor, b.alamat FROM t_po01 as a inner join t_vendor as b on a.vendor = b.vendor WHERE ponum = '$ponum'");
+        $this->db->query("SELECT a.*, b.namavendor, b.alamat, fGetApproveDatePO(a.ponum) as 'appdate' FROM t_po01 as a inner join t_vendor as b on a.vendor = b.vendor WHERE ponum = '$ponum'");
         return $this->db->single();
     }
 

@@ -6,7 +6,7 @@
                 ?>
             </div>
             <div class="row clearfix">
-            <form action="<?= BASEURL; ?>/service/save" method="POST" enctype="multipart/form-data">
+            <form id="form-create-service" enctype="multipart/form-data">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
@@ -407,13 +407,13 @@
                 action = 'add';
             });            
 
-            $('#form-conf-service').on('submit', function(event){
+            $('#form-create-service').on('submit', function(event){
                 event.preventDefault();
-                $("#btn-post").attr("disabled", true);
+                // $("#btn-post").attr("disabled", true);
                 var formData = new FormData(this);
                 console.log($(this).serialize())
                     $.ajax({
-                        url:base_url+'/service/postconfirmservice',
+                        url:base_url+'/service/save',
                         method:'post',
                         data:formData,
                         dataType:'JSON',
@@ -432,9 +432,11 @@
                         }
                     }).done(function(data){
                         if(data.msgtype === "1"){
-                            showSuccessMessage('Service ' + servicenumber + ' Confirmed With Document Number'+ data.docnum)
+                            showSuccessMessage('Service ' + data.docnum + ' Created')
+                        }if(data.msgtype === "3"){
+                            showErrorMessage(JSON.stringify(data.message[0].message))  
                         }else{
-                            showErrorMessage(JSON.stringify(data.message))                            
+                            showErrorMessage(JSON.stringify(data.message))  
                         }
                     })
             })

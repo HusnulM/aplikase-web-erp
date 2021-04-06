@@ -24,6 +24,7 @@
                                     <thead>
                                         <tr>
                                             <th></th>
+                                            <th></th>
                                             <th>NO. Service</th>
                                             <th>Note</th>
                                             <th>Tanggal Service</th>
@@ -105,6 +106,7 @@
                         "data":           null,
                         "defaultContent": ''
                     },
+                    {"defaultContent": "<button class='btn btn-primary btn-xs'>Print</button>"},
                     { "data": "servicenum" },
                     { "data": "note" },
                     { "data": "servicedate" },
@@ -117,6 +119,15 @@
                 "pageLength": 50,
                 "lengthMenu": [50, 100, 200, 500]
             } );
+
+            $('#example tbody').on( 'click', 'button', function () {
+                var table = $('#example').DataTable();
+                selected_data = [];
+                selected_data = table.row($(this).closest('tr')).data();
+                console.log(selected_data);
+
+                window.open(base_url+"/service/printservice/"+selected_data.servicenum, '_blank');
+            } ); 
             
             // Add event listener for opening and closing details
             $('#example tbody').on('click', 'td.details-control', function () {

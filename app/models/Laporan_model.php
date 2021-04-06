@@ -139,12 +139,26 @@ class Laporan_model{
     {
         $user = $_SESSION['usr']['user'];
         $dept = $_SESSION['usr']['department'];
+        $ob_whs = $this->getWhsAuth();
+
         if($movement === 'All'){
-            $this->db->query("SELECT * FROM v_inventory03 WHERE movementdate BETWEEN '$strdate' AND '$enddate'");
+            if($ob_whs['ob_value'] === "*"){
+                $this->db->query("SELECT * FROM v_inventory03 WHERE movementdate BETWEEN '$strdate' AND '$enddate'");
+            }else{
+                $this->db->query("SELECT * FROM v_inventory03 WHERE movementdate BETWEEN '$strdate' AND '$enddate' and warehouse in(select ob_value from t_user_object_auth where username='$user' and ob_auth = 'OB_WAREHOUSE')");
+            }
         }elseif($movement === '1'){
-            $this->db->query("SELECT * FROM v_inventory03 WHERE movementdate BETWEEN '$strdate' AND '$enddate' AND movement in('101','561')");
+            if($ob_whs['ob_value'] === "*"){
+                $this->db->query("SELECT * FROM v_inventory03 WHERE movementdate BETWEEN '$strdate' AND '$enddate' AND movement in('101','561')");
+            }else{
+                $this->db->query("SELECT * FROM v_inventory03 WHERE movementdate BETWEEN '$strdate' AND '$enddate' AND movement in('101','561') and warehouse in(select ob_value from t_user_object_auth where username='$user' and ob_auth = 'OB_WAREHOUSE')");
+            }
         }else{
-            $this->db->query("SELECT * FROM v_inventory03 WHERE movementdate BETWEEN '$strdate' AND '$enddate' AND movement not in('101','561')");
+            if($ob_whs['ob_value'] === "*"){
+                $this->db->query("SELECT * FROM v_inventory03 WHERE movementdate BETWEEN '$strdate' AND '$enddate' AND movement not in('101','561')");
+            }else{
+                $this->db->query("SELECT * FROM v_inventory03 WHERE movementdate BETWEEN '$strdate' AND '$enddate' AND movement not in('101','561') and warehouse in(select ob_value from t_user_object_auth where username='$user' and ob_auth = 'OB_WAREHOUSE')");
+            }
         }
 		return $this->db->resultSet();
     }

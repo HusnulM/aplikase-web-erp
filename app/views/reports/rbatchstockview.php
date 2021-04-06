@@ -8,7 +8,11 @@
                             <h2>
                                 <?= $data['menu']; ?>
                             </h2>
-                            <ul class="header-dropdown m-r--5">                                
+                            <ul class="header-dropdown m-r--5">        
+                                <a href="<?= BASEURL; ?>/exportdata/exportbatchstock/<?= $data['material']; ?>/<?= $data['warehouse']; ?>" target="_blank" class="btn bg-blue">
+                                   <i class="material-icons">cloud_download</i> EXPORT DATA
+                                </a>      
+
                                 <a href="<?= BASEURL; ?>/reports/batchstock" class="btn bg-blue">
                                    <i class="material-icons">backspace</i> BACK
                                 </a>
