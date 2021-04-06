@@ -98,6 +98,7 @@
                                                     <th>Material Description</th>
                                                     <th style="width:150px;">Quantity</th>
                                                     <th style="width:150px;">Unit</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody id="tbl-pr-body" class="mainbodynpo">
@@ -120,6 +121,9 @@
                                                         </td>
                                                         <td> 
                                                             <input type="text" name="itm_unit[]"  class="form-control" style="width:100%;" required="true" value="<?= $out['unit']; ?>" readonly/>
+                                                        </td>
+                                                        <td> 
+                                                            <a href="<?= BASEURL; ?>/service/deleteitem/<?= $out['servicenum']; ?>/<?= $out['serviceitem']; ?>" class="btn btn-danger">Remove</a>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; ?>

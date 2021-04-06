@@ -246,6 +246,17 @@ class Service extends Controller{
 			header('location: '. BASEURL . '/service');
 			exit;	
 		}
-        // echo json_encode($_POST);
+	}
+
+    public function deleteitem($servicenum,$serviceitem){
+		if( $this->model('Service_model')->deleteitem($servicenum,$serviceitem) > 0 ) {			
+			Flasher::setMessage('Service ', $servicenum . ' deleted!', 'success');
+			header('location: '. BASEURL . '/service/serviceconfirm/'.$servicenum);
+			exit;			
+		}else{
+			$result = ["msg"=>"error"];
+			header('location: '. BASEURL . '/service/serviceconfirm/'.$servicenum);
+			exit;	
+		}
 	}
 }

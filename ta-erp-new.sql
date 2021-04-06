@@ -26,7 +26,7 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getBatchByFIFO` (IN `pMaterial` VARCHAR(70), IN `pWhs` VARCHAR(20), IN `pQuantity` DECIMAL(15,2), IN `pMatdoc` VARCHAR(20), IN `pYear` VARCHAR(5), IN `pMvt` INT, IN `pMatdesc` VARCHAR(70), IN `pUnit` VARCHAR(10), IN `pWhs1` VARCHAR(10), IN `pWhs2` VARCHAR(10), IN `pShkzg` VARCHAR(1), IN `pResnum` VARCHAR(15), IN `pResitem` INT, IN `pCreatedby` VARCHAR(50))  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `getBatchByFIFO` (IN `pMaterial` VARCHAR(70), IN `pWhs` VARCHAR(20), IN `pQuantity` DECIMAL(15,2), IN `pMatdoc` VARCHAR(20), IN `pYear` VARCHAR(5), IN `pMvt` INT, IN `pMatdesc` VARCHAR(70), IN `pUnit` VARCHAR(10), IN `pWhs1` VARCHAR(10), IN `pWhs2` VARCHAR(10), IN `pShkzg` VARCHAR(1), IN `pResnum` VARCHAR(15), IN `pResitem` INT, IN `pCreatedby` VARCHAR(50))  BEGIN
     
     DECLARE inputQty decimal(15,2);
     DECLARE sBatch varchar(20);
@@ -56,7 +56,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getBatchByFIFO` (IN `pMaterial` VAR
 	
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getWarehouseByObAuth` (IN `pUsername` VARCHAR(255))  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `getWarehouseByObAuth` (IN `pUsername` VARCHAR(255))  BEGIN
 	DECLARE checkAuthVal varchar(50);
     
     SELECT ob_value INTO checkAuthVal FROM t_user_object_auth where username = pUsername and ob_auth = 'OB_WAREHOUSE' LIMIT 1;
@@ -72,7 +72,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getWarehouseByObAuth` (IN `pUsernam
     
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getAuthWhs` (IN `pUsername` VARCHAR(50))  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_getAuthWhs` (IN `pUsername` VARCHAR(50))  BEGIN
 	
     DECLARE checkAuthVal varchar(50);
     
@@ -89,7 +89,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getAuthWhs` (IN `pUsername` VARC
     
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetInvMovementCatByAuth` (IN `pUsername ` VARCHAR(50))  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_GetInvMovementCatByAuth` (IN `pUsername ` VARCHAR(50))  BEGIN
 	DECLARE checkAuthVal varchar(50);
     
     SELECT ob_value INTO checkAuthVal FROM t_user_object_auth where username = pUsername and ob_auth = 'OB_WAREHOUSE' LIMIT 1;
@@ -104,7 +104,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetInvMovementCatByAuth` (IN `pU
     end if;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetInvMovementCatByObjAuth` (IN `pUser` VARCHAR(50))  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_GetInvMovementCatByObjAuth` (IN `pUser` VARCHAR(50))  BEGIN
 	DECLARE checkAuthVal varchar(50);
     
     SELECT ob_value INTO checkAuthVal FROM t_user_object_auth where username = pUser and ob_auth = 'OB_MOVEMENT' LIMIT 1;
@@ -119,7 +119,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetInvMovementCatByObjAuth` (IN 
     end if;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetMat2` (IN `pKodebrg` VARCHAR(15), IN `pUnit` VARCHAR(5))  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_GetMat2` (IN `pKodebrg` VARCHAR(15), IN `pUnit` VARCHAR(5))  BEGIN
 	DECLARE _ConvUom decimal(15,2);
     
     SELECT convbase into _ConvUom from t_material2 where material = pKodebrg and altuom = pUnit;
@@ -128,7 +128,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_GetMat2` (IN `pKodebrg` VARCHAR(
     
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getStock` (IN `pUsername` VARCHAR(50), IN `pMaterial` VARCHAR(40), IN `pWhs` VARCHAR(15))  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_getStock` (IN `pUsername` VARCHAR(50), IN `pMaterial` VARCHAR(40), IN `pWhs` VARCHAR(15))  BEGIN
 
 SELECT * FROM v_inventory01 where material like CONCAT('%', '', '%') and warehouse in(SELECT ob_value FROM t_user_object_auth where username = 'logistic2' and ob_auth = 'OB_WAREHOUSE') and warehouse like CONCAT('%', '', '%');
 	
@@ -138,7 +138,7 @@ SELECT * FROM v_inventory01 where material like CONCAT('%', '', '%') and warehou
     
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_InsertItemAuto` (IN `pGrnum` VARCHAR(15), IN `pYear` VARCHAR(5), IN `pGritem` INT, IN `pMovement` VARCHAR(5), IN `pMaterial` VARCHAR(40), IN `pMatdesc` VARCHAR(40), IN `pQuantity` DECIMAL(15,2), IN `pUnit` VARCHAR(5), IN `pPonum` VARCHAR(15), IN `pPoitem` INT, IN `pResnum` VARCHAR(15), IN `pResitem` INT, IN `pRemark` TEXT, IN `pWhs1` VARCHAR(15), IN `pWhs2` VARCHAR(15), IN `pShkzg` VARCHAR(1))  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_InsertItemAuto` (IN `pGrnum` VARCHAR(15), IN `pYear` VARCHAR(5), IN `pGritem` INT, IN `pMovement` VARCHAR(5), IN `pMaterial` VARCHAR(40), IN `pMatdesc` VARCHAR(40), IN `pQuantity` DECIMAL(15,2), IN `pUnit` VARCHAR(5), IN `pPonum` VARCHAR(15), IN `pPoitem` INT, IN `pResnum` VARCHAR(15), IN `pResitem` INT, IN `pRemark` TEXT, IN `pWhs1` VARCHAR(15), IN `pWhs2` VARCHAR(15), IN `pShkzg` VARCHAR(1))  BEGIN
 
 DECLARE _grItem int;
 
@@ -148,7 +148,7 @@ set _grItem = pGritem+1;
     VALUES(pGrnum,pYear,_grItem,pMovement,pMaterial,mMatdesc,pQuantity,pUnit,pPonum,pPoitem,pResnum,pResitem,pRemark,pWhs1,pWhs2,pShkzg);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_NextNriv` (IN `pObject` TEXT)  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_NextNriv` (IN `pObject` TEXT)  BEGIN
 
 	DECLARE nextnumb bigint DEFAULT 0;
     
@@ -164,7 +164,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_NextNriv` (IN `pObject` TEXT)  B
     
  END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_Pivot` ()  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_Pivot` ()  BEGIN
 	SET @sql = NULL;
     SELECT
      GROUP_CONCAT(DISTINCT
@@ -187,7 +187,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_Pivot` ()  BEGIN
     DEALLOCATE PREPARE stmt;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_Pivot2` ()  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_Pivot2` ()  BEGIN
 	SET @sql = NULL;
     SELECT
      GROUP_CONCAT(DISTINCT
@@ -210,7 +210,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_Pivot2` ()  BEGIN
     DEALLOCATE PREPARE stmt;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_pivot3` ()  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_pivot3` ()  BEGIN
 
 SET @sql = NULL;
 
@@ -232,7 +232,7 @@ EXECUTE stmt;
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ReportWIP` (IN `pStrdate` DATE, IN `pEnddate` DATE)  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_ReportWIP` (IN `pStrdate` DATE, IN `pEnddate` DATE)  BEGIN
 	SET @sql = NULL;
     
     SELECT
@@ -254,7 +254,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ReportWIP` (IN `pStrdate` DATE, 
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ReportWIP1` ()  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_ReportWIP1` ()  BEGIN
 	SET @sql = NULL;
     SELECT
      GROUP_CONCAT(DISTINCT
@@ -280,7 +280,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ReportWIP1` ()  BEGIN
 	Drop temporary table t1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ReportWIP2` (IN `pDate1` DATE, IN `pDate2` DATE)  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_ReportWIP2` (IN `pDate1` DATE, IN `pDate2` DATE)  BEGIN
 	SET @sql = NULL;
     SELECT
      GROUP_CONCAT(DISTINCT
@@ -306,7 +306,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ReportWIP2` (IN `pDate1` DATE, I
 	Drop temporary table t1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ResetData` ()  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_ResetData` ()  BEGIN
 	DELETE FROM t_pr01;
     DELETE FROM t_pr02;
     DELETE FROM t_po01;
@@ -326,7 +326,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ResetData` ()  BEGIN
     UPDATE t_nriv set currentnum = '' WHERE object in('GRPO','PR','PO','RSRV','BATCH','SERVICE','JURNAL','GROTHER');
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ReverseStock` (IN `pKodebrg` VARCHAR(70), IN `pQuantity` DECIMAL(15,2), IN `pMvt` VARCHAR(5), IN `pWhs` VARCHAR(15), IN `pUnit` VARCHAR(15), IN `pWhsto` VARCHAR(15), IN `pShkzg` VARCHAR(1), IN `pResnum` VARCHAR(15), IN `pResitem` INT)  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_ReverseStock` (IN `pKodebrg` VARCHAR(70), IN `pQuantity` DECIMAL(15,2), IN `pMvt` VARCHAR(5), IN `pWhs` VARCHAR(15), IN `pUnit` VARCHAR(15), IN `pWhsto` VARCHAR(15), IN `pShkzg` VARCHAR(1), IN `pResnum` VARCHAR(15), IN `pResitem` INT)  BEGIN
 	DECLARE _ConvUom decimal(15,2);
     DECLARE currentqty bigint DEFAULT 0;
     DECLARE currentqty2 decimal(15,2) DEFAULT 0;
@@ -357,7 +357,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ReverseStock` (IN `pKodebrg` VAR
         end if;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_TriggerMovement` (IN `pKodebrg` VARCHAR(15), IN `pWarehouse` VARCHAR(15), IN `pQuantity` DECIMAL(15,2), IN `pMvt` VARCHAR(15), IN `pUnit` VARCHAR(15), IN `pWarehouse2` VARCHAR(15), IN `pPonum` VARCHAR(25), IN `pPoitem` INT, IN `pRsnum` VARCHAR(15), IN `pRsitem` INT, IN `pGrnum` VARCHAR(15), IN `pYear` VARCHAR(5), IN `pGritem` INT, IN `pMatdesc` VARCHAR(40), IN `pShkzg` VARCHAR(1), IN `pRemark` TEXT, IN `pBatch` VARCHAR(20))  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_TriggerMovement` (IN `pKodebrg` VARCHAR(15), IN `pWarehouse` VARCHAR(15), IN `pQuantity` DECIMAL(15,2), IN `pMvt` VARCHAR(15), IN `pUnit` VARCHAR(15), IN `pWarehouse2` VARCHAR(15), IN `pPonum` VARCHAR(25), IN `pPoitem` INT, IN `pRsnum` VARCHAR(15), IN `pRsitem` INT, IN `pGrnum` VARCHAR(15), IN `pYear` VARCHAR(5), IN `pGritem` INT, IN `pMatdesc` VARCHAR(40), IN `pShkzg` VARCHAR(1), IN `pRemark` TEXT, IN `pBatch` VARCHAR(20))  BEGIN
 	
     call sp_UpdateStock(pKodebrg,pWarehouse,pQuantity,pMvt,pUnit,pWarehouse2,pShkzg,pBatch);
     
@@ -369,7 +369,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_TriggerMovement` (IN `pKodebrg` 
     
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateGrPOStatus` (IN `pPonum` VARCHAR(25), IN `pPoitem` INT, IN `pGrqty` DECIMAL(15,2))  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_updateGrPOStatus` (IN `pPonum` VARCHAR(25), IN `pPoitem` INT, IN `pGrqty` DECIMAL(15,2))  BEGIN
 	DECLARE totalgr decimal(15,2);
     DECLARE qtypo decimal(15,2);
     
@@ -385,7 +385,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateGrPOStatus` (IN `pPonum` V
     end if;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_UpdatePRStatus` (IN `pPrnum` VARCHAR(15), IN `pPritem` INT)  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_UpdatePRStatus` (IN `pPrnum` VARCHAR(15), IN `pPritem` INT)  BEGIN
 	DECLARE prQty decimal(15,2);
     DECLARE poQty decimal(15,2);
     SELECT quantity into prQty from t_pr02 where prnum = pPrnum and pritem = pPritem;
@@ -396,7 +396,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_UpdatePRStatus` (IN `pPrnum` VAR
     END IF;  
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_UpdateStock` (IN `pKodebrg` VARCHAR(70), IN `pWarehouse` VARCHAR(15), IN `pQuantity` DECIMAL(15,2), IN `pMvt` VARCHAR(5), IN `pUnit` VARCHAR(5), IN `pWarehouseto` VARCHAR(15), IN `pShkzg` VARCHAR(1), IN `pBatch` VARCHAR(20))  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_UpdateStock` (IN `pKodebrg` VARCHAR(70), IN `pWarehouse` VARCHAR(15), IN `pQuantity` DECIMAL(15,2), IN `pMvt` VARCHAR(5), IN `pUnit` VARCHAR(5), IN `pWarehouseto` VARCHAR(15), IN `pShkzg` VARCHAR(1), IN `pBatch` VARCHAR(20))  BEGIN
 	DECLARE currentqty decimal(15,2) DEFAULT 0;
     DECLARE _currentqty decimal(15,2) DEFAULT 0;
     DECLARE _bathqty decimal(15,2) DEFAULT 0;
@@ -450,7 +450,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_UpdateStock` (IN `pKodebrg` VARC
     end if;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_UpdateStockWIP` (IN `pWIPType` VARCHAR(5), IN `pBomid` VARCHAR(30), IN `pQuantity` INT, IN `pFromarea` INT, IN `pToarea` INT, IN `pDate` DATE)  BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` PROCEDURE `sp_UpdateStockWIP` (IN `pWIPType` VARCHAR(5), IN `pBomid` VARCHAR(30), IN `pQuantity` INT, IN `pFromarea` INT, IN `pToarea` INT, IN `pDate` DATE)  BEGIN
 	DECLARE currentqty bigint DEFAULT 0;
     DECLARE _currentqty bigint DEFAULT 0;
     DECLARE inpqty decimal(15,2);
@@ -476,7 +476,7 @@ END$$
 --
 -- Functions
 --
-CREATE DEFINER=`root`@`localhost` FUNCTION `fCheckPOIsGR` (`pPonum` VARCHAR(25)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fCheckPOIsGR` (`pPonum` VARCHAR(25)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
     DECLARE hasil VARCHAR(20);
 	
     SET hasil = (SELECT grnum from t_inv_i where ponum = pPonum limit 1);
@@ -484,7 +484,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `fCheckPOIsGR` (`pPonum` VARCHAR(25))
 	RETURN (hasil);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fCheckPRIsPoCreated` (`pPrnum` VARCHAR(15)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fCheckPRIsPoCreated` (`pPrnum` VARCHAR(15)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
     DECLARE hasil VARCHAR(20);
 	
     SET hasil = (SELECT pocreated from t_pr02 where prnum = pPrnum and pocreated = 'X' limit 1);
@@ -492,7 +492,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `fCheckPRIsPoCreated` (`pPrnum` VARCH
 	RETURN (hasil);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fCurrencyConvertion` (`pFromCurr` VARCHAR(10), `pToCurr` VARCHAR(10)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fCurrencyConvertion` (`pFromCurr` VARCHAR(10), `pToCurr` VARCHAR(10)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
     DECLARE hasil VARCHAR(20);
 	
     SET hasil = (SELECT kurs2 from t_kurs where currency1 = pFromCurr and currency2 = pToCurr);
@@ -500,7 +500,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `fCurrencyConvertion` (`pFromCurr` VA
 	RETURN (hasil);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fGeneratePONUM` (`pPonum` VARCHAR(15)) RETURNS VARCHAR(30) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fGeneratePONUM` (`pPonum` VARCHAR(15)) RETURNS VARCHAR(30) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
     DECLARE hasil VARCHAR(30);
     DECLARE currentMonth int;
     DECLARE smonth varchar(10);
@@ -543,7 +543,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `fGeneratePONUM` (`pPonum` VARCHAR(15
 	RETURN (hasil);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fGetApproveDatePO` (`pPonum` VARCHAR(20)) RETURNS VARCHAR(20) CHARSET latin1 BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fGetApproveDatePO` (`pPonum` VARCHAR(20)) RETURNS VARCHAR(20) CHARSET latin1 BEGIN
     DECLARE hasil VARCHAR(20);
 	
     SET hasil = (SELECT approvedate from t_po02 where ponum = pPonum and final_approve = 'X' and approvestat not in('5','1') LIMIT 1);
@@ -551,7 +551,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `fGetApproveDatePO` (`pPonum` VARCHAR
 	RETURN (hasil);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fGetApproveDatePR` (`pPrnum` VARCHAR(20)) RETURNS VARCHAR(20) CHARSET latin1 BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fGetApproveDatePR` (`pPrnum` VARCHAR(20)) RETURNS VARCHAR(20) CHARSET latin1 BEGIN
     DECLARE hasil VARCHAR(20);
 	
     SET hasil = (SELECT approvedate from t_pr02 where prnum = pPrnum and final_approve = 'X' and approvestat not in('5','1') LIMIT 1);
@@ -559,7 +559,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `fGetApproveDatePR` (`pPrnum` VARCHAR
 	RETURN (hasil);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fGetAreaDesc` (`pArea` INT) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fGetAreaDesc` (`pArea` INT) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
     DECLARE hasil VARCHAR(20);
 	
     SET hasil = (SELECT deskripsi from t_meja where nomeja = pArea);
@@ -567,7 +567,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `fGetAreaDesc` (`pArea` INT) RETURNS 
 	RETURN (hasil);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fGetDepartment` (`pId` INT) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fGetDepartment` (`pId` INT) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
     DECLARE hasil VARCHAR(20);
 	
     SET hasil = (SELECT department from t_department where id = pId);
@@ -575,7 +575,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `fGetDepartment` (`pId` INT) RETURNS 
 	RETURN (hasil);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fGetJabatan` (`pId` INT) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fGetJabatan` (`pId` INT) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
     DECLARE hasil VARCHAR(20);
 	
     SET hasil = (SELECT jabatan from t_jabatan where id = pId);
@@ -583,7 +583,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `fGetJabatan` (`pId` INT) RETURNS VAR
 	RETURN (hasil);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fGetMaterialTotalStock` (`pMaterial` VARCHAR(70)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fGetMaterialTotalStock` (`pMaterial` VARCHAR(70)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
     DECLARE hasil VARCHAR(20);
 	
     SET hasil = (SELECT sum(quantity) from t_stock where material = pMaterial);
@@ -591,7 +591,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `fGetMaterialTotalStock` (`pMaterial`
 	RETURN (hasil);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fGetNamaUser` (`pUser` VARCHAR(50)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fGetNamaUser` (`pUser` VARCHAR(50)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
     DECLARE hasil VARCHAR(20);
 	
     SET hasil = (SELECT nama from t_user where username = pUser);
@@ -599,7 +599,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `fGetNamaUser` (`pUser` VARCHAR(50)) 
 	RETURN (hasil);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fGetOpenPRQty` (`pPrnum` VARCHAR(20), `pPritem` INT) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fGetOpenPRQty` (`pPrnum` VARCHAR(20), `pPritem` INT) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
     DECLARE hasil VARCHAR(20);
 	
     SET hasil = (SELECT sum(quantity) from t_po02 where prnum = pPrnum and pritem = pPritem);
@@ -607,13 +607,13 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `fGetOpenPRQty` (`pPrnum` VARCHAR(20)
 	RETURN (hasil);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fGetSaldo` (`_pBankno` VARCHAR(70)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fGetSaldo` (`_pBankno` VARCHAR(70)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
     DECLARE hasil VARCHAR(255);  
     SET hasil = (SELECT saldo FROM t_arus_kas where frombankacc = _pBankno order by transnum desc limit 1);  
     RETURN (hasil);  
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fGetTotalQtyDel` (`pBomid` VARCHAR(30), `pDate` DATE) RETURNS BIGINT(20) BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fGetTotalQtyDel` (`pBomid` VARCHAR(30), `pDate` DATE) RETURNS BIGINT(20) BEGIN
     DECLARE hasil bigint;
 	
     if day(pDate) = 1 and month(pDate) = 1 THEN
@@ -632,7 +632,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `fGetTotalQtyDel` (`pBomid` VARCHAR(3
 	RETURN (hasil);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fGetTotalQtyReq` (`pBomid` VARCHAR(30), `pDate` DATE) RETURNS BIGINT(20) BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fGetTotalQtyReq` (`pBomid` VARCHAR(30), `pDate` DATE) RETURNS BIGINT(20) BEGIN
     DECLARE hasil bigint;
 	
     if day(pDate) = 1 and month(pDate) = 1 THEN
@@ -653,7 +653,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `fGetTotalQtyReq` (`pBomid` VARCHAR(3
 	RETURN (hasil);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fGetTotalValuePO` (`pPonum` VARCHAR(20)) RETURNS VARCHAR(20) CHARSET latin1 BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fGetTotalValuePO` (`pPonum` VARCHAR(20)) RETURNS VARCHAR(20) CHARSET latin1 BEGIN
     DECLARE hasil VARCHAR(20);
 	
     SET hasil = (SELECT sum(subtotal) from v_po004 where ponum = pPonum and paymentstat is null and approvestat <> 5);
@@ -661,7 +661,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `fGetTotalValuePO` (`pPonum` VARCHAR(
 	RETURN (hasil);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fGetUserDepartment` (`pUsername` VARCHAR(50)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fGetUserDepartment` (`pUsername` VARCHAR(50)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
     DECLARE hasil VARCHAR(20);
 	
     SET hasil = (SELECT deptname from v_user where username = pUsername);
@@ -669,7 +669,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `fGetUserDepartment` (`pUsername` VAR
 	RETURN (hasil);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fGetUserJabatan` (`pUsername` VARCHAR(50)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fGetUserJabatan` (`pUsername` VARCHAR(50)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
     DECLARE hasil VARCHAR(20);
 	
     SET hasil = (SELECT jbtn from v_user where username = pUsername);
@@ -677,7 +677,7 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `fGetUserJabatan` (`pUsername` VARCHA
 	RETURN (hasil);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `fGetWarehouseName` (`pWhs` VARCHAR(15)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
+CREATE DEFINER=`cpses_ep1yf5ybwr`@`localhost` FUNCTION `fGetWarehouseName` (`pWhs` VARCHAR(15)) RETURNS VARCHAR(20) CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci BEGIN
     DECLARE hasil VARCHAR(20);
 	
     SET hasil = (SELECT deskripsi from t_gudang where gudang = pWhs);
@@ -3971,7 +3971,7 @@ CREATE TABLE `v_wos01` (
 --
 DROP TABLE IF EXISTS `t_totalcycletime`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `t_totalcycletime`  AS  select `a`.`bomid` AS `bomid`,`a`.`activity` AS `activity`,`a`.`partnumber` AS `partnumber`,`a`.`quantity` AS `quantity`,`b`.`cycletime` AS `cycletime`,(`a`.`quantity` * `b`.`cycletime`) AS `totaltime` from (`t_cost02` `a` join `t_activity` `b` on((`a`.`activity` = `b`.`id`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `t_totalcycletime`  AS  select `a`.`bomid` AS `bomid`,`a`.`activity` AS `activity`,`a`.`partnumber` AS `partnumber`,`a`.`quantity` AS `quantity`,`b`.`cycletime` AS `cycletime`,(`a`.`quantity` * `b`.`cycletime`) AS `totaltime` from (`t_cost02` `a` join `t_activity` `b` on((`a`.`activity` = `b`.`id`))) ;
 
 -- --------------------------------------------------------
 
@@ -3980,7 +3980,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_bank_master`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_bank_master`  AS  select `a`.`id` AS `id`,`a`.`bankid` AS `bankid`,`a`.`bankno` AS `bankno`,`a`.`bankacc` AS `bankacc`,`a`.`status` AS `status`,`b`.`deskripsi` AS `deskripsi`,`a`.`balance` AS `balance`,`a`.`user` AS `user` from (`t_bank` `a` join `t_bank_list` `b` on((`a`.`bankid` = `b`.`bankey`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_bank_master`  AS  select `a`.`id` AS `id`,`a`.`bankid` AS `bankid`,`a`.`bankno` AS `bankno`,`a`.`bankacc` AS `bankacc`,`a`.`status` AS `status`,`b`.`deskripsi` AS `deskripsi`,`a`.`balance` AS `balance`,`a`.`user` AS `user` from (`t_bank` `a` join `t_bank_list` `b` on((`a`.`bankid` = `b`.`bankey`))) ;
 
 -- --------------------------------------------------------
 
@@ -3989,7 +3989,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_cost01`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_cost01`  AS  select `a`.`bomid` AS `bomid`,`a`.`partnumber` AS `partnumber`,`b`.`partname` AS `partname`,`b`.`customer` AS `customer`,`b`.`qtycct` AS `qtycct` from (`t_cost01` `a` join `t_bom01` `b` on((`a`.`bomid` = `b`.`bomid`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_cost01`  AS  select `a`.`bomid` AS `bomid`,`a`.`partnumber` AS `partnumber`,`b`.`partname` AS `partname`,`b`.`customer` AS `customer`,`b`.`qtycct` AS `qtycct` from (`t_cost01` `a` join `t_bom01` `b` on((`a`.`bomid` = `b`.`bomid`))) ;
 
 -- --------------------------------------------------------
 
@@ -3998,7 +3998,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_detailcost`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_detailcost`  AS  select `a`.`bomid` AS `bomid`,`b`.`id` AS `id`,`b`.`activity` AS `activity`,`b`.`cycletime` AS `cycletime`,`a`.`quantity` AS `quantity`,format((`a`.`quantity` * `b`.`cycletime`),2) AS `totaltime`,`b`.`cycvleunit` AS `cycvleunit`,`a`.`partnumber` AS `partnumber` from (`t_cost02` `a` join `t_activity` `b` on((`a`.`activity` = `b`.`id`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_detailcost`  AS  select `a`.`bomid` AS `bomid`,`b`.`id` AS `id`,`b`.`activity` AS `activity`,`b`.`cycletime` AS `cycletime`,`a`.`quantity` AS `quantity`,format((`a`.`quantity` * `b`.`cycletime`),2) AS `totaltime`,`b`.`cycvleunit` AS `cycvleunit`,`a`.`partnumber` AS `partnumber` from (`t_cost02` `a` join `t_activity` `b` on((`a`.`activity` = `b`.`id`))) ;
 
 -- --------------------------------------------------------
 
@@ -4007,7 +4007,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_inventory01`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_inventory01`  AS  select `a`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,`b`.`partname` AS `partname`,`b`.`partnumber` AS `partnumber`,`a`.`warehouse` AS `warehouse`,`c`.`deskripsi` AS `deskripsi`,`a`.`quantity` AS `quantity`,`b`.`matunit` AS `matunit` from ((`t_stock` `a` join `t_material` `b` on((`a`.`material` = `b`.`material`))) join `t_gudang` `c` on((`a`.`warehouse` = `c`.`gudang`))) order by `a`.`material`,`a`.`warehouse` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_inventory01`  AS  select `a`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,`b`.`partname` AS `partname`,`b`.`partnumber` AS `partnumber`,`a`.`warehouse` AS `warehouse`,`c`.`deskripsi` AS `deskripsi`,`a`.`quantity` AS `quantity`,`b`.`matunit` AS `matunit` from ((`t_stock` `a` join `t_material` `b` on((`a`.`material` = `b`.`material`))) join `t_gudang` `c` on((`a`.`warehouse` = `c`.`gudang`))) order by `a`.`material`,`a`.`warehouse` ;
 
 -- --------------------------------------------------------
 
@@ -4016,7 +4016,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_inventory02`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_inventory02`  AS  select `a`.`grnum` AS `grnum`,`a`.`year` AS `year`,`a`.`gritem` AS `gritem`,`b`.`movement` AS `movement`,`b`.`movementdate` AS `movementdate`,`b`.`note` AS `note`,`a`.`material` AS `material`,`a`.`matdesc` AS `matdesc`,`a`.`quantity` AS `quantity`,`a`.`unit` AS `unit`,`a`.`ponum` AS `ponum`,`a`.`poitem` AS `poitem`,`a`.`remark` AS `remark`,`a`.`warehouse` AS `warehouse`,`c`.`price` AS `price`,`d`.`vendor` AS `vendor`,`f`.`namavendor` AS `namavendor` from ((((`t_inv_i` `a` join `t_inv_h` `b` on(((`a`.`grnum` = `b`.`grnum`) and (`a`.`year` = `b`.`year`)))) join `t_po02` `c` on(((`a`.`ponum` = `c`.`ponum`) and (`a`.`poitem` = `c`.`poitem`)))) join `t_po01` `d` on((`c`.`ponum` = `d`.`ponum`))) join `t_vendor` `f` on((`d`.`vendor` = `f`.`vendor`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_inventory02`  AS  select `a`.`grnum` AS `grnum`,`a`.`year` AS `year`,`a`.`gritem` AS `gritem`,`b`.`movement` AS `movement`,`b`.`movementdate` AS `movementdate`,`b`.`note` AS `note`,`a`.`material` AS `material`,`a`.`matdesc` AS `matdesc`,`a`.`quantity` AS `quantity`,`a`.`unit` AS `unit`,`a`.`ponum` AS `ponum`,`a`.`poitem` AS `poitem`,`a`.`remark` AS `remark`,`a`.`warehouse` AS `warehouse`,`c`.`price` AS `price`,`d`.`vendor` AS `vendor`,`f`.`namavendor` AS `namavendor` from ((((`t_inv_i` `a` join `t_inv_h` `b` on(((`a`.`grnum` = `b`.`grnum`) and (`a`.`year` = `b`.`year`)))) join `t_po02` `c` on(((`a`.`ponum` = `c`.`ponum`) and (`a`.`poitem` = `c`.`poitem`)))) join `t_po01` `d` on((`c`.`ponum` = `d`.`ponum`))) join `t_vendor` `f` on((`d`.`vendor` = `f`.`vendor`))) ;
 
 -- --------------------------------------------------------
 
@@ -4025,7 +4025,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_inventory03`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_inventory03`  AS  select `b`.`grnum` AS `grnum`,`b`.`year` AS `year`,`a`.`gritem` AS `gritem`,`b`.`movement` AS `movement`,`b`.`movementdate` AS `movementdate`,(case when (`a`.`movement` = '101') then 'Penerimaan PO' when (`a`.`movement` = '201') then 'Transfer reservation' when (`a`.`movement` = '211') then 'Transfer other' when (`a`.`movement` = '261') then 'Pemakain Material' when (`a`.`movement` = '561') then 'Penerimaan Lain-lain' end) AS `movemventtext`,`b`.`note` AS `note`,`a`.`batchnumber` AS `batchnumber`,`a`.`material` AS `material`,`a`.`matdesc` AS `matdesc`,`a`.`quantity` AS `quantity`,`a`.`unit` AS `unit`,`a`.`ponum` AS `ponum`,`a`.`poitem` AS `poitem`,`a`.`resnum` AS `resnum`,`a`.`resitem` AS `resitem`,`a`.`remark` AS `remark`,`a`.`warehouse` AS `warehouse`,`fGetWarehouseName`(`a`.`warehouse`) AS `whsname`,`a`.`warehouseto` AS `warehouseto`,`fGetWarehouseName`(`a`.`warehouseto`) AS `whsdest`,`a`.`shkzg` AS `shkzg`,`a`.`createdby` AS `createdby`,`fGetUserDepartment`(`a`.`createdby`) AS `department` from (`t_inv_i` `a` join `t_inv_h` `b` on(((`a`.`grnum` = `b`.`grnum`) and (`a`.`year` = `b`.`year`)))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_inventory03`  AS  select `b`.`grnum` AS `grnum`,`b`.`year` AS `year`,`a`.`gritem` AS `gritem`,`b`.`movement` AS `movement`,`b`.`movementdate` AS `movementdate`,(case when (`a`.`movement` = '101') then 'Penerimaan PO' when (`a`.`movement` = '201') then 'Transfer reservation' when (`a`.`movement` = '211') then 'Transfer other' when (`a`.`movement` = '261') then 'Pemakain Material' when (`a`.`movement` = '561') then 'Penerimaan Lain-lain' end) AS `movemventtext`,`b`.`note` AS `note`,`a`.`batchnumber` AS `batchnumber`,`a`.`material` AS `material`,`a`.`matdesc` AS `matdesc`,`a`.`quantity` AS `quantity`,`a`.`unit` AS `unit`,`a`.`ponum` AS `ponum`,`a`.`poitem` AS `poitem`,`a`.`resnum` AS `resnum`,`a`.`resitem` AS `resitem`,`a`.`remark` AS `remark`,`a`.`warehouse` AS `warehouse`,`fGetWarehouseName`(`a`.`warehouse`) AS `whsname`,`a`.`warehouseto` AS `warehouseto`,`fGetWarehouseName`(`a`.`warehouseto`) AS `whsdest`,`a`.`shkzg` AS `shkzg`,`a`.`createdby` AS `createdby`,`fGetUserDepartment`(`a`.`createdby`) AS `department` from (`t_inv_i` `a` join `t_inv_h` `b` on(((`a`.`grnum` = `b`.`grnum`) and (`a`.`year` = `b`.`year`)))) ;
 
 -- --------------------------------------------------------
 
@@ -4034,7 +4034,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_payment01`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_payment01`  AS  select distinct `a`.`ponum` AS `ponum`,`a`.`podat` AS `podat`,`a`.`note` AS `note`,`a`.`vendor` AS `vendor`,`b`.`namavendor` AS `namavendor`,cast(`fGetTotalValuePO`(`a`.`ponum`) as decimal(15,2)) AS `povalue` from ((`t_po01` `a` join `t_vendor` `b` on((`a`.`vendor` = `b`.`vendor`))) join `t_po02` `c` on((`a`.`ponum` = `c`.`ponum`))) where ((`c`.`final_approve` = 'X') and isnull(`c`.`paymentstat`) and (`c`.`approvestat` <> 5)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_payment01`  AS  select distinct `a`.`ponum` AS `ponum`,`a`.`podat` AS `podat`,`a`.`note` AS `note`,`a`.`vendor` AS `vendor`,`b`.`namavendor` AS `namavendor`,cast(`fGetTotalValuePO`(`a`.`ponum`) as decimal(15,2)) AS `povalue` from ((`t_po01` `a` join `t_vendor` `b` on((`a`.`vendor` = `b`.`vendor`))) join `t_po02` `c` on((`a`.`ponum` = `c`.`ponum`))) where ((`c`.`final_approve` = 'X') and isnull(`c`.`paymentstat`) and (`c`.`approvestat` <> 5)) ;
 
 -- --------------------------------------------------------
 
@@ -4043,7 +4043,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_payment02`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_payment02`  AS  select `a`.`ivnum` AS `ivnum`,`a`.`ivyear` AS `ivyear`,`a`.`ivitem` AS `ivitem`,`a`.`ponum` AS `ponum`,`a`.`poitem` AS `poitem`,`a`.`ivdate` AS `ivdate`,`b`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,`b`.`mattypedesc` AS `mattypedesc`,`b`.`quantity` AS `quantity`,`b`.`unit` AS `unit`,`b`.`price` AS `price`,`b`.`ppn` AS `ppn`,`b`.`discount` AS `discount`,cast(`b`.`subtotal` as decimal(15,2)) AS `subtotal`,`b`.`prnum` AS `prnum`,`b`.`pritem` AS `pritem`,`b`.`final_approve` AS `final_approve`,`b`.`paymentstat` AS `paymentstat` from (`t_invoice02` `a` join `v_po004` `b` on(((`a`.`ponum` = `b`.`ponum`) and (`a`.`poitem` = `b`.`poitem`)))) order by `a`.`ivnum`,`a`.`ivitem` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_payment02`  AS  select `a`.`ivnum` AS `ivnum`,`a`.`ivyear` AS `ivyear`,`a`.`ivitem` AS `ivitem`,`a`.`ponum` AS `ponum`,`a`.`poitem` AS `poitem`,`a`.`ivdate` AS `ivdate`,`b`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,`b`.`mattypedesc` AS `mattypedesc`,`b`.`quantity` AS `quantity`,`b`.`unit` AS `unit`,`b`.`price` AS `price`,`b`.`ppn` AS `ppn`,`b`.`discount` AS `discount`,cast(`b`.`subtotal` as decimal(15,2)) AS `subtotal`,`b`.`prnum` AS `prnum`,`b`.`pritem` AS `pritem`,`b`.`final_approve` AS `final_approve`,`b`.`paymentstat` AS `paymentstat` from (`t_invoice02` `a` join `v_po004` `b` on(((`a`.`ponum` = `b`.`ponum`) and (`a`.`poitem` = `b`.`poitem`)))) order by `a`.`ivnum`,`a`.`ivitem` ;
 
 -- --------------------------------------------------------
 
@@ -4052,7 +4052,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_po001`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_po001`  AS  select distinct `a`.`ponum` AS `ponum`,`a`.`ext_ponum` AS `ext_ponum`,`a`.`potype` AS `potype`,`a`.`podat` AS `podat`,`a`.`vendor` AS `vendor`,`a`.`note` AS `note`,`a`.`currency` AS `currency`,`c`.`approvestat` AS `approvestat`,`a`.`appby` AS `appby`,`a`.`completed` AS `completed`,`a`.`createdon` AS `createdon`,`a`.`createdby` AS `createdby`,`b`.`namavendor` AS `namavendor`,`b`.`alamat` AS `alamat`,`b`.`notelp` AS `notelp`,`b`.`email` AS `email`,`fGetUserDepartment`(`a`.`createdby`) AS `department`,(case when (`c`.`approvestat` = '1') then 'Open' when (`c`.`approvestat` = '2') then 'Approved' when (`c`.`approvestat` = '3') then 'Rejected' when (`c`.`approvestat` = '4') then 'Closed' end) AS `postat`,`a`.`warehouse` AS `warehouse` from ((`t_po01` `a` join `t_vendor` `b` on((`a`.`vendor` = `b`.`vendor`))) join `t_po02` `c` on((`a`.`ponum` = `c`.`ponum`))) where isnull(`c`.`final_approve`) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_po001`  AS  select distinct `a`.`ponum` AS `ponum`,`a`.`ext_ponum` AS `ext_ponum`,`a`.`potype` AS `potype`,`a`.`podat` AS `podat`,`a`.`vendor` AS `vendor`,`a`.`note` AS `note`,`a`.`currency` AS `currency`,`c`.`approvestat` AS `approvestat`,`a`.`appby` AS `appby`,`a`.`completed` AS `completed`,`a`.`createdon` AS `createdon`,`a`.`createdby` AS `createdby`,`b`.`namavendor` AS `namavendor`,`b`.`alamat` AS `alamat`,`b`.`notelp` AS `notelp`,`b`.`email` AS `email`,`fGetUserDepartment`(`a`.`createdby`) AS `department`,(case when (`c`.`approvestat` = '1') then 'Open' when (`c`.`approvestat` = '2') then 'Approved' when (`c`.`approvestat` = '3') then 'Rejected' when (`c`.`approvestat` = '4') then 'Closed' end) AS `postat`,`a`.`warehouse` AS `warehouse` from ((`t_po01` `a` join `t_vendor` `b` on((`a`.`vendor` = `b`.`vendor`))) join `t_po02` `c` on((`a`.`ponum` = `c`.`ponum`))) where isnull(`c`.`final_approve`) ;
 
 -- --------------------------------------------------------
 
@@ -4061,7 +4061,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_po002`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_po002`  AS  select distinct `a`.`ponum` AS `ponum`,`a`.`vendor` AS `vendor`,`c`.`namavendor` AS `namavendor`,`a`.`podat` AS `podat`,`a`.`note` AS `note`,`a`.`warehouse` AS `warehouse` from ((`t_po01` `a` join `t_po02` `b` on((`a`.`ponum` = `b`.`ponum`))) join `t_vendor` `c` on((`a`.`vendor` = `c`.`vendor`))) where ((`b`.`final_approve` = 'X') and isnull(`b`.`grstatus`) and isnull(`b`.`pocomplete`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_po002`  AS  select distinct `a`.`ponum` AS `ponum`,`a`.`vendor` AS `vendor`,`c`.`namavendor` AS `namavendor`,`a`.`podat` AS `podat`,`a`.`note` AS `note`,`a`.`warehouse` AS `warehouse` from ((`t_po01` `a` join `t_po02` `b` on((`a`.`ponum` = `b`.`ponum`))) join `t_vendor` `c` on((`a`.`vendor` = `c`.`vendor`))) where ((`b`.`final_approve` = 'X') and isnull(`b`.`grstatus`) and isnull(`b`.`pocomplete`)) ;
 
 -- --------------------------------------------------------
 
@@ -4070,7 +4070,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_po003`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_po003`  AS  select `t_po01`.`ponum` AS `ponum`,`t_po01`.`potype` AS `potype`,`t_po01`.`podat` AS `podat`,`t_po01`.`vendor` AS `vendor`,`b`.`namavendor` AS `namavendor`,`t_po01`.`note` AS `note`,`t_po01`.`currency` AS `currency`,`t_po01`.`approvestat` AS `approvestat`,`t_po01`.`appby` AS `appby`,`t_po01`.`completed` AS `completed`,`t_po01`.`createdon` AS `createdon`,`t_po01`.`createdby` AS `createdby`,`fCheckPOIsGR`(`t_po01`.`ponum`) AS `isgr` from (`t_po01` left join `t_vendor` `b` on((`t_po01`.`vendor` = `b`.`vendor`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_po003`  AS  select `t_po01`.`ponum` AS `ponum`,`t_po01`.`potype` AS `potype`,`t_po01`.`podat` AS `podat`,`t_po01`.`vendor` AS `vendor`,`b`.`namavendor` AS `namavendor`,`t_po01`.`note` AS `note`,`t_po01`.`currency` AS `currency`,`t_po01`.`approvestat` AS `approvestat`,`t_po01`.`appby` AS `appby`,`t_po01`.`completed` AS `completed`,`t_po01`.`createdon` AS `createdon`,`t_po01`.`createdby` AS `createdby`,`fCheckPOIsGR`(`t_po01`.`ponum`) AS `isgr` from (`t_po01` left join `t_vendor` `b` on((`t_po01`.`vendor` = `b`.`vendor`))) ;
 
 -- --------------------------------------------------------
 
@@ -4079,7 +4079,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_po004`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_po004`  AS  select `a`.`ponum` AS `ponum`,`a`.`poitem` AS `poitem`,`a`.`material` AS `material`,`a`.`matdesc` AS `matdesc`,`a`.`quantity` AS `quantity`,`a`.`unit` AS `unit`,`a`.`price` AS `price`,`a`.`ppn` AS `ppn`,`a`.`discount` AS `discount`,`a`.`grqty` AS `grqty`,`a`.`prnum` AS `prnum`,`a`.`pritem` AS `pritem`,`a`.`grstatus` AS `grstatus`,`a`.`pocomplete` AS `pocomplete`,`a`.`approvestat` AS `approvestat`,`a`.`approvedby` AS `approvedby`,`a`.`final_approve` AS `final_approve`,`a`.`approvedate` AS `approvedate`,`a`.`paymentstat` AS `paymentstat`,`a`.`createdon` AS `createdon`,`a`.`createdby` AS `createdby`,`c`.`mattypedesc` AS `mattypedesc`,cast((((`a`.`quantity` * `a`.`price`) - `a`.`discount`) + (((`a`.`quantity` * `a`.`price`) - `a`.`discount`) * (`a`.`ppn` / 100))) as decimal(15,2)) AS `subtotal`,cast(((((`a`.`quantity` * `a`.`price`) - `a`.`discount`) + (((`a`.`quantity` * `a`.`price`) - `a`.`discount`) * (`a`.`ppn` / 100))) / `a`.`quantity`) as decimal(15,2)) AS `unitprice` from ((`t_po02` `a` join `t_material` `b` on((`a`.`material` = `b`.`material`))) join `t_materialtype` `c` on((`b`.`mattype` = `c`.`mattype`))) order by `a`.`ponum`,`a`.`poitem` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_po004`  AS  select `a`.`ponum` AS `ponum`,`a`.`poitem` AS `poitem`,`a`.`material` AS `material`,`a`.`matdesc` AS `matdesc`,`a`.`quantity` AS `quantity`,`a`.`unit` AS `unit`,`a`.`price` AS `price`,`a`.`ppn` AS `ppn`,`a`.`discount` AS `discount`,`a`.`grqty` AS `grqty`,`a`.`prnum` AS `prnum`,`a`.`pritem` AS `pritem`,`a`.`grstatus` AS `grstatus`,`a`.`pocomplete` AS `pocomplete`,`a`.`approvestat` AS `approvestat`,`a`.`approvedby` AS `approvedby`,`a`.`final_approve` AS `final_approve`,`a`.`approvedate` AS `approvedate`,`a`.`paymentstat` AS `paymentstat`,`a`.`createdon` AS `createdon`,`a`.`createdby` AS `createdby`,`c`.`mattypedesc` AS `mattypedesc`,cast((((`a`.`quantity` * `a`.`price`) - `a`.`discount`) + (((`a`.`quantity` * `a`.`price`) - `a`.`discount`) * (`a`.`ppn` / 100))) as decimal(15,2)) AS `subtotal`,cast(((((`a`.`quantity` * `a`.`price`) - `a`.`discount`) + (((`a`.`quantity` * `a`.`price`) - `a`.`discount`) * (`a`.`ppn` / 100))) / `a`.`quantity`) as decimal(15,2)) AS `unitprice` from ((`t_po02` `a` join `t_material` `b` on((`a`.`material` = `b`.`material`))) join `t_materialtype` `c` on((`b`.`mattype` = `c`.`mattype`))) order by `a`.`ponum`,`a`.`poitem` ;
 
 -- --------------------------------------------------------
 
@@ -4088,7 +4088,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_pr001`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pr001`  AS  select `a`.`prnum` AS `prnum`,`a`.`typepr` AS `typepr`,`a`.`note` AS `note`,`a`.`prdate` AS `prdate`,`a`.`relgroup` AS `relgroup`,`a`.`approvestat` AS `approvestat`,`a`.`requestby` AS `requestby`,`a`.`warehouse` AS `warehouse`,`a`.`createdon` AS `createdon`,`a`.`createdby` AS `createdby`,`b`.`pritem` AS `pritem`,`b`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,`b`.`quantity` AS `quantity`,`b`.`unit` AS `unit`,`b`.`pocreated` AS `pocreated`,`c`.`deskripsi` AS `whsname`,`fGetUserDepartment`(`a`.`createdby`) AS `department` from ((`t_pr01` `a` join `t_pr02` `b` on((`a`.`prnum` = `b`.`prnum`))) join `t_gudang` `c` on((`a`.`warehouse` = `c`.`gudang`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_pr001`  AS  select `a`.`prnum` AS `prnum`,`a`.`typepr` AS `typepr`,`a`.`note` AS `note`,`a`.`prdate` AS `prdate`,`a`.`relgroup` AS `relgroup`,`a`.`approvestat` AS `approvestat`,`a`.`requestby` AS `requestby`,`a`.`warehouse` AS `warehouse`,`a`.`createdon` AS `createdon`,`a`.`createdby` AS `createdby`,`b`.`pritem` AS `pritem`,`b`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,`b`.`quantity` AS `quantity`,`b`.`unit` AS `unit`,`b`.`pocreated` AS `pocreated`,`c`.`deskripsi` AS `whsname`,`fGetUserDepartment`(`a`.`createdby`) AS `department` from ((`t_pr01` `a` join `t_pr02` `b` on((`a`.`prnum` = `b`.`prnum`))) join `t_gudang` `c` on((`a`.`warehouse` = `c`.`gudang`))) ;
 
 -- --------------------------------------------------------
 
@@ -4097,7 +4097,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_pr002`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pr002`  AS  select `a`.`prnum` AS `prnum`,`a`.`typepr` AS `typepr`,`a`.`note` AS `note`,`a`.`prdate` AS `prdate`,`a`.`relgroup` AS `relgroup`,`a`.`approvestat` AS `approvestat`,`a`.`requestby` AS `requestby`,`a`.`warehouse` AS `warehouse`,`a`.`idproject` AS `idproject`,`a`.`appby` AS `appby`,`a`.`createdon` AS `createdon`,`a`.`createdby` AS `createdby`,`b`.`deskripsi` AS `deskripsi`,(case when (`a`.`approvestat` = '1') then 'Open' when (`a`.`approvestat` = '2') then 'Approved' when (`a`.`approvestat` = '3') then 'Rejected' end) AS `status`,`fGetUserDepartment`(`a`.`createdby`) AS `department` from (`t_pr01` `a` left join `t_gudang` `b` on((`a`.`warehouse` = `b`.`gudang`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_pr002`  AS  select `a`.`prnum` AS `prnum`,`a`.`typepr` AS `typepr`,`a`.`note` AS `note`,`a`.`prdate` AS `prdate`,`a`.`relgroup` AS `relgroup`,`a`.`approvestat` AS `approvestat`,`a`.`requestby` AS `requestby`,`a`.`warehouse` AS `warehouse`,`a`.`idproject` AS `idproject`,`a`.`appby` AS `appby`,`a`.`createdon` AS `createdon`,`a`.`createdby` AS `createdby`,`b`.`deskripsi` AS `deskripsi`,(case when (`a`.`approvestat` = '1') then 'Open' when (`a`.`approvestat` = '2') then 'Approved' when (`a`.`approvestat` = '3') then 'Rejected' end) AS `status`,`fGetUserDepartment`(`a`.`createdby`) AS `department` from (`t_pr01` `a` left join `t_gudang` `b` on((`a`.`warehouse` = `b`.`gudang`))) ;
 
 -- --------------------------------------------------------
 
@@ -4106,7 +4106,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_pr003`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pr003`  AS  select `t_pr01`.`prnum` AS `prnum`,`t_pr01`.`typepr` AS `typepr`,`t_pr01`.`note` AS `note`,`t_pr01`.`prdate` AS `prdate`,`t_pr01`.`relgroup` AS `relgroup`,`t_pr01`.`approvestat` AS `approvestat`,`t_pr01`.`requestby` AS `requestby`,`t_pr01`.`warehouse` AS `warehouse`,`t_pr01`.`idproject` AS `idproject`,`t_pr01`.`appby` AS `appby`,`t_pr01`.`createdon` AS `createdon`,`t_pr01`.`createdby` AS `createdby`,`fCheckPRIsPoCreated`(`t_pr01`.`prnum`) AS `info` from `t_pr01` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_pr003`  AS  select `t_pr01`.`prnum` AS `prnum`,`t_pr01`.`typepr` AS `typepr`,`t_pr01`.`note` AS `note`,`t_pr01`.`prdate` AS `prdate`,`t_pr01`.`relgroup` AS `relgroup`,`t_pr01`.`approvestat` AS `approvestat`,`t_pr01`.`requestby` AS `requestby`,`t_pr01`.`warehouse` AS `warehouse`,`t_pr01`.`idproject` AS `idproject`,`t_pr01`.`appby` AS `appby`,`t_pr01`.`createdon` AS `createdon`,`t_pr01`.`createdby` AS `createdby`,`fCheckPRIsPoCreated`(`t_pr01`.`prnum`) AS `info` from `t_pr01` ;
 
 -- --------------------------------------------------------
 
@@ -4115,7 +4115,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_pr004`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pr004`  AS  select `a`.`prnum` AS `prnum`,`a`.`pritem` AS `pritem`,`a`.`material` AS `material`,`a`.`matdesc` AS `matdesc`,`a`.`quantity` AS `quantity`,`a`.`unit` AS `unit`,`a`.`warehouse` AS `warehouse`,`a`.`pocreated` AS `pocreated`,`a`.`approvestat` AS `approvestat`,`a`.`approveby` AS `approveby`,`a`.`remark` AS `remark`,`a`.`createdon` AS `createdon`,`a`.`createdby` AS `createdby`,`b`.`mattype` AS `mattype`,`c`.`mattypedesc` AS `mattypedesc` from ((`t_pr02` `a` left join `t_material` `b` on((`a`.`material` = `b`.`material`))) join `t_materialtype` `c` on((`b`.`mattype` = `c`.`mattype`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_pr004`  AS  select `a`.`prnum` AS `prnum`,`a`.`pritem` AS `pritem`,`a`.`material` AS `material`,`a`.`matdesc` AS `matdesc`,`a`.`quantity` AS `quantity`,`a`.`unit` AS `unit`,`a`.`warehouse` AS `warehouse`,`a`.`pocreated` AS `pocreated`,`a`.`approvestat` AS `approvestat`,`a`.`approveby` AS `approveby`,`a`.`remark` AS `remark`,`a`.`createdon` AS `createdon`,`a`.`createdby` AS `createdby`,`b`.`mattype` AS `mattype`,`c`.`mattypedesc` AS `mattypedesc` from ((`t_pr02` `a` left join `t_material` `b` on((`a`.`material` = `b`.`material`))) join `t_materialtype` `c` on((`b`.`mattype` = `c`.`mattype`))) ;
 
 -- --------------------------------------------------------
 
@@ -4124,7 +4124,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_pr005`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pr005`  AS  select `a`.`prnum` AS `prnum`,`a`.`pritem` AS `pritem`,`b`.`warehouse` AS `warehouse`,`c`.`deskripsi` AS `whsname`,`a`.`material` AS `material`,`a`.`matdesc` AS `matdesc`,`a`.`quantity` AS `quantity`,(case when ((`a`.`quantity` - `fGetOpenPRQty`(`a`.`prnum`,`a`.`pritem`)) > 0) then (`a`.`quantity` - `fGetOpenPRQty`(`a`.`prnum`,`a`.`pritem`)) else `a`.`quantity` end) AS `openqty`,`a`.`unit` AS `unit`,`a`.`pocreated` AS `pocreated` from ((`t_pr02` `a` join `t_pr01` `b` on((`a`.`prnum` = `b`.`prnum`))) left join `t_gudang` `c` on((`b`.`warehouse` = `c`.`gudang`))) where ((`a`.`final_approve` = 'X') and (`a`.`approvestat` <> 5) and isnull(`a`.`pocreated`)) order by `a`.`prnum`,`a`.`pritem` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_pr005`  AS  select `a`.`prnum` AS `prnum`,`a`.`pritem` AS `pritem`,`b`.`warehouse` AS `warehouse`,`c`.`deskripsi` AS `whsname`,`a`.`material` AS `material`,`a`.`matdesc` AS `matdesc`,`a`.`quantity` AS `quantity`,(case when ((`a`.`quantity` - `fGetOpenPRQty`(`a`.`prnum`,`a`.`pritem`)) > 0) then (`a`.`quantity` - `fGetOpenPRQty`(`a`.`prnum`,`a`.`pritem`)) else `a`.`quantity` end) AS `openqty`,`a`.`unit` AS `unit`,`a`.`pocreated` AS `pocreated` from ((`t_pr02` `a` join `t_pr01` `b` on((`a`.`prnum` = `b`.`prnum`))) left join `t_gudang` `c` on((`b`.`warehouse` = `c`.`gudang`))) where ((`a`.`final_approve` = 'X') and (`a`.`approvestat` <> 5) and isnull(`a`.`pocreated`)) order by `a`.`prnum`,`a`.`pritem` ;
 
 -- --------------------------------------------------------
 
@@ -4133,7 +4133,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_quotation`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_quotation`  AS  select `a`.`bomid` AS `bomid`,`a`.`component` AS `component`,`a`.`partnumber` AS `partnumber`,`a`.`quantity` AS `quantity`,`a`.`unit` AS `unit`,`b`.`color` AS `color`,`b`.`stdprice` AS `stdprice`,`b`.`stdpriceusd` AS `stdpriceusd`,`fCurrencyConvertion`('USD','IDR') AS `kurs`,(case when (`b`.`stdpriceusd` > 0) then (`b`.`stdpriceusd` * `fCurrencyConvertion`('USD','IDR')) when (`b`.`stdpriceusd` = 0) then `b`.`stdprice` end) AS `value`,(case when (`b`.`stdpriceusd` > 0) then 'USD' when (`b`.`stdpriceusd` = 0) then 'IDR' end) AS `currency` from (`t_bom02` `a` join `t_material` `b` on((`a`.`component` = `b`.`material`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_quotation`  AS  select `a`.`bomid` AS `bomid`,`a`.`component` AS `component`,`a`.`partnumber` AS `partnumber`,`a`.`quantity` AS `quantity`,`a`.`unit` AS `unit`,`b`.`color` AS `color`,`b`.`stdprice` AS `stdprice`,`b`.`stdpriceusd` AS `stdpriceusd`,`fCurrencyConvertion`('USD','IDR') AS `kurs`,(case when (`b`.`stdpriceusd` > 0) then (`b`.`stdpriceusd` * `fCurrencyConvertion`('USD','IDR')) when (`b`.`stdpriceusd` = 0) then `b`.`stdprice` end) AS `value`,(case when (`b`.`stdpriceusd` > 0) then 'USD' when (`b`.`stdpriceusd` = 0) then 'IDR' end) AS `currency` from (`t_bom02` `a` join `t_material` `b` on((`a`.`component` = `b`.`material`))) ;
 
 -- --------------------------------------------------------
 
@@ -4142,7 +4142,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_rdefect`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_rdefect`  AS  select `a`.`isnpecdate` AS `isnpecdate`,`b`.`jenisdefect` AS `defect`,sum(`a`.`jumlahng`) AS `jmlng` from (`t_inspection` `a` join `t_defect_jenis` `b` on((`a`.`jenisdefect` = `b`.`idjenis`))) group by `a`.`isnpecdate`,`b`.`jenisdefect` order by `a`.`isnpecdate` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_rdefect`  AS  select `a`.`isnpecdate` AS `isnpecdate`,`b`.`jenisdefect` AS `defect`,sum(`a`.`jumlahng`) AS `jmlng` from (`t_inspection` `a` join `t_defect_jenis` `b` on((`a`.`jenisdefect` = `b`.`idjenis`))) group by `a`.`isnpecdate`,`b`.`jenisdefect` order by `a`.`isnpecdate` ;
 
 -- --------------------------------------------------------
 
@@ -4151,7 +4151,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_rdelivery`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_rdelivery`  AS  select `t_delivery`.`partnumber` AS `partnumber`,`t_delivery`.`deliverydate` AS `deliverydate`,`t_delivery`.`bomid` AS `bomid`,sum(`t_delivery`.`reqqty`) AS `reqqty`,sum(`t_delivery`.`delqty`) AS `delqty` from `t_delivery` group by `t_delivery`.`partnumber`,`t_delivery`.`deliverydate`,`t_delivery`.`bomid` order by `t_delivery`.`deliverydate`,`t_delivery`.`partnumber` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_rdelivery`  AS  select `t_delivery`.`partnumber` AS `partnumber`,`t_delivery`.`deliverydate` AS `deliverydate`,`t_delivery`.`bomid` AS `bomid`,sum(`t_delivery`.`reqqty`) AS `reqqty`,sum(`t_delivery`.`delqty`) AS `delqty` from `t_delivery` group by `t_delivery`.`partnumber`,`t_delivery`.`deliverydate`,`t_delivery`.`bomid` order by `t_delivery`.`deliverydate`,`t_delivery`.`partnumber` ;
 
 -- --------------------------------------------------------
 
@@ -4160,7 +4160,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_reportdelivery`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_reportdelivery`  AS  select `v_rdelivery`.`partnumber` AS `partnumber`,`v_rdelivery`.`deliverydate` AS `deliverydate`,`v_rdelivery`.`bomid` AS `bomid`,`v_rdelivery`.`reqqty` AS `reqqty`,`v_rdelivery`.`delqty` AS `delqty`,((`fGetTotalQtyReq`(`v_rdelivery`.`bomid`,`v_rdelivery`.`deliverydate`) + `v_rdelivery`.`reqqty`) - `fGetTotalQtyDel`(`v_rdelivery`.`bomid`,`v_rdelivery`.`deliverydate`)) AS `totalreq`,(`v_rdelivery`.`delqty` - ((`fGetTotalQtyReq`(`v_rdelivery`.`bomid`,`v_rdelivery`.`deliverydate`) + `v_rdelivery`.`reqqty`) - `fGetTotalQtyDel`(`v_rdelivery`.`bomid`,`v_rdelivery`.`deliverydate`))) AS `balance` from `v_rdelivery` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_reportdelivery`  AS  select `v_rdelivery`.`partnumber` AS `partnumber`,`v_rdelivery`.`deliverydate` AS `deliverydate`,`v_rdelivery`.`bomid` AS `bomid`,`v_rdelivery`.`reqqty` AS `reqqty`,`v_rdelivery`.`delqty` AS `delqty`,((`fGetTotalQtyReq`(`v_rdelivery`.`bomid`,`v_rdelivery`.`deliverydate`) + `v_rdelivery`.`reqqty`) - `fGetTotalQtyDel`(`v_rdelivery`.`bomid`,`v_rdelivery`.`deliverydate`)) AS `totalreq`,(`v_rdelivery`.`delqty` - ((`fGetTotalQtyReq`(`v_rdelivery`.`bomid`,`v_rdelivery`.`deliverydate`) + `v_rdelivery`.`reqqty`) - `fGetTotalQtyDel`(`v_rdelivery`.`bomid`,`v_rdelivery`.`deliverydate`))) AS `balance` from `v_rdelivery` ;
 
 -- --------------------------------------------------------
 
@@ -4169,7 +4169,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_reservasi01`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_reservasi01`  AS  select `a`.`resnum` AS `resnum`,`b`.`resitem` AS `resitem`,`a`.`resdate` AS `resdate`,`a`.`note` AS `note`,`a`.`requestor` AS `requestor`,`b`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,`b`.`quantity` AS `quantity`,`b`.`unit` AS `unit`,`b`.`fromwhs` AS `fromwhs`,`fGetWarehouseName`(`b`.`fromwhs`) AS `whsname`,`b`.`towhs` AS `towhs`,`fGetWarehouseName`(`b`.`fromwhs`) AS `whsdest`,`b`.`remark` AS `remark`,`b`.`movementstat` AS `movementstat`,`fGetUserDepartment`(`a`.`createdby`) AS `department` from (`t_reserv01` `a` join `t_reserv02` `b` on((`a`.`resnum` = `b`.`resnum`))) order by `a`.`resnum`,`b`.`resitem` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_reservasi01`  AS  select `a`.`resnum` AS `resnum`,`b`.`resitem` AS `resitem`,`a`.`resdate` AS `resdate`,`a`.`note` AS `note`,`a`.`requestor` AS `requestor`,`b`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,`b`.`quantity` AS `quantity`,`b`.`unit` AS `unit`,`b`.`fromwhs` AS `fromwhs`,`fGetWarehouseName`(`b`.`fromwhs`) AS `whsname`,`b`.`towhs` AS `towhs`,`fGetWarehouseName`(`b`.`fromwhs`) AS `whsdest`,`b`.`remark` AS `remark`,`b`.`movementstat` AS `movementstat`,`fGetUserDepartment`(`a`.`createdby`) AS `department` from (`t_reserv01` `a` join `t_reserv02` `b` on((`a`.`resnum` = `b`.`resnum`))) order by `a`.`resnum`,`b`.`resitem` ;
 
 -- --------------------------------------------------------
 
@@ -4178,7 +4178,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_reservasi02`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_reservasi02`  AS  select distinct `a`.`resnum` AS `resnum`,`a`.`requestor` AS `requestor`,`a`.`note` AS `note`,`a`.`resdate` AS `resdate`,`a`.`towhs` AS `towhs`,`c`.`deskripsi` AS `whsname` from ((`t_reserv01` `a` join `t_reserv02` `b` on((`a`.`resnum` = `b`.`resnum`))) left join `t_gudang` `c` on((`a`.`towhs` = `c`.`gudang`))) where isnull(`b`.`movementstat`) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_reservasi02`  AS  select distinct `a`.`resnum` AS `resnum`,`a`.`requestor` AS `requestor`,`a`.`note` AS `note`,`a`.`resdate` AS `resdate`,`a`.`towhs` AS `towhs`,`c`.`deskripsi` AS `whsname` from ((`t_reserv01` `a` join `t_reserv02` `b` on((`a`.`resnum` = `b`.`resnum`))) left join `t_gudang` `c` on((`a`.`towhs` = `c`.`gudang`))) where isnull(`b`.`movementstat`) ;
 
 -- --------------------------------------------------------
 
@@ -4187,7 +4187,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_rinvoice01`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_rinvoice01`  AS  select `a`.`ivnum` AS `ivnum`,`a`.`ivyear` AS `ivyear`,`a`.`vendor` AS `vendor`,`a`.`total_invoice` AS `total_invoice`,`a`.`note` AS `note`,`a`.`bankacc` AS `bankacc`,`a`.`ivdate` AS `ivdate`,`a`.`createdby` AS `createdby`,`a`.`createdon` AS `createdon`,`a`.`approvestat` AS `approvestat`,`a`.`approvedate` AS `approvedate`,`b`.`namavendor` AS `namavendor`,(case when isnull(`a`.`approvestat`) then 'Open' else 'Approved' end) AS `ivstat`,`b`.`alamat` AS `alamat`,`b`.`npwp` AS `npwp` from (`t_invoice01` `a` join `t_vendor` `b` on((`a`.`vendor` = `b`.`vendor`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_rinvoice01`  AS  select `a`.`ivnum` AS `ivnum`,`a`.`ivyear` AS `ivyear`,`a`.`vendor` AS `vendor`,`a`.`total_invoice` AS `total_invoice`,`a`.`note` AS `note`,`a`.`bankacc` AS `bankacc`,`a`.`ivdate` AS `ivdate`,`a`.`createdby` AS `createdby`,`a`.`createdon` AS `createdon`,`a`.`approvestat` AS `approvestat`,`a`.`approvedate` AS `approvedate`,`b`.`namavendor` AS `namavendor`,(case when isnull(`a`.`approvestat`) then 'Open' else 'Approved' end) AS `ivstat`,`b`.`alamat` AS `alamat`,`b`.`npwp` AS `npwp` from (`t_invoice01` `a` join `t_vendor` `b` on((`a`.`vendor` = `b`.`vendor`))) ;
 
 -- --------------------------------------------------------
 
@@ -4196,7 +4196,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_rinvoice02`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_rinvoice02`  AS  select `a`.`ivnum` AS `ivnum`,`a`.`ivyear` AS `ivyear`,`a`.`ivitem` AS `ivitem`,`a`.`ponum` AS `ponum`,`a`.`poitem` AS `poitem`,`b`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,`b`.`quantity` AS `quantity`,`b`.`unit` AS `unit`,`b`.`price` AS `price`,`b`.`discount` AS `discount`,`b`.`ppn` AS `ppn`,cast((((`b`.`quantity` * `b`.`price`) - `b`.`discount`) + ((((`b`.`quantity` * `b`.`price`) - `b`.`discount`) * `b`.`ppn`) / 100)) as decimal(15,2)) AS `totalprice`,cast(((((`b`.`quantity` * `b`.`price`) - `b`.`discount`) + ((((`b`.`quantity` * `b`.`price`) - `b`.`discount`) * `b`.`ppn`) / 100)) / `b`.`quantity`) as decimal(15,2)) AS `netprice` from (`t_invoice02` `a` join `t_po02` `b` on(((`a`.`ponum` = `b`.`ponum`) and (`a`.`poitem` = `b`.`poitem`)))) order by `a`.`ivnum`,`a`.`ivyear`,`a`.`ivitem` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_rinvoice02`  AS  select `a`.`ivnum` AS `ivnum`,`a`.`ivyear` AS `ivyear`,`a`.`ivitem` AS `ivitem`,`a`.`ponum` AS `ponum`,`a`.`poitem` AS `poitem`,`b`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,`b`.`quantity` AS `quantity`,`b`.`unit` AS `unit`,`b`.`price` AS `price`,`b`.`discount` AS `discount`,`b`.`ppn` AS `ppn`,cast((((`b`.`quantity` * `b`.`price`) - `b`.`discount`) + ((((`b`.`quantity` * `b`.`price`) - `b`.`discount`) * `b`.`ppn`) / 100)) as decimal(15,2)) AS `totalprice`,cast(((((`b`.`quantity` * `b`.`price`) - `b`.`discount`) + ((((`b`.`quantity` * `b`.`price`) - `b`.`discount`) * `b`.`ppn`) / 100)) / `b`.`quantity`) as decimal(15,2)) AS `netprice` from (`t_invoice02` `a` join `t_po02` `b` on(((`a`.`ponum` = `b`.`ponum`) and (`a`.`poitem` = `b`.`poitem`)))) order by `a`.`ivnum`,`a`.`ivyear`,`a`.`ivitem` ;
 
 -- --------------------------------------------------------
 
@@ -4205,7 +4205,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_role_activity`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_role_activity`  AS  select `a`.`roleid` AS `roleid`,`a`.`menuid` AS `menuid`,`b`.`activity` AS `activity`,`b`.`status` AS `status` from (`t_rolemenu` `a` join `t_role_avtivity` `b` on(((`a`.`roleid` = `b`.`roleid`) and (`a`.`menuid` = `b`.`menuid`)))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_role_activity`  AS  select `a`.`roleid` AS `roleid`,`a`.`menuid` AS `menuid`,`b`.`activity` AS `activity`,`b`.`status` AS `status` from (`t_rolemenu` `a` join `t_role_avtivity` `b` on(((`a`.`roleid` = `b`.`roleid`) and (`a`.`menuid` = `b`.`menuid`)))) ;
 
 -- --------------------------------------------------------
 
@@ -4214,7 +4214,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_saldo_akhir`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_saldo_akhir`  AS  select `v_bank_master`.`id` AS `id`,`v_bank_master`.`bankid` AS `bankid`,`v_bank_master`.`bankno` AS `bankno`,`v_bank_master`.`bankacc` AS `bankacc`,`v_bank_master`.`status` AS `status`,`v_bank_master`.`deskripsi` AS `deskripsi`,`v_bank_master`.`balance` AS `balance`,`v_bank_master`.`user` AS `user`,`fGetSaldo`(`v_bank_master`.`bankno`) AS `saldo_akhir` from `v_bank_master` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_saldo_akhir`  AS  select `v_bank_master`.`id` AS `id`,`v_bank_master`.`bankid` AS `bankid`,`v_bank_master`.`bankno` AS `bankno`,`v_bank_master`.`bankacc` AS `bankacc`,`v_bank_master`.`status` AS `status`,`v_bank_master`.`deskripsi` AS `deskripsi`,`v_bank_master`.`balance` AS `balance`,`v_bank_master`.`user` AS `user`,`fGetSaldo`(`v_bank_master`.`bankno`) AS `saldo_akhir` from `v_bank_master` ;
 
 -- --------------------------------------------------------
 
@@ -4223,7 +4223,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_service01`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_service01`  AS  select `a`.`servicenum` AS `servicenum`,`a`.`servicedate` AS `servicedate`,`a`.`note` AS `note`,`a`.`mekanik` AS `mekanik`,`a`.`nopol` AS `nopol`,`a`.`refnum` AS `refnum`,`a`.`servicestatus` AS `servicestatus`,`a`.`warehouse` AS `warehouse`,`a`.`createdon` AS `createdon`,`a`.`createdby` AS `createdby`,`b`.`deskripsi` AS `whsname` from (`t_service01` `a` left join `t_gudang` `b` on((`a`.`warehouse` = `b`.`gudang`))) where (`a`.`servicestatus` = 'X') ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_service01`  AS  select `a`.`servicenum` AS `servicenum`,`a`.`servicedate` AS `servicedate`,`a`.`note` AS `note`,`a`.`mekanik` AS `mekanik`,`a`.`nopol` AS `nopol`,`a`.`refnum` AS `refnum`,`a`.`servicestatus` AS `servicestatus`,`a`.`warehouse` AS `warehouse`,`a`.`createdon` AS `createdon`,`a`.`createdby` AS `createdby`,`b`.`deskripsi` AS `whsname` from (`t_service01` `a` left join `t_gudang` `b` on((`a`.`warehouse` = `b`.`gudang`))) where (`a`.`servicestatus` = 'X') ;
 
 -- --------------------------------------------------------
 
@@ -4232,7 +4232,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_service02`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_service02`  AS  select `a`.`servicenum` AS `servicenum`,`b`.`resitem` AS `resitem`,`a`.`servicedate` AS `servicedate`,`a`.`note` AS `note`,`a`.`mekanik` AS `mekanik`,`a`.`nopol` AS `nopol`,`b`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,`b`.`batchnumber` AS `batchnumber`,`b`.`quantity` AS `quantity`,`b`.`unit` AS `unit`,`b`.`price` AS `price`,cast((`b`.`price` * `b`.`quantity`) as decimal(15,2)) AS `subtotal`,`b`.`warehouse` AS `warehouse`,`c`.`deskripsi` AS `whsname` from ((`t_service01` `a` join `t_inv_i` `b` on((`a`.`servicenum` = `b`.`resnum`))) left join `t_gudang` `c` on((`b`.`warehouse` = `c`.`gudang`))) where (`b`.`movement` = '261') ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_service02`  AS  select `a`.`servicenum` AS `servicenum`,`b`.`resitem` AS `resitem`,`a`.`servicedate` AS `servicedate`,`a`.`note` AS `note`,`a`.`mekanik` AS `mekanik`,`a`.`nopol` AS `nopol`,`b`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,`b`.`batchnumber` AS `batchnumber`,`b`.`quantity` AS `quantity`,`b`.`unit` AS `unit`,`b`.`price` AS `price`,cast((`b`.`price` * `b`.`quantity`) as decimal(15,2)) AS `subtotal`,`b`.`warehouse` AS `warehouse`,`c`.`deskripsi` AS `whsname` from ((`t_service01` `a` join `t_inv_i` `b` on((`a`.`servicenum` = `b`.`resnum`))) left join `t_gudang` `c` on((`b`.`warehouse` = `c`.`gudang`))) where (`b`.`movement` = '261') ;
 
 -- --------------------------------------------------------
 
@@ -4241,7 +4241,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_service03`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_service03`  AS  select `a`.`servicenum` AS `servicenum`,`a`.`servicedate` AS `servicedate`,`a`.`note` AS `note`,`a`.`mekanik` AS `mekanik`,`a`.`nopol` AS `nopol`,`c`.`deskripsi` AS `whsname`,`a`.`servicestatus` AS `servicestatus`,`b`.`serviceitem` AS `serviceitem`,`b`.`material` AS `material`,`d`.`matdesc` AS `matdesc`,`b`.`quantity` AS `quantity`,`b`.`unit` AS `unit` from (((`t_service01` `a` join `t_service02` `b` on((`a`.`servicenum` = `b`.`servicenum`))) left join `t_gudang` `c` on((`a`.`warehouse` = `c`.`gudang`))) left join `t_material` `d` on((`b`.`material` = `d`.`material`))) order by `a`.`servicenum`,`b`.`serviceitem` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_service03`  AS  select `a`.`servicenum` AS `servicenum`,`a`.`servicedate` AS `servicedate`,`a`.`note` AS `note`,`a`.`mekanik` AS `mekanik`,`a`.`nopol` AS `nopol`,`c`.`deskripsi` AS `whsname`,`a`.`servicestatus` AS `servicestatus`,`b`.`serviceitem` AS `serviceitem`,`b`.`material` AS `material`,`d`.`matdesc` AS `matdesc`,`b`.`quantity` AS `quantity`,`b`.`unit` AS `unit` from (((`t_service01` `a` join `t_service02` `b` on((`a`.`servicenum` = `b`.`servicenum`))) left join `t_gudang` `c` on((`a`.`warehouse` = `c`.`gudang`))) left join `t_material` `d` on((`b`.`material` = `d`.`material`))) order by `a`.`servicenum`,`b`.`serviceitem` ;
 
 -- --------------------------------------------------------
 
@@ -4250,7 +4250,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_stock`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_stock`  AS  select `a`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,`a`.`warehouse` AS `warehouse`,`c`.`deskripsi` AS `deskripsi`,`a`.`quantity` AS `quantity`,`b`.`matunit` AS `matunit` from ((`t_stock` `a` left join `t_material` `b` on((`a`.`material` = `b`.`material`))) left join `t_gudang` `c` on((`a`.`warehouse` = `c`.`gudang`))) order by `a`.`material`,`a`.`warehouse` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_stock`  AS  select `a`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,`a`.`warehouse` AS `warehouse`,`c`.`deskripsi` AS `deskripsi`,`a`.`quantity` AS `quantity`,`b`.`matunit` AS `matunit` from ((`t_stock` `a` left join `t_material` `b` on((`a`.`material` = `b`.`material`))) left join `t_gudang` `c` on((`a`.`warehouse` = `c`.`gudang`))) order by `a`.`material`,`a`.`warehouse` ;
 
 -- --------------------------------------------------------
 
@@ -4259,7 +4259,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_stockbatch`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_stockbatch`  AS  select `a`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,`a`.`warehouse` AS `warehouse`,`c`.`deskripsi` AS `whsname`,`a`.`batch` AS `batch`,`a`.`quantity` AS `quantity`,`b`.`matunit` AS `matunit` from ((`t_batch_stock` `a` join `t_material` `b` on((`a`.`material` = `b`.`material`))) left join `t_gudang` `c` on((`a`.`warehouse` = `c`.`gudang`))) order by `a`.`material`,`a`.`warehouse`,`a`.`batch` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_stockbatch`  AS  select `a`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,`a`.`warehouse` AS `warehouse`,`c`.`deskripsi` AS `whsname`,`a`.`batch` AS `batch`,`a`.`quantity` AS `quantity`,`b`.`matunit` AS `matunit` from ((`t_batch_stock` `a` join `t_material` `b` on((`a`.`material` = `b`.`material`))) left join `t_gudang` `c` on((`a`.`warehouse` = `c`.`gudang`))) order by `a`.`material`,`a`.`warehouse`,`a`.`batch` ;
 
 -- --------------------------------------------------------
 
@@ -4268,7 +4268,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_stockwip`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_stockwip`  AS  select `a`.`area` AS `area`,`c`.`deskripsi` AS `deskripsi`,`a`.`bomid` AS `bomid`,`b`.`partnumber` AS `partnumber`,`b`.`partname` AS `partname`,`b`.`customer` AS `customer`,`a`.`period` AS `period`,`a`.`quantity` AS `quantity` from ((`t_wip_stock` `a` join `t_bom01` `b` on((`a`.`bomid` = `b`.`bomid`))) join `t_meja` `c` on((`a`.`area` = `c`.`nomeja`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_stockwip`  AS  select `a`.`area` AS `area`,`c`.`deskripsi` AS `deskripsi`,`a`.`bomid` AS `bomid`,`b`.`partnumber` AS `partnumber`,`b`.`partname` AS `partname`,`b`.`customer` AS `customer`,`a`.`period` AS `period`,`a`.`quantity` AS `quantity` from ((`t_wip_stock` `a` join `t_bom01` `b` on((`a`.`bomid` = `b`.`bomid`))) join `t_meja` `c` on((`a`.`area` = `c`.`nomeja`))) ;
 
 -- --------------------------------------------------------
 
@@ -4277,7 +4277,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_totalstock`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_totalstock`  AS  select `a`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,sum(`a`.`quantity`) AS `qty`,`b`.`matunit` AS `matunit` from (`t_stock` `a` join `t_material` `b` on((`a`.`material` = `b`.`material`))) group by `a`.`material`,`b`.`matdesc`,`b`.`matunit` order by `a`.`material` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_totalstock`  AS  select `a`.`material` AS `material`,`b`.`matdesc` AS `matdesc`,sum(`a`.`quantity`) AS `qty`,`b`.`matunit` AS `matunit` from (`t_stock` `a` join `t_material` `b` on((`a`.`material` = `b`.`material`))) group by `a`.`material`,`b`.`matdesc`,`b`.`matunit` order by `a`.`material` ;
 
 -- --------------------------------------------------------
 
@@ -4286,7 +4286,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_user`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_user`  AS  select `a`.`username` AS `username`,`a`.`password` AS `password`,`a`.`nama` AS `nama`,`a`.`userlevel` AS `userlevel`,`a`.`department` AS `department`,`a`.`jabatan` AS `jabatan`,`a`.`createdby` AS `createdby`,`a`.`createdon` AS `createdon`,`b`.`department` AS `deptname`,`c`.`jabatan` AS `jbtn` from ((`t_user` `a` left join `t_department` `b` on((`a`.`department` = `b`.`id`))) left join `t_jabatan` `c` on((`a`.`jabatan` = `c`.`id`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_user`  AS  select `a`.`username` AS `username`,`a`.`password` AS `password`,`a`.`nama` AS `nama`,`a`.`userlevel` AS `userlevel`,`a`.`department` AS `department`,`a`.`jabatan` AS `jabatan`,`a`.`createdby` AS `createdby`,`a`.`createdon` AS `createdon`,`b`.`department` AS `deptname`,`c`.`jabatan` AS `jbtn` from ((`t_user` `a` left join `t_department` `b` on((`a`.`department` = `b`.`id`))) left join `t_jabatan` `c` on((`a`.`jabatan` = `c`.`id`))) ;
 
 -- --------------------------------------------------------
 
@@ -4295,7 +4295,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_user_menu`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_user_menu`  AS  select `a`.`username` AS `username`,`b`.`roleid` AS `roleid`,`f`.`rolename` AS `rolename`,`c`.`menuid` AS `menuid`,`d`.`id` AS `id`,`d`.`menu` AS `menu`,`d`.`route` AS `route`,`d`.`type` AS `type`,`d`.`grouping` AS `grouping`,`d`.`icon` AS `icon`,`d`.`createdon` AS `createdon`,`d`.`createdby` AS `createdby` from ((((`t_user` `a` join `t_user_role` `b` on((`a`.`username` = `b`.`username`))) join `t_rolemenu` `c` on((`c`.`roleid` = `b`.`roleid`))) join `t_menus` `d` on((`d`.`id` = `c`.`menuid`))) join `t_role` `f` on((`f`.`roleid` = `b`.`roleid`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_user_menu`  AS  select `a`.`username` AS `username`,`b`.`roleid` AS `roleid`,`f`.`rolename` AS `rolename`,`c`.`menuid` AS `menuid`,`d`.`id` AS `id`,`d`.`menu` AS `menu`,`d`.`route` AS `route`,`d`.`type` AS `type`,`d`.`grouping` AS `grouping`,`d`.`icon` AS `icon`,`d`.`createdon` AS `createdon`,`d`.`createdby` AS `createdby` from ((((`t_user` `a` join `t_user_role` `b` on((`a`.`username` = `b`.`username`))) join `t_rolemenu` `c` on((`c`.`roleid` = `b`.`roleid`))) join `t_menus` `d` on((`d`.`id` = `c`.`menuid`))) join `t_role` `f` on((`f`.`roleid` = `b`.`roleid`))) ;
 
 -- --------------------------------------------------------
 
@@ -4304,7 +4304,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_user_role_avtivity`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_user_role_avtivity`  AS  select `a`.`roleid` AS `roleid`,`a`.`menuid` AS `menuid`,`a`.`activity` AS `activity`,`a`.`status` AS `status`,`a`.`createdon` AS `createdon`,`b`.`route` AS `route`,`b`.`menu` AS `menu`,`c`.`username` AS `username`,`d`.`rolename` AS `rolename` from (((`t_role_avtivity` `a` join `t_menus` `b` on((`a`.`menuid` = `b`.`id`))) join `t_user_role` `c` on((`a`.`roleid` = `c`.`roleid`))) join `t_role` `d` on((`a`.`roleid` = `d`.`roleid`))) order by `c`.`username`,`d`.`rolename` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_user_role_avtivity`  AS  select `a`.`roleid` AS `roleid`,`a`.`menuid` AS `menuid`,`a`.`activity` AS `activity`,`a`.`status` AS `status`,`a`.`createdon` AS `createdon`,`b`.`route` AS `route`,`b`.`menu` AS `menu`,`c`.`username` AS `username`,`d`.`rolename` AS `rolename` from (((`t_role_avtivity` `a` join `t_menus` `b` on((`a`.`menuid` = `b`.`id`))) join `t_user_role` `c` on((`a`.`roleid` = `c`.`roleid`))) join `t_role` `d` on((`a`.`roleid` = `d`.`roleid`))) order by `c`.`username`,`d`.`rolename` ;
 
 -- --------------------------------------------------------
 
@@ -4313,7 +4313,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_wip01`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_wip01`  AS  select `t_wip`.`wipid` AS `wipid`,`t_wip`.`wiptype` AS `wiptype`,`t_wip`.`from_area` AS `from_area`,`fGetAreaDesc`(`t_wip`.`from_area`) AS `area1`,`t_wip`.`dest_area` AS `dest_area`,`fGetAreaDesc`(`t_wip`.`dest_area`) AS `area2`,`t_wip`.`bomid` AS `bomid`,`t_wip`.`partnumber` AS `partnumber`,`t_wip`.`customer` AS `customer`,`t_wip`.`quantity` AS `quantity`,`t_wip`.`periode` AS `periode`,`t_wip`.`createdby` AS `createdby`,`t_wip`.`createdon` AS `createdon`,(case when (`t_wip`.`wiptype` = 'IN') then `t_wip`.`quantity` when (`t_wip`.`wiptype` = 'OUT') then (`t_wip`.`quantity` * -(1)) end) AS `qty` from `t_wip` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_wip01`  AS  select `t_wip`.`wipid` AS `wipid`,`t_wip`.`wiptype` AS `wiptype`,`t_wip`.`from_area` AS `from_area`,`fGetAreaDesc`(`t_wip`.`from_area`) AS `area1`,`t_wip`.`dest_area` AS `dest_area`,`fGetAreaDesc`(`t_wip`.`dest_area`) AS `area2`,`t_wip`.`bomid` AS `bomid`,`t_wip`.`partnumber` AS `partnumber`,`t_wip`.`customer` AS `customer`,`t_wip`.`quantity` AS `quantity`,`t_wip`.`periode` AS `periode`,`t_wip`.`createdby` AS `createdby`,`t_wip`.`createdon` AS `createdon`,(case when (`t_wip`.`wiptype` = 'IN') then `t_wip`.`quantity` when (`t_wip`.`wiptype` = 'OUT') then (`t_wip`.`quantity` * -(1)) end) AS `qty` from `t_wip` ;
 
 -- --------------------------------------------------------
 
@@ -4322,7 +4322,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_wos01`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_wos01`  AS  select `a`.`id` AS `id`,`a`.`reffid` AS `reffid`,`a`.`partnumber` AS `partnumber`,`a`.`quantity` AS `quantity`,`a`.`wpnumber` AS `wpnumber`,`a`.`circuitno` AS `circuitno`,`a`.`stardate` AS `stardate`,`a`.`enddate` AS `enddate`,`a`.`wos_status` AS `wos_status`,`a`.`createdby` AS `createdby`,`a`.`createdon` AS `createdon`,`b`.`imagelink` AS `imagelink`,(case when (`a`.`wos_status` = '1') then 'On progress' when (`a`.`wos_status` = '2') then 'Closed' end) AS `wosstat` from (`t_wos01` `a` left join `t_wos_image` `b` on(((`a`.`circuitno` = `b`.`circuitno`) and (`a`.`partnumber` = `b`.`partnumber`)))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`cpses_ep1yf5ybwr`@`localhost` SQL SECURITY DEFINER VIEW `v_wos01`  AS  select `a`.`id` AS `id`,`a`.`reffid` AS `reffid`,`a`.`partnumber` AS `partnumber`,`a`.`quantity` AS `quantity`,`a`.`wpnumber` AS `wpnumber`,`a`.`circuitno` AS `circuitno`,`a`.`stardate` AS `stardate`,`a`.`enddate` AS `enddate`,`a`.`wos_status` AS `wos_status`,`a`.`createdby` AS `createdby`,`a`.`createdon` AS `createdon`,`b`.`imagelink` AS `imagelink`,(case when (`a`.`wos_status` = '1') then 'On progress' when (`a`.`wos_status` = '2') then 'Closed' end) AS `wosstat` from (`t_wos01` `a` left join `t_wos_image` `b` on(((`a`.`circuitno` = `b`.`circuitno`) and (`a`.`partnumber` = `b`.`partnumber`)))) ;
 
 --
 -- Indexes for dumped tables

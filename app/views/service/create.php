@@ -216,6 +216,11 @@
             var imgupload         = [];
             var count = 0;            
 
+            function materialExists(material) {
+                return detail_order_beli.some(function(el) {
+                    return el.material === material;
+                }); 
+            }
             
             function loaddatabarang(_warehouse){
                 $('#list-barang').dataTable({
@@ -239,51 +244,61 @@
                     selected_data = table.row($(this).closest('tr')).data();
 
                     console.log(selected_data)
-                    
-                    kodebrg = selected_data.material;
-                    $('#namabrg').val(selected_data.matdesc);
-                    $('#satuan').val(selected_data.matunit);
+                    if(materialExists(selected_data.material)){
 
-                    count = count+1;
-                    html = '';
-                    html = `
-                        <tr counter="`+ count +`" id="tr`+ count +`">
-                            <td class="nurut"> 
-                                `+ count +`
-                                <input type="hidden" name="itm_no[]" value="`+ count +`" />
-                            </td>
-                            <td> 
-                                <input type="text" name="itm_material[]" counter="`+count+`" id="material`+count+`" class="form-control materialCode" style="width:150px;" required="true" value="`+ selected_data.material +`" readonly/>
-                            </td>
-                            <td> 
-                                <input type="text" name="itm_matdesc[]" counter="`+count+`" id="matdesc`+count+`" class="form-control" style="width:300px;" value="`+ selected_data.matdesc +`" readonly/>
-                            </td>
-                            
-                            
-                            <td> 
-                                <input type="text" name="itm_qty[]" counter="`+count+`" id="poqty`+count+`"  class="form-control inputNumber" style="width:110px; text-align:right;" required="true" autocomplete="off"/>
-                            </td>
-                            <td> 
-                                <input type="text" name="itm_unit[]" counter="`+count+`" id="unit`+count+`" class="form-control" style="width:80px;" required="true" value="`+ selected_data.matunit +`" readonly/>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-danger btn-sm removePO hideComponent" counter="`+count+`">Remove</button>
-                            </td>
-                        </tr>
-                    `;
-                    $('#tbl-pr-body').append(html);
-                    renumberRows();
+                    }else{
+                        kodebrg = selected_data.material;
+                        $('#namabrg').val(selected_data.matdesc);
+                        $('#satuan').val(selected_data.matunit);
+                        detail_order_beli.push(selected_data);
 
-                    $('.removePO').on('click', function(e){
-                        e.preventDefault();
-                        $(this).closest("tr").remove();
+                        count = count+1;
+                        html = '';
+                        html = `
+                            <tr counter="`+ count +`" id="tr`+ count +`">
+                                <td class="nurut"> 
+                                    `+ count +`
+                                    <input type="hidden" name="itm_no[]" value="`+ count +`" />
+                                </td>
+                                <td> 
+                                    <input type="text" name="itm_material[]" counter="`+count+`" id="material`+count+`" class="form-control materialCode" style="width:150px;" required="true" value="`+ selected_data.material +`" readonly/>
+                                </td>
+                                <td> 
+                                    <input type="text" name="itm_matdesc[]" counter="`+count+`" id="matdesc`+count+`" class="form-control" style="width:300px;" value="`+ selected_data.matdesc +`" readonly/>
+                                </td>
+                                
+                                
+                                <td> 
+                                    <input type="text" name="itm_qty[]" counter="`+count+`" id="poqty`+count+`"  class="form-control inputNumber" style="width:110px; text-align:right;" required="true" autocomplete="off"/>
+                                </td>
+                                <td> 
+                                    <input type="text" name="itm_unit[]" counter="`+count+`" id="unit`+count+`" class="form-control" style="width:80px;" required="true" value="`+ selected_data.matunit +`" readonly/>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-sm removePO hideComponent" counter="`+count+`">Remove</button>
+                                </td>
+                            </tr>
+                        `;
+                        $('#tbl-pr-body').append(html);
                         renumberRows();
-                    });
 
-                    $('.inputNumber').on('change', function(){
-                        this.value = formatRupiah(this.value, '');
-                    });
+                        $('.removePO').on('click', function(e){
+                            e.preventDefault();
+                            var row_index = $(this).closest("tr").index();
+                            removeitem(row_index);      
+                            $(this).closest("tr").remove();
+                            renumberRows();
+                        });
+
+                        $('.inputNumber').on('change', function(){
+                            this.value = formatRupiah(this.value, '');
+                        });
+                    }
                 } );
+            }
+
+            function removeitem(index){
+                detail_order_beli.splice(index, 1);
             }
 
             function loaddatareservasi(){
@@ -432,8 +447,8 @@
                         }
                     }).done(function(data){
                         if(data.msgtype === "1"){
-                            showSuccessMessage('Service ' + data.docnum + ' Created')
-                        }if(data.msgtype === "3"){
+                            showSuccessMessage('Service SRV-' + data.docnum + ' Created')
+                        }else if(data.msgtype === "3"){
                             showErrorMessage(JSON.stringify(data.message[0].message))  
                         }else{
                             showErrorMessage(JSON.stringify(data.message))  
@@ -465,7 +480,7 @@
             function showSuccessMessage(message) {
                 swal({title: "Success!", text: message, type: "success"},
                     function(){ 
-                        window.location.href = base_url+'/service/confirm';
+                        window.location.href = base_url+'/service';
                     }
                 );
             }

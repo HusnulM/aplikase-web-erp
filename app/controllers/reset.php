@@ -20,7 +20,10 @@ class Reset extends Controller{
 			$data['menu']  = 'Reset Data';
 			$data['menu-dsc'] = '';
 	
-			$data['setting'] = $this->model('Setting_model')->getgensetting();
+			// Wajib di semua route ke view--------------------------------------------
+			$data['setting']  = $this->model('Setting_model')->getgensetting();    //--
+			$data['appmenu']  = $this->model('Home_model')->getUsermenu();         //--
+			//-------------------------------------------------------------------------  
 	
 			$this->view('templates/header_a', $data);
 			$this->view('reset/index', $data);

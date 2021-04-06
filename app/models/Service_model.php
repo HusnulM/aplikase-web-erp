@@ -104,6 +104,7 @@ class Service_model{
             $query2 = "INSERT INTO t_service02(servicenum,serviceitem,material,warehouse,quantity,unit,createdon,createdby)
                             VALUES(:servicenum,:serviceitem,:material,:warehouse,:quantity,:unit,:createdon,:createdby)";
             $this->db->query($query2);
+            $rows = 0;
             for($i = 0; $i < count($matnr); $i++){
                 $rows = $rows + 1;
                 $this->db->bind('servicenum',   $servicenum);
@@ -192,7 +193,8 @@ class Service_model{
     }
 
     public function closeservice($servicenum){
-        $query1 = "UPDATE t_service01 SET servicestatus='X' WHERE servicenum='$servicenum'";
+        $date = date('Y-m-d');
+        $query1 = "UPDATE t_service01 SET servicestatus='X', confirmdate='$date' WHERE servicenum='$servicenum'";
         $this->db->query($query1);
         $this->db->execute();    
     }
@@ -200,7 +202,17 @@ class Service_model{
     public function delete($servicenum){
         $query1 = "DELETE FROM t_service01 WHERE servicenum='$servicenum'";
         $this->db->query($query1);
-        $this->db->execute();    
+        $this->db->execute();  
+        
+        return $this->db->rowCount();   
+    }
+
+    public function deleteitem($servicenum,$serviceitem){
+        $query1 = "DELETE FROM t_service02 WHERE servicenum='$servicenum' AND serviceitem='$serviceitem'";
+        $this->db->query($query1);
+        $this->db->execute();  
+
+        return $this->db->rowCount();   
     }
 
     public function getuomconversion($matnr, $meins){
@@ -303,31 +315,7 @@ class Service_model{
                         '$_srvitm',
                         '$user'
                     )");
-                    $this->db->execute();                
-                    // $rows = $rows + 1;
-                    // $this->db->bind('grnum',       $mblnr);
-                    // $this->db->bind('year',        date('Y'));
-                    // $this->db->bind('gritem',      $rows);
-                    // $this->db->bind('movement',    '261');                    
-                    // $this->db->bind('batchnumber', $batch[$i]);
-                    // $this->db->bind('material',    $matnr[$i]);
-                    // $this->db->bind('matdesc',     $maktx[$i]);                    
-                    // $_menge = "";
-                    // $_menge = str_replace(".", "",  $menge[$i]);
-                    // $_menge = str_replace(",", ".", $_menge);
-                    // $this->db->bind('quantity',     $_menge);
-                    // $this->db->bind('unit',         $meins[$i]);                    
-                    // $this->db->bind('ponum',        null);
-                    // $this->db->bind('poitem',       null);
-                    // $this->db->bind('resnum',       null);
-                    // $this->db->bind('resitem',      null);
-                    // $this->db->bind('shkzg',        '-');
-                    // $this->db->bind('remark',       $txz01[$i]);
-                    // $this->db->bind('warehouse',    $lgort[$i]);
-                    // $this->db->bind('warehouseto',  null);
-                    // $this->db->bind('createdon',    date('Y-m-d'));
-                    // $this->db->bind('createdby',    $_SESSION['usr']['user']);
-                    // $this->db->execute();
+                    $this->db->execute();   
                 }
     
                 
